@@ -1,0 +1,69 @@
+---
+import { getOboToken } from '@src/utils/server/getOboToken';
+import { apiUrl } from '@src/utils/server/urls';
+import Layout from '../../layouts/Layout.astro';
+import ReportList from '@components/ReportList/ReportList';
+import styles from '../_rapporter.module.css';
+import { Button, Link } from '@navikt/ds-react';
+import Forbidden from '@components/forbidden/Forbidden.astro';
+
+const oboToken = await getOboToken(Astro.locals.token);
+
+const response = await fetch(`${apiUrl}/api/reports/aggregated`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: `Bearer ${oboToken}`,
+  },
+  // @ts-expect-error - This is a valid option
+  duplex: 'half',
+});
+
+const userResponse = await fetch(`${apiUrl}/api/user`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: `Bearer ${oboToken}`,
+  },
+  // @ts-expect-error - This is a valid option
+  duplex: 'half',
+});
+
+const data = await response.json();
+const user = await userResponse.json();
+---
+
+<Layout>
+  {
+    !user.isAdmin ? (
+      <Forbidden />
+    ) : (
+      <span>
+        <div class={styles.headingAndButton}>
+          <h1>Admin</h1>
+          <Button
+            as={Link}
+            variant="primary"
+            href="/admin/create-report"
+            className={styles.buttonAsLink}
+          >
+            Opprett en samslått rapport
+          </Button>
+          <Button
+            as={Link}
+            variant="primary"
+            href="https://myaccount.microsoft.com/groups/07bca51b-e5dc-484a-ac09-685e61244b6b"
+            className={styles.buttonAsLink}
+          >
+            Legg til admin i Azure
+          </Button>
+        </div>
+        <div class={styles.content}>
+          <ReportList client:only reports={data} />
+        </div>
+      </span>
+    )
+  }
+</Layout>

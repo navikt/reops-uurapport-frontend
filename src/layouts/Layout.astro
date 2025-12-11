@@ -1,0 +1,42 @@
+---
+import Navbar from '../components/navbar/Navbar.astro';
+import Footer from '../components/footer/Footer';
+import styles from './Layout.module.css';
+import { ViewTransitions } from 'astro:transitions';
+---
+
+<!doctype html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>a11y rapportering</title>
+    <script
+      is:inline
+      data-astro-rerun
+      defer
+      src="https://cdn.nav.no/team-researchops/sporing/sporing.js"
+      data-host-url="https://umami.nav.no"
+      data-website-id="d4ae85db-d511-44ed-94bf-60e424bf67e3"></script>
+
+    <link
+      rel="preload"
+      href="https://cdn.nav.no/aksel/@navikt/ds-css/6.10.0/index.min.css"
+      as="style"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.nav.no/aksel/@navikt/ds-css/6.10.0/index.min.css"
+    />
+    <ViewTransitions />
+  </head>
+  <body class="body">
+    <Navbar />
+    <main class={styles.main}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
