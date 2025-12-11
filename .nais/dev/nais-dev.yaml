@@ -1,10 +1,10 @@
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: accessibility-reporting-tool-frontend
-  namespace: a11y-statement
+  name: reops-accessibility-reporting-tool-frontend
+  namespace: team-researchops
   labels:
-    team: a11y-statement
+    team: team-researchops
 
 spec:
   image: {{image}}
@@ -19,11 +19,11 @@ spec:
     min: 2
     max: 4
   ingresses:
-    - 'https://a11y-statement-ny.ansatt.dev.nav.no'
+    - 'https://reops-a11y-statement-ny.ansatt.dev.nav.no'
   accessPolicy:
     outbound:
       rules:
-        - application: a11y-statement
+        - application: reops-a11y-statement
   azure:
     application:
       enabled: true
