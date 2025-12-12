@@ -1,7 +1,7 @@
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: reops-accessibility-reporting-tool-frontend
+  name: reops-a11y-statement-frontend
   namespace: team-researchops
   labels:
     team: team-researchops
