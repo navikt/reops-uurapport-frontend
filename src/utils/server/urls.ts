@@ -1,8 +1,8 @@
 enum ServerEnv {
   mock = 'mock',
   local = 'local',
-  development = 'development',
-  production = 'production',
+  devGcp = 'dev-gcp',
+  prodGcp = 'prod-gcp',
 }
 
 import { getEnvironment, isMock, isLocal } from '@src/utils/server/environment';
@@ -10,8 +10,8 @@ import { getEnvironment, isMock, isLocal } from '@src/utils/server/environment';
 const API_URLS: Record<ServerEnv, string> = {
   [ServerEnv.mock]: 'http://127.0.0.1:8787',
   [ServerEnv.local]: 'http://localhost:8787',
-  [ServerEnv.development]: 'http://reops-a11y-statement',
-  [ServerEnv.production]: 'http://reops-a11y-statement',
+  [ServerEnv.devGcp]: 'http://reops-a11y-statement',
+  [ServerEnv.prodGcp]: 'http://reops-a11y-statement',
 };
 
 export const loginUrl = (redirectUrl: string = '') =>

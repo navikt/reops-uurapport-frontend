@@ -1,4 +1,4 @@
-export type Environment = 'mock' | 'local' | 'dev' | 'prod';
+export type Environment = 'mock' | 'local' | 'dev-gcp' | 'prod-gcp';
 
 const deriveEnvironment = (): Environment => {
   const overrideEnv = (process.env.APP_ENV ?? process.env.VITE_APP_ENV ?? '').toLowerCase();
@@ -12,14 +12,18 @@ const deriveEnvironment = (): Environment => {
   }
 
   if (process.env.NAIS_CLUSTER_NAME === 'dev-gcp') {
-    return 'dev';
+    return 'dev-gcp';
+  }
+
+  if (process.env.NAIS_CLUSTER_NAME === 'prod-gcp') {
+    return 'prod-gcp';
   }
 
   if (process.env.NODE_ENV === 'development') {
-    return 'dev';
+    return 'dev-gcp';
   }
 
-  return 'prod';
+  return 'prod-gcp';
 };
 
 const environment = deriveEnvironment();
