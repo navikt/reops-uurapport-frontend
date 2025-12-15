@@ -26,16 +26,16 @@ const getEnvironment = (): ENV => {
 
 const getDevBaseUrl = () => {
   if (window.location.href.includes('beta.ansatt.dev.nav.no')) {
-    return 'https://a11y-statement-ny-beta.ansatt.dev.nav.no';
+    return 'https://reops-a11y-statement-ny-beta.ansatt.dev.nav.no';
   }
-  return 'https://a11y-statement-ny.ansatt.dev.nav.no';
+  return 'https://reops-a11y-statement-ny.ansatt.dev.nav.no';
 };
 
 const BASE_URL: { [key in ENV]: string } = {
   mock: 'http://localhost:4321',
   local: 'http://localhost:4322',
   development: getDevBaseUrl(),
-  production: 'https://a11y-statement-ny.ansatt.nav.no',
+  production: 'https://reops-a11y-statement-ny.ansatt.nav.no',
 };
 
 const API_PROXY_URL = `${BASE_URL[getEnvironment()]}/api/proxy`;

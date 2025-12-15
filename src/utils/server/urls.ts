@@ -10,8 +10,8 @@ import { getEnvironment, isMock, isLocal } from '@src/utils/server/environment';
 const API_URLS: Record<ServerEnv, string> = {
   [ServerEnv.mock]: 'http://127.0.0.1:8787',
   [ServerEnv.local]: 'http://localhost:8787',
-  [ServerEnv.development]: 'http://a11y-statement',
-  [ServerEnv.production]: 'http://a11y-statement',
+  [ServerEnv.development]: 'http://reops-a11y-statement',
+  [ServerEnv.production]: 'http://reops-a11y-statement',
 };
 
 export const loginUrl = (redirectUrl: string = '') =>

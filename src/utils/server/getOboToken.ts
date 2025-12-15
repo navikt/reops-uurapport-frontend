@@ -5,7 +5,7 @@ import {
 } from '@src/utils/server/environment';
 import { tokenEndpoint, tokenRequestBody } from '@src/utils/server/urls';
 
-const API_SCOPE = `api://${process.env.NAIS_CLUSTER_NAME}.a11y-statement.a11y-statement/.default`;
+const API_SCOPE = `api://${process.env.NAIS_CLUSTER_NAME}.reops-a11y-statement.reops-a11y-statement/.default`;
 
 export const getOboToken = async (token: string): Promise<string> => {
   if (isMock) {
@@ -39,7 +39,7 @@ export const getOboToken = async (token: string): Promise<string> => {
 
   if (!oboResult.ok) {
     console.log('Fail on-behalf-of token for api');
-    throw new Error(`Request oboToken for a11y-statement backend failed`);
+    throw new Error(`Request oboToken for reops-a11y-statement backend failed`);
   }
 
   return oboResult.token;
