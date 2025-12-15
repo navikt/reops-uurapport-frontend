@@ -38,8 +38,11 @@ export const getOboToken = async (token: string): Promise<string> => {
   const oboResult = await requestOboToken(token, API_SCOPE);
 
   if (!oboResult.ok) {
-    console.log('Fail on-behalf-of token for api');
-    throw new Error(`Request oboToken for reops-a11y-statement backend failed`);
+    console.error('Fail on-behalf-of token for api', {
+      error: oboResult.error,
+      details: oboResult
+    });
+    throw new Error(`Request oboToken for reops-a11y-statement backend failed: ${oboResult.error || 'Unknown error'}`);
   }
 
   return oboResult.token;
