@@ -46,3 +46,5 @@ spec:
       value: "dev-gcp"
     - name: BACKEND_APP_NAME
       value: "reops-a11y-statement"
+    - name: VITE_WONDERWALL_INGRESS
+      value: "$(WONDERWALL_INGRESS)"

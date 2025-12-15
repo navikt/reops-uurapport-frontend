@@ -13,6 +13,10 @@ const getOverrideEnv = (): ENV | null => {
 };
 
 const getEnvironment = (): ENV => {
+  // Use local when running in Vite dev server (npm run dev)
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV) {
+    return ENV.local;
+  }
   const override = getOverrideEnv();
   if (override) return override;
   if (window.location.href.includes('dev.nav.no')) {
@@ -25,10 +29,10 @@ const getEnvironment = (): ENV => {
 };
 
 const BASE_URL: { [key in ENV]: string } = {
-  mock: 'http://localhost:4321',
-  local: 'http://localhost:4322',
-  development: `${process.env.WONDERWALL_INGRESS}`,
-  production: `${process.env.WONDERWALL_INGRESS}`
+    mock: 'http://localhost:4321',
+    local: 'http://localhost:4321',
+    development: `${import.meta.env.VITE_WONDERWALL_INGRESS}`,
+    production: `${import.meta.env.VITE_WONDERWALL_INGRESS}`
 };
 
 const API_PROXY_URL = `${BASE_URL[getEnvironment()]}/api/proxy`;
