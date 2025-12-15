@@ -41,3 +41,6 @@ spec:
     requests:
       cpu: '20m'
       memory: 128Mi
+  env:
+    - name: NAIS_CLUSTER_NAME
+      value: "dev-gcp"
