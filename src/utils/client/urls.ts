@@ -28,7 +28,7 @@ const BASE_URL: { [key in ENV]: string } = {
   mock: 'http://localhost:4321',
   local: 'http://localhost:4322',
   development: `${process.env.WONDERWALL_INGRESS}`,
-  production: 'https://reops-a11y-statement-ny.ansatt.nav.no',
+  production: `${process.env.WONDERWALL_INGRESS}`
 };
 
 const API_PROXY_URL = `${BASE_URL[getEnvironment()]}/api/proxy`;

@@ -1,6 +1,6 @@
 # a11y rapporteringsverktøy frontend
 
-[a11y-statement](https://reops-a11y-statement-ny.ansatt.nav.no/) dekker behovet for intern rapportering av tilgjengelighetsstatusen av Navs produkter og tjenester.
+[a11y-statement](https://reops-a11y-statement.ansatt.nav.no/) dekker behovet for intern rapportering av tilgjengelighetsstatusen av Navs produkter og tjenester.
 
 ## Kjøre applikasjonen lokalt med mock
 
