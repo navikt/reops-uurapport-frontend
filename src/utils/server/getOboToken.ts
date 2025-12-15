@@ -5,7 +5,9 @@ import {
 } from '@src/utils/server/environment';
 import { tokenEndpoint, tokenRequestBody } from '@src/utils/server/urls';
 
-const API_SCOPE = `api://${process.env.NAIS_CLUSTER_NAME}.${process.env.NAIS_NAMESPACE}.${process.env.NAIS_APP_NAME}/.default`;
+// Use the backend app name for OBO token audience
+const BACKEND_APP_NAME = 'reops-a11y-statement';
+const API_SCOPE = `api://${process.env.NAIS_CLUSTER_NAME}.${process.env.NAIS_NAMESPACE}.${BACKEND_APP_NAME}/.default`;
 
 export const getOboToken = async (token: string): Promise<string> => {
   if (isMock) {
@@ -47,3 +49,5 @@ export const getOboToken = async (token: string): Promise<string> => {
 
   return oboResult.token;
 };
+
+console.log('getOboToken: API_SCOPE', API_SCOPE);
