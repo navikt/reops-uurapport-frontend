@@ -20,7 +20,18 @@ const userResponse = await fetch(`${apiUrl}/api/user`, {
   duplex: 'half',
 });
 
-const user = await userResponse.json();
+let user = null;
+if (userResponse.ok) {
+  user = await userResponse.json();
+} else {
+  const errorText = await userResponse.text();
+  console.error('Failed to fetch user:', {
+    status: userResponse.status,
+    statusText: userResponse.statusText,
+    body: errorText
+  });
+  throw new Error(`Failed to fetch user: ${userResponse.status} ${userResponse.statusText}`);
+}
 ---
 
 <Layout>
