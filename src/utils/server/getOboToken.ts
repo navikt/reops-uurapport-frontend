@@ -5,7 +5,7 @@ import {
 } from '@src/utils/server/environment';
 import { tokenEndpoint, tokenRequestBody } from '@src/utils/server/urls';
 
-const API_SCOPE = `api://${process.env.NAIS_CLUSTER_NAME}.reops-a11y-statement.reops-a11y-statement/.default`;
+const API_SCOPE = `api://${process.env.NAIS_CLUSTER_NAME}.${process.env.NAIS_NAMESPACE}.${process.env.NAIS_APP_NAME}/.default`;
 
 export const getOboToken = async (token: string): Promise<string> => {
   if (isMock) {
