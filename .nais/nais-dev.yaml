@@ -44,3 +44,5 @@ spec:
   env:
     - name: NAIS_CLUSTER_NAME
       value: "dev-gcp"
+    - name: BACKEND_APP_NAME
+      value: "reops-a11y-statement"
