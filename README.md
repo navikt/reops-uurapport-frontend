@@ -1,4 +1,4 @@
-# a11y rapporteringsverktøy frontend
+# uurapport frontend
 
 [uurapport](https://uurapport.ansatt.nav.no/) dekker behovet for intern rapportering av tilgjengelighetsstatusen av Navs produkter og tjenester.
 
