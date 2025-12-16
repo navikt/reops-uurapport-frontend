@@ -42,7 +42,7 @@ export const getOboToken = async (token: string): Promise<string> => {
       error: oboResult.error,
       details: oboResult
     });
-    throw new Error(`Request oboToken for reops-a11y-statement backend failed: ${oboResult.error || 'Unknown error'}`);
+    throw new Error(`Request oboToken for uurapport-backend failed: ${oboResult.error || 'Unknown error'}`);
   }
 
   return oboResult.token;

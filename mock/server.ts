@@ -146,7 +146,7 @@ api.get('/api/reports', (c) => {
     {
       id: '56b00314-b0a4-44f8-b841-97d97349f3c2',
       title: 'Nytt navn på rapport',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'sommer-a11y',
       teamName: 'Sommer a11y',
       date: '2024-09-20T09:53:35.000Z',
@@ -155,7 +155,7 @@ api.get('/api/reports', (c) => {
     {
       id: '73ea46dd-9af2-47e8-8e3f-df533f3616fa',
       title: 'Ordentlig tilgjengelig side',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'sommer-a11y',
       teamName: 'Sommer a11y',
       date: '2024-09-20T09:53:36.000Z',
@@ -164,7 +164,7 @@ api.get('/api/reports', (c) => {
     {
       id: '6c68683f-13b3-4213-80a7-cf7371fa4240',
       title: 'UU er kult 2.0',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'sommer-a11y',
       teamName: 'Sommer a11y',
       date: '2024-09-23T08:23:12.000Z',
@@ -191,7 +191,7 @@ api.get('/api/reports', (c) => {
     {
       id: 'bcda1591-7104-439f-b0a9-2203df2884dc',
       title: 'Tester rapport V5 -- update',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'min-side',
       teamName: 'min side',
       date: '2024-08-27T06:21:15.000Z',
@@ -200,7 +200,7 @@ api.get('/api/reports', (c) => {
     {
       id: '169dac2a-0f9c-414b-8cf7-cc28bf66d3c6',
       title: 'Tester rapport V4 sjekk at tittell oppdateres',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'min-side',
       teamName: 'min side',
       date: '2024-08-27T11:13:51.000Z',
@@ -208,8 +208,8 @@ api.get('/api/reports', (c) => {
     },
     {
       id: '659833c4-a563-46c2-9081-b41a0c2475e5',
-      title: 'Ny a11y-statement frontend',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      title: 'Ny uurapport frontend',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'sommer-a11y',
       teamName: 'Sommer a11y',
       date: '2024-09-26T13:24:01.000Z',
@@ -235,8 +235,8 @@ api.get('/api/reports', (c) => {
     },
     {
       id: '0e3f10a8-8e6e-466f-86cf-5f6a220112b8',
-      title: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      title: 'https://uurapport.ansatt.dev.nav.no/',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'sommer-a11y',
       teamName: 'Sommer a11y',
       date: '2024-09-26T15:12:10.000Z',
@@ -263,7 +263,7 @@ api.get('/api/reports', (c) => {
     {
       id: '9cbde386-56a5-4565-bd8e-30cb12493ac6',
       title: 'Tester rapport igjen',
-      url: 'https://a11y-statement-ny.ansatt.dev.nav.no/',
+      url: 'https://uurapport.ansatt.dev.nav.no/',
       teamId: 'min-side',
       teamName: 'min side',
       date: '2024-08-19T11:59:41.000Z',

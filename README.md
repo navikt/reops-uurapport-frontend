@@ -1,6 +1,6 @@
 # a11y rapporteringsverktøy frontend
 
-[a11y-statement](https://reops-a11y-statement.ansatt.nav.no/) dekker behovet for intern rapportering av tilgjengelighetsstatusen av Navs produkter og tjenester.
+[uurapport](https://uurapport.ansatt.nav.no/) dekker behovet for intern rapportering av tilgjengelighetsstatusen av Navs produkter og tjenester.
 
 ## Kjøre applikasjonen lokalt med mock
 
@@ -16,4 +16,4 @@ bare mock server:
 
 ## Endpoints
 
-En oversikt over endepunkter: https://reops-a11y-statement.ekstern.dev.nav.no/static/openapi
+En oversikt over endepunkter: https://uurapport.ekstern.dev.nav.no/static/openapi
