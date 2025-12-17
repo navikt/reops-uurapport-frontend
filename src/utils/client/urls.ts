@@ -5,6 +5,21 @@ enum ENV {
   production = 'production',
 }
 
+const sanitizeBase = (value: string) => value.replace(/\/$/, '');
+
+const resolveHostedBase = () => {
+  const configuredIngress = import.meta.env.VITE_WONDERWALL_INGRESS?.trim();
+  if (configuredIngress) {
+    return sanitizeBase(configuredIngress);
+  }
+
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return sanitizeBase(window.location.origin);
+  }
+
+  return '';
+};
+
 const getOverrideEnv = (): ENV | null => {
   const env = (import.meta.env.VITE_APP_ENV ?? '').toString().toLowerCase();
   if (env === ENV.mock) return ENV.mock;
@@ -29,12 +44,20 @@ const getEnvironment = (): ENV => {
 };
 
 const BASE_URL: { [key in ENV]: string } = {
-    mock: 'http://localhost:4321',
-    local: 'http://localhost:4321',
-    development: `${import.meta.env.VITE_WONDERWALL_INGRESS}`,
-    production: `${import.meta.env.VITE_WONDERWALL_INGRESS}`
+  mock: 'http://localhost:4321',
+  local: 'http://localhost:4321',
+  development: resolveHostedBase(),
+  production: resolveHostedBase(),
 };
 
-const API_PROXY_URL = `${BASE_URL[getEnvironment()]}/api/proxy`;
+const withProxyPath = (base: string) => {
+  if (!base) {
+    return '/api/proxy';
+  }
+
+  return `${sanitizeBase(base)}/api/proxy`;
+};
+
+const API_PROXY_URL = withProxyPath(BASE_URL[getEnvironment()]);
 
 export const apiProxyUrl = API_PROXY_URL;
