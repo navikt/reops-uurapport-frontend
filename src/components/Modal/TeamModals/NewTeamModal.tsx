@@ -7,15 +7,6 @@ import { createNewTeam } from '@src/services/teamServices';
 import useSWRImmutable from 'swr/immutable';
 import { fetcher } from '@src/utils/client/api';
 import styles from '../Modal.module.css';
-import useSWR from 'swr';
-
-{
-  /*
-interface ModalElementProps {
-  onAddTeam?: (newTeam: NewTeam) => void;
-}
-*/
-}
 
 function NewTeamModal() {
   const ref = useRef<HTMLDialogElement>(null);
@@ -27,8 +18,6 @@ function NewTeamModal() {
     { url: `${apiProxyUrl}/users/details` },
     fetcher,
   );
-
-  const { mutate } = useSWR({ url: `${apiProxyUrl}/teams` }, fetcher);
 
   const addMemberField = () => {
     setMembers([...members, '']);
@@ -47,7 +36,6 @@ function NewTeamModal() {
 
     try {
       await createNewTeam(newTeam);
-      mutate();
       setTeamName('');
       setTeamEmail('');
       setMembers(['']);
