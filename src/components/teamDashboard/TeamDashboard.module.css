@@ -17,6 +17,13 @@
   min-width: 0;
   margin-right: 20px;
   overflow-x: auto;
+  position: relative;
+}
+
+.chartContainer {
+  flex: 1;
+  min-width: 280px;
+  min-height: 250px;
 }
 
 .pieChart>fieldset {
@@ -99,5 +106,10 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
+  }
+
+  .chartContainer {
+    width: 100%;
+    min-height: 220px;
   }
 }

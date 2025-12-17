@@ -37,8 +37,12 @@ function TeamDashboard(props: TeamDashboardProps) {
     fetcher,
   );
 
+  const reportRequest = currentReportId
+    ? { url: `${apiProxyUrl}/reports/${currentReportId}` }
+    : null;
+
   const { data: reportData, isLoading: isLoadingReport } = useSWR(
-    { url: `${apiProxyUrl}/reports/${currentReportId}` },
+    reportRequest,
     fetcher,
   );
 
@@ -147,8 +151,8 @@ function TeamDashboard(props: TeamDashboardProps) {
                     </Radio>
                   ))}
                 </RadioGroup>
-                <div style={{ width: 450, height: 230 }}>
-                  <ResponsiveContainer>
+                <div className={styles.chartContainer}>
+                  <ResponsiveContainer width="100%" height={230}>
                     <PieChart>
                       <Pie
                         data={chartData}

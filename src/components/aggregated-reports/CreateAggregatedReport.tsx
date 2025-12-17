@@ -115,7 +115,7 @@ const Reports = ({ reports, aggregatedReport }: ReportListProps) => {
         onClick={() => createAggregatedReport(initialData)}
         className={styles.createReportButton}
       >
-        Oprett rapport
+        Opprett rapport
       </Button>
     </div>
   );
