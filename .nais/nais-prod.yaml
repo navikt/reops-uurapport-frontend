@@ -21,6 +21,9 @@ spec:
   ingresses:
     - 'https://uurapport.ansatt.nav.no'
     - 'https://a11y-statement-ny.ansatt.nav.no'
+  redirects:
+    - from: "https://a11y-statement-ny.ansatt.nav.no"
+      to: "https://uurapport.ansatt.nav.no"
   accessPolicy:
     outbound:
       rules:
