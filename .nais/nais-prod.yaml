@@ -20,6 +20,7 @@ spec:
     max: 4
   ingresses:
     - 'https://uurapport.ansatt.nav.no'
+    - 'https://a11y-statement-ny.ansatt.nav.no'
   accessPolicy:
     outbound:
       rules:
