@@ -1,8 +1,10 @@
 # uurapport frontend
 
-Dette repoet bruker [PNPM](https://pnpm.io/), siden pnpm har [litt mer fokus på sikkerhet](https://pnpm.io/supply-chain-security) en det npm har, feks disabler de install scripts by default, og har en fin `minimumReleaseAge` config. litt mer info her: https://sikkerhet.nav.no/docs/sikker-utvikling/frontend
-
 [uurapport](https://uurapport.ansatt.nav.no/) dekker behovet for intern rapportering av tilgjengelighetsstatusen av Navs produkter og tjenester.
+
+# Utvikling
+
+Dette repoet bruker [PNPM](https://pnpm.io/), siden pnpm har [litt mer fokus på sikkerhet](https://pnpm.io/supply-chain-security) en det npm har, feks disabler de install scripts by default, og har en fin `minimumReleaseAge` config. litt mer info her: https://sikkerhet.nav.no/docs/sikker-utvikling/frontend
 
 ## Kjøre applikasjonen lokalt med mock
 
