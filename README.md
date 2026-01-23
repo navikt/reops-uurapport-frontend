@@ -4,15 +4,15 @@
 
 ## Kjøre applikasjonen lokalt med mock
 
-1. Installer dependencies:<code>npm i<code>
-2. Få opp astro-appen og mock-server: <code>npm run mock-dev<code>
+1. Installer dependencies:<code>npm i</code>
+2. Få opp astro-appen og mock-server: <code>npm run mock-dev</code>
 
 bare mock server:
 1. Få opp mock-server: <code>npm run mock</code>
 
 ## Kjøre applikasjonen lokalt med ekte backend (todo)
-1. Installer dependencies:<code>npm i<code>
-2. Få opp astro-appen: <code>npm run dev<code>
+1. Installer dependencies:<code>npm i</code>
+2. Få opp astro-appen: <code>npm run dev</code>
 
 ## Endpoints
 
