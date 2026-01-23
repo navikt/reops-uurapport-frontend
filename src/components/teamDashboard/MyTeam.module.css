@@ -29,7 +29,7 @@
   background-color: white;
   padding: 16px;
   border-radius: 1rem;
-  box-shadow: var(--a-shadow-small);
+  box-shadow: var(--ax-shadow-small);
 }
 
 .myReportsContainer > section {

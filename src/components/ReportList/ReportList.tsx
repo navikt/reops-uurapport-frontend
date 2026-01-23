@@ -75,13 +75,13 @@ const ReportList = ({ reports }: ReportListProps) => {
               <Table.Row key={report.id}>
                 <Table.HeaderCell>
                   {report.teamId !== '' ? (
-                    <Link href={`/reports/${report.id}`} variant="action">
+                    <Link data-color="accent" href={`/reports/${report.id}`}>
                       {report.title === '' ? 'Uten navn' : report.title}
                     </Link>
                   ) : (
                     <Link
+                      data-color="accent"
                       href={`/reports/aggregated/${report.id}`}
-                      variant="action"
                     >
                       {report.title === '' ? '(Uten navn)' : report.title}
                     </Link>

@@ -5,8 +5,8 @@
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
-  box-shadow: var(--a-shadow-small);
-  background-color: var(--a-white);
+  box-shadow: var(--ax-shadow-small);
+  background-color: var(--ax-bg-default);
   border-radius: 1rem;
   padding: 20px;
 }

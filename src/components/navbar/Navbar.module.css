@@ -3,7 +3,7 @@
   padding: 1rem 1rem;
   width: 100%;
   background-color: white;
-  box-shadow: var(--a-shadow-xsmall);
+  box-shadow: var(--ax-shadow-xsmall);
 }
 
 .contentWrapper {

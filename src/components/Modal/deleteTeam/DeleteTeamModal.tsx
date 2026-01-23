@@ -14,26 +14,25 @@ const DeleteTeamModal = ({ teamId }: DeleteTeamModalProps) => {
   return (
     <div>
       <Button
-        variant="danger"
+        data-color="danger"
+        variant="primary"
         icon={<TrashIcon aria-hidden />}
         className={styles.button}
-        onClick={() => ref.current?.showModal()}
-      >
+        onClick={() => ref.current?.showModal()}>
         Slett
       </Button>
-
       <Modal ref={ref} header={{ heading: 'Slett team' }}>
         <Modal.Body>
           <BodyLong>Er du sikker på at du vil slette dette teamet?</BodyLong>
         </Modal.Body>
         <Modal.Footer>
           <Button
+            data-color="danger"
             type="button"
-            variant="danger"
+            variant="primary"
             onClick={() => {
               deleteTeam(teamId);
-            }}
-          >
+            }}>
             Slett
           </Button>
           <Button

@@ -11,7 +11,7 @@
   gap: 24px;
   background-color: white;
   border-radius: 1rem;
-  box-shadow: var(--a-shadow-small);
+  box-shadow: var(--ax-shadow-small);
   padding: 16px;
   flex: 1;
   min-width: 0;
@@ -26,7 +26,7 @@
   min-height: 250px;
 }
 
-.pieChart>fieldset {
+.pieChart > fieldset {
   flex-shrink: 0;
   min-width: 150px;
 }
@@ -44,7 +44,7 @@
   justify-content: start;
   background-color: white;
   border-radius: 1rem;
-  box-shadow: var(--a-shadow-small);
+  box-shadow: var(--ax-shadow-small);
   padding: 16px;
   width: 320px;
   flex-shrink: 0;
@@ -79,7 +79,7 @@
 .reportList {
   background-color: white;
   border-radius: 1rem;
-  box-shadow: var(--a-shadow-small);
+  box-shadow: var(--ax-shadow-small);
   padding: 16px;
   width: 100%;
   margin-top: 20px;

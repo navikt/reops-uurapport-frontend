@@ -5,7 +5,7 @@
   margin-top: 20px;
   border-radius: 10px;
   background-color: white;
-  box-shadow: var(--a-shadow-small);
+  box-shadow: var(--ax-shadow-small);
   padding: 20px;
 }
 
@@ -25,10 +25,7 @@
 }
 
 .buttonAsLink {
-  color: var(
-    --ac-button-primary-text,
-    var(--__ac-button-primary-text, var(--a-text-on-action))
-  );
+  color: var(--ax-text-on-action);
   text-decoration: none;
 }
 

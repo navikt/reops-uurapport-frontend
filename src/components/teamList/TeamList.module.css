@@ -14,7 +14,7 @@
 .wrapper {
   background-color: white;
   border-radius: 10px;
-  box-shadow: var(--a-shadow-small);
+  box-shadow: var(--ax-shadow-small);
   padding: 16px;
 }
 

@@ -38,7 +38,7 @@
   border-radius: 1rem;
   width: 30%;
   min-height: 10rem;
-  box-shadow: var(--a-shadow-small);
+  box-shadow: var(--ax-shadow-small);
 }
 
 .verktoyTekst {

@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { Button, List, Modal, TextField } from '@navikt/ds-react';
-import { PersonPencilIcon, XMarkIcon } from '@navikt/aksel-icons';
-import styles from './EditTeamModal.module.css';
-import type { Team } from '@src/types.ts';
-import { updateTeam } from '@src/services/teamServices';
-import useSWR from 'swr';
-import { fetcher } from '@src/utils/client/api.ts';
-import { apiProxyUrl } from '@src/utils/client/urls.ts';
+import { useEffect, useRef, useState } from "react";
+import { Button, List, Modal, TextField, Box } from "@navikt/ds-react";
+import { PersonPencilIcon, XMarkIcon } from "@navikt/aksel-icons";
+import styles from "./EditTeamModal.module.css";
+import type { Team } from "@src/types.ts";
+import { updateTeam } from "@src/services/teamServices";
+import useSWR from "swr";
+import { fetcher } from "@src/utils/client/api.ts";
+import { apiProxyUrl } from "@src/utils/client/urls.ts";
 
 interface EditTeamModalProps {
   teamId: string;
@@ -14,13 +14,13 @@ interface EditTeamModalProps {
 
 function EditTeamModal(props: EditTeamModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
-  const [teamEmail, setTeamEmail] = useState('');
+  const [teamEmail, setTeamEmail] = useState("");
   const [newMembers, setNewMembers] = useState<string[]>([]);
   const [currentMembers, setCurrentMembers] = useState<string[]>([]);
-  const [teamName, setTeamName] = useState('');
+  const [teamName, setTeamName] = useState("");
 
   const addMemberField = () => {
-    setNewMembers([...newMembers, '']);
+    setNewMembers([...newMembers, ""]);
   };
 
   const {
@@ -42,7 +42,7 @@ function EditTeamModal(props: EditTeamModalProps) {
     try {
       await updateTeam(props.teamId as string, editedTeam);
       ref.current?.close();
-      console.log('her her her');
+      console.log("her her her");
       mutate();
       setCurrentMembers(editedTeam.members);
       setNewMembers([]);
@@ -70,10 +70,9 @@ function EditTeamModal(props: EditTeamModalProps) {
       >
         Rediger
       </Button>
-
       <Modal
         ref={ref}
-        header={{ heading: 'Rediger team' }}
+        header={{ heading: "Rediger team" }}
         width={400}
         closeOnBackdropClick={true}
       >
@@ -92,29 +91,33 @@ function EditTeamModal(props: EditTeamModalProps) {
               onChange={(e) => setTeamEmail(e.target.value)}
             />
 
-            <List className={styles.currentMembersList}>
-              {currentMembers?.map((member: string) => {
-                return (
-                  <List.Item
-                    key={member}
-                    icon={<XMarkIcon />}
-                    className={styles.currentMembersListItem}
-                    onClick={() => {
-                      let membersCopy = [...currentMembers];
-                      let index = membersCopy.indexOf(member);
-                      console.log(membersCopy, '********1111');
-                      membersCopy.splice(index, 1);
-                      console.log(membersCopy, '*********2222');
-                      setCurrentMembers(membersCopy);
+            <div className={styles.currentMembersList}>
+              <Box marginBlock="space-16" asChild>
+                <List data-aksel-migrated-v8>
+                  {currentMembers?.map((member: string) => {
+                    return (
+                      <List.Item
+                        key={member}
+                        icon={<XMarkIcon />}
+                        className={styles.currentMembersListItem}
+                        onClick={() => {
+                          let membersCopy = [...currentMembers];
+                          let index = membersCopy.indexOf(member);
+                          console.log(membersCopy, "********1111");
+                          membersCopy.splice(index, 1);
+                          console.log(membersCopy, "*********2222");
+                          setCurrentMembers(membersCopy);
 
-                      console.log(membersCopy);
-                    }}
-                  >
-                    Fjern {member}
-                  </List.Item>
-                );
-              })}
-            </List>
+                          console.log(membersCopy);
+                        }}
+                      >
+                        Fjern {member}
+                      </List.Item>
+                    );
+                  })}
+                </List>
+              </Box>
+            </div>
             {newMembers?.map((member, index) => (
               <TextField
                 key={index}
@@ -135,7 +138,7 @@ function EditTeamModal(props: EditTeamModalProps) {
                 e.preventDefault();
                 addMemberField();
               }}
-              style={{ display: 'block', marginTop: '1rem' }}
+              style={{ display: "block", marginTop: "1rem" }}
             >
               Legg til medlem
             </a>

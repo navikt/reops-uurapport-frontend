@@ -7,5 +7,4 @@
 
 .createReportButton {
   align-self: start;
-  padding: var(--ac-button-padding, var(--__ac-button-padding));
 }

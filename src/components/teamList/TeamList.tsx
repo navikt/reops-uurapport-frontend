@@ -26,7 +26,7 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
               return (
                 <Table.Row key={team.id}>
                   <Table.HeaderCell scope="row">
-                    <Link href={`/teams/${team.id}`} variant="neutral">
+                    <Link data-color="neutral" href={`/teams/${team.id}`}>
                       {team.name}
                     </Link>
                   </Table.HeaderCell>
@@ -46,7 +46,7 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
           {teams.map((team: Team) => {
             return (
               <li key={team.id} className={styles.listItem}>
-                <Link href={`/teams/${team.id}`} variant="neutral">
+                <Link data-color="neutral" href={`/teams/${team.id}`}>
                   {team.name}
                 </Link>
               </li>
