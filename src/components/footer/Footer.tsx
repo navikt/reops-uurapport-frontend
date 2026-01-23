@@ -26,7 +26,7 @@ function Footer() {
             Oppdager du feil eller har forslag til forbedringer? Legg inn en
             issue på GitHub.
           </BodyLong>
-          <a href="https://github.com/navikt/accessibility-reporting-tool-frontend">
+          <a href="https://github.com/navikt/reops-uurapport-frontend">
             GitHub
           </a>
         </div>

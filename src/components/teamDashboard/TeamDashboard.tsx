@@ -8,6 +8,7 @@ import EditTeamModal from '@components/Modal/TeamModals/EditTeamModal';
 import CreateReportModal from '@components/Modal/createReportModal/CreateReportModal';
 import { apiProxyUrl } from '@src/utils/client/urls.ts';
 import type { ReportSummary } from '@src/types.ts';
+import type { NameType } from 'recharts/types/component/DefaultTooltipContent';
 
 interface TeamDashboardProps {
     teamId: string;
@@ -200,12 +201,15 @@ function TeamDashboard(props: TeamDashboardProps) {
                                                         ))}
                                                     </Pie>
                                                     <Tooltip
-                                                        formatter={(value: number) => {
+                                                        formatter={(value?: number, _name?: NameType) => {
+                                                            const safeValue = typeof value === 'number' ? value : 0;
+
                                                             if (!total) {
-                                                                return [`${value} (0%)`];
+                                                                return [`${safeValue} (0%)`, ''];
                                                             }
-                                                            const percentage = ((value / total) * 100).toFixed(1);
-                                                            return [`${value} (${percentage}%)`];
+
+                                                            const percentage = ((safeValue / total) * 100).toFixed(1);
+                                                            return [`${safeValue} (${percentage}%)`, ''];
                                                         }}
                                                     />
                                                     <Legend
@@ -311,3 +315,4 @@ function TeamDashboard(props: TeamDashboardProps) {
 }
 
 export default TeamDashboard;
+
