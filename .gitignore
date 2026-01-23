@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 /.astro/*
 /.idea/*
 .DS_Store
+
+# we only want pnpm lockfile now
+package-lock.json
