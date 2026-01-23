@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "mock-dev": "concurrently \"npm run mock\" \"npm run dev:mock\"",
+    "mock-dev": "concurrently \"pnpm run mock\" \"pnpm run dev:mock\"",
     "dev": "APP_ENV=local VITE_APP_ENV=local astro dev",
     "dev:mock": "APP_ENV=mock VITE_APP_ENV=mock astro dev",
     "prettier": "prettier --write .",
