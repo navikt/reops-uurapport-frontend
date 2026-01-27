@@ -6,6 +6,7 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 5
     rebase-strategy: "auto"
+    package-manager: "pnpm"
     groups:
       all:
         patterns:
