@@ -33,7 +33,7 @@ RUN --mount=type=secret,id=node_auth_token \
     pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # Production stage - minimal Chainguard image
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25.1@sha256:ef3666edfca4848c3a3c6791b22bc5143684b6361dfc0bad8c9aac922a1a3b00 AS production
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25.5.0@sha256:4335c1a0fd2d1622f87d6f40e97c276f8c2a7a37667c6ad472b28336cb63520e AS production
 LABEL maintainer="team-researchops"
 WORKDIR /usr/src/app
 
