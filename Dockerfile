@@ -1,5 +1,6 @@
 # Base stage - setup pnpm
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25-dev AS base
+USER root
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -29,7 +30,7 @@ RUN --mount=type=secret,id=node_auth_token \
     if [ -f /run/secrets/node_auth_token ]; then \
         export NODE_AUTH_TOKEN=$(cat /run/secrets/node_auth_token); \
     fi && \
-    pnpm install --prod --frozen-lockfile
+    pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # Production stage - minimal Chainguard image
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25.1@sha256:ef3666edfca4848c3a3c6791b22bc5143684b6361dfc0bad8c9aac922a1a3b00 AS production
