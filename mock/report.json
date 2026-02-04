@@ -28,7 +28,7 @@
       "contentGroup": "Ikoner, bilder, grafer",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/111-ikke-tekstlig-innhold",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.1.1"
@@ -46,7 +46,7 @@
       "contentGroup": "Lyd, video, animasjoner",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/audio-only-and-video-only-prerecorded.html",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/121-bare-lyd-og-bare-video-forhandsinnspilt",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.2.1"
@@ -64,7 +64,7 @@
       "contentGroup": "Lyd, video, animasjoner",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/captions-prerecorded",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/122-teksting-forhandsinnspilt",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.2.2"
@@ -82,7 +82,7 @@
       "contentGroup": "Lyd, video, animasjoner",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/audio-description-or-media-alternative-prerecorded",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/123-synstolking-eller-mediealternativ-forhandsinnspilt",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.2.3"
@@ -100,7 +100,7 @@
       "contentGroup": "Lyd, video, animasjoner",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/audio-description-prerecorded",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/125-synstolking-forhandsinnspilt",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "1.2.5"
@@ -118,7 +118,7 @@
       "contentGroup": "",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/131-informasjon-og-relasjoner",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.3.1"
@@ -136,7 +136,7 @@
       "contentGroup": "",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/meaningful-sequence",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/132-meningsbaerende-rekkefolge",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.3.2"
@@ -154,7 +154,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/sensory-characteristics",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/133-sensoriske-egenskaper",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.3.3"
@@ -172,7 +172,7 @@
       "contentGroup": "",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/orientation",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/134-visningsretning",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.3.4"
@@ -190,7 +190,7 @@
       "contentGroup": "Skjema",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/identify-input-purpose",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/135-identifiser-formal-med-inndata",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "1.3.5"
@@ -208,7 +208,7 @@
       "contentGroup": "",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/distinguishable",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/141-bruk-av-farge",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.4.1"
@@ -226,7 +226,7 @@
       "contentGroup": "Lyd, video, animasjoner",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-dis-audio.html",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/142-styring-av-lyd",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "1.4.2"
@@ -262,7 +262,7 @@
       "contentGroup": "",
       "status": "NOT_COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/resize-text",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/144-endring-av-tekststorrelse",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "1.4.4"
@@ -280,7 +280,7 @@
       "contentGroup": "Ikoner, bilder, grafer",
       "status": "NOT_COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/images-of-text",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/145-bilder-av-tekst",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "1.4.5"
@@ -298,7 +298,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/reflow.html",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/1410-dynamisk-tilpasning-reflow",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "1.4.10"
@@ -316,7 +316,7 @@
       "contentGroup": "",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/1411-kontrast-for-ikke-tekstlig-innhold",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "1.4.11"
@@ -352,7 +352,7 @@
       "contentGroup": "",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/1413-pekerfolsomt-innhold-eller-innhold-ved-tastaturfokus",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "1.4.13"
@@ -370,7 +370,7 @@
       "contentGroup": "",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/keyboard",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/211-tastatur",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.1.1"
@@ -388,7 +388,7 @@
       "contentGroup": "",
       "status": "NOT_APPLICABLE",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/no-keyboard-trap",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/212-ingen-tastaturfelle",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.1.2"
@@ -406,7 +406,7 @@
       "contentGroup": "",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/character-key-shortcuts",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/214-hurtigtaster-som-bestar-av-ett-tegn",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.1.4"
@@ -424,7 +424,7 @@
       "contentGroup": "Tidsbegrenset innhold",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/timing-adjustable",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/221-justerbar-hastighet",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.2.1"
@@ -442,7 +442,7 @@
       "contentGroup": "Innhold som automatisk endrer seg eller oppdaterer",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/pause-stop-hide",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/222-pause-stopp-skjul",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.2.2"
@@ -460,7 +460,7 @@
       "contentGroup": "Innhold som blinker",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/three-flashes-or-below-threshold",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/231-terskelverdi-pa-maksimalt-tre-glimt",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.3.1"
@@ -478,7 +478,7 @@
       "contentGroup": "",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/241-hoppe-over-blokker",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.4.1"
@@ -496,7 +496,7 @@
       "contentGroup": "",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/page-titled",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/242-sidetitler",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.4.2"
@@ -514,7 +514,7 @@
       "contentGroup": "",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/focus-order",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/243-fokusrekkefolge",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.4.3"
@@ -532,7 +532,7 @@
       "contentGroup": "",
       "status": "COMPLIANT",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-in-context",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/244-formal-med-lenke-i-kontekst",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.4.4"
@@ -550,7 +550,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/multiple-ways",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/245-flere-mater",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "2.4.5"
@@ -568,7 +568,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/headings-and-labels",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/246-overskrifter-og-ledetekster",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "2.4.6"
@@ -586,7 +586,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/focus-visible",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/247-synlig-fokus",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "2.4.7"
@@ -604,7 +604,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/pointer-gestures",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/251-pekerbevegelser",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.5.1"
@@ -622,7 +622,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/pointer-cancellation",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/252-pekeravbrytelse",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.5.2"
@@ -640,7 +640,7 @@
       "contentGroup": "Skjemaer",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/label-in-name",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/253-ledetekst-i-navn",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.5.3"
@@ -658,7 +658,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/motion-actuation",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/254-bevegelsesaktivering",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "2.5.4"
@@ -676,7 +676,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/language-of-page",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/311-sprak-pa-siden",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "3.1.1"
@@ -694,7 +694,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/language-of-parts",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/312-sprak-pa-deler-av-innhold",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "3.1.2"
@@ -712,7 +712,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/on-focus",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/321-fokus",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "3.2.1"
@@ -730,7 +730,7 @@
       "contentGroup": "Skjemaer",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/on-input",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/322-inndata",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "3.2.2"
@@ -748,7 +748,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/consistent-navigation",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/323-konsekvent-navigering",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "3.2.3"
@@ -766,7 +766,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/consistent-identification",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/324-konsekvent-identifikasjon",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "3.2.4"
@@ -784,7 +784,7 @@
       "contentGroup": "Skjema",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/error-identification",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/331-identifikasjon-av-feil",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "3.3.1"
@@ -802,7 +802,7 @@
       "contentGroup": "Skjema",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/332-ledetekster-eller-instruksjoner",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "3.3.2"
@@ -820,7 +820,7 @@
       "contentGroup": "Skjema",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/error-suggestion",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/333-forslag-ved-feil",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "3.3.3"
@@ -838,7 +838,7 @@
       "contentGroup": "Skjema",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/error-prevention-legal-financial-data",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/334-forhindring-av-feil",
       "wcagVersion": "2.1",
       "wcagLevel": "AA",
       "successCriterionNumber": "3.3.4"
@@ -856,7 +856,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/parsing",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/411-parsing",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "4.1.1"
@@ -874,7 +874,7 @@
       "contentGroup": "",
       "status": "NOT_TESTED",
       "wcagUrl": "https://www.w3.org/WAI/WCAG21/Understanding/name-role-value",
-      "helpUrl": null,
+      "helpUrl": "https://aksel.nav.no/god-praksis/artikler/412-navn-rolle-verdi",
       "wcagVersion": "2.1",
       "wcagLevel": "A",
       "successCriterionNumber": "4.1.2"
