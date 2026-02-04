@@ -22,7 +22,7 @@ COPY . .
 RUN pnpm run build
 
 # Production stage - minimal Chainguard image
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25-slim AS production
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25.1@sha256:ef3666edfca4848c3a3c6791b22bc5143684b6361dfc0bad8c9aac922a1a3b00 AS production
 LABEL maintainer="team-researchops"
 WORKDIR /usr/src/app
 
