@@ -50,5 +50,10 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write"
+  },
+  "pnpm": {
+    "overrides": {
+      "lodash": "^4.17.23"
+    }
   }
 }

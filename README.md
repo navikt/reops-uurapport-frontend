@@ -29,7 +29,7 @@ For å bygge Docker imaget lokalt trenger du en `NODE_AUTH_TOKEN` miljøvariabel
 
 ```bash
 export NODE_AUTH_TOKEN=<your-github-token>
-docker build --secret id=node_auth_token,env=NODE_AUTH_TOKEN . -t reops-uurapport-frontend:latest
+docker build --secret id=NODE_AUTH_TOKEN . -t reops-uurapport-frontend:latest
 ```
 
 På CI/CD vil `NODE_AUTH_TOKEN` automatisk være tilgjengelig via `GITHUB_TOKEN`.
