@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import styles from './TeamDashboard.module.css';
 import { BodyLong, Heading, Radio, RadioGroup, Select, Alert, Loader } from '@navikt/ds-react';
@@ -315,4 +316,3 @@ function TeamDashboard(props: TeamDashboardProps) {
 }
 
 export default TeamDashboard;
-

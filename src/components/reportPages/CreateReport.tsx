@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import Criterion from './criterion/Criterion';
 import type { AggregatedReport, CriterionType, Report } from '@src/types.ts';

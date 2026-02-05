@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useRef, useState } from "react";
 import { Button, List, Modal, TextField, Box } from "@navikt/ds-react";
 import { PersonPencilIcon, XMarkIcon } from "@navikt/aksel-icons";

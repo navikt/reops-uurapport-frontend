@@ -1,3 +1,4 @@
+'use client';
 import { useRef, useState, useEffect } from 'react';
 import { Button, Modal, Select, TextField, Checkbox } from '@navikt/ds-react';
 import { createReport } from '@src/services/reportServices';

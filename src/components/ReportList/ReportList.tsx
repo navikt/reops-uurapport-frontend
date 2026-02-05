@@ -1,3 +1,4 @@
+'use client';
 import { Link, Table } from '@navikt/ds-react';
 import { useEffect, useState } from 'react';
 import { formatDate } from '@src/utils/client/date';
