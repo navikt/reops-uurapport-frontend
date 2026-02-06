@@ -30,8 +30,6 @@ WORKDIR /usr/src/app
 COPY --from=build /usr/src/app/.next/standalone ./
 # Copy static files
 COPY --from=build /usr/src/app/.next/static ./.next/static
-# Copy public folder if it exists
-COPY --from=build /usr/src/app/public ./public
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
