@@ -1,5 +1,5 @@
 import CreateAggregatedReport from "@src/components/aggregated-reports/CreateAggregatedReport";
-import { getReports } from "@src/services/reportServices";
+import { getReports } from "@src/actions/reportActions";
 import styles from "./create-report.module.css";
 
 export default async function CreateReportPage() {

@@ -3,7 +3,7 @@ import { getOboToken } from "@src/utils/server/getOboToken";
 import { getAuthToken } from "@src/utils/server/getAuthToken";
 import CreateAggregatedReport from "@src/components/aggregated-reports/CreateAggregatedReport";
 import Forbidden from "@src/components/forbidden/Forbidden";
-import { getReports } from "@src/services/reportServices";
+import { getReports } from "@src/actions/reportActions";
 import type { AggregatedReport, User } from "@src/types";
 import styles from "../create-report.module.css";
 

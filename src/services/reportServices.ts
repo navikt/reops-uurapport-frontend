@@ -1,36 +1,17 @@
 import type {
   Report,
-  ReportSummary,
   InitialReport,
   InitializeAggregatedReport,
   AggregatedReport,
 } from "@src/types";
 import { apiProxyUrl } from "@src/utils/client/urls";
-import { apiUrl } from "@src/utils/server/urls";
-import { getOboToken } from "@src/utils/server/getOboToken";
-import { getAuthToken } from "@src/utils/server/getAuthToken";
+
+/**
+ * Client-safe functions that use the API proxy
+ * These can be called from both client and server components
+ */
 
 // GET operations
-export const getReports = async (): Promise<ReportSummary[]> => {
-  const token = await getAuthToken();
-  const oboToken = await getOboToken(token);
-
-  const response = await fetch(`${apiUrl}/api/reports`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${oboToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch reports: ${response.status}`);
-  }
-
-  return response.json();
-};
-
 export const getReport = async (url: string): Promise<Report> => {
   const response = await fetch(`${apiProxyUrl}${url}`, {
     method: "GET",
