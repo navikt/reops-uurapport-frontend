@@ -135,7 +135,7 @@ function TeamDashboard(props: TeamDashboardProps) {
       danger:
         root.getPropertyValue("--a-surface-danger-strong").trim() || "#C32F27",
       neutral:
-        root.getPropertyValue("--a-surface-neutral-moderate").trim() ||
+        root.getPropertyValue("--ax-bg-neutral-moderate").trim() ||
         "#595959",
       warning:
         root.getPropertyValue("--a-surface-warning-strong").trim() || "#FF9100",

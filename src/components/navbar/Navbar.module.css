@@ -2,8 +2,8 @@
   align-items: center;
   padding: 1rem 1rem;
   width: 100%;
-  background-color: var(--a-bg-default);
-  box-shadow: var(--ax-shadow-xsmall);
+  background-color: var(--ax-bg-default);
+  border-bottom: 1px solid var(--ax-border-neutral-subtle);
 }
 
 .contentWrapper {

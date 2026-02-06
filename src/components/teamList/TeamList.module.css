@@ -12,7 +12,7 @@
 }
 
 .wrapper {
-  background-color: var(--a-bg-default);
+  background-color: var(--ax-bg-default);
   border-radius: 10px;
   box-shadow: var(--ax-shadow-small);
   padding: 16px;

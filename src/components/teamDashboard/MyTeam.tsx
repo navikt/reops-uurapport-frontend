@@ -29,7 +29,7 @@ function MyTeam({ user }: MyTeamProps) {
           <Tabs.Tab value="teamView" label="Mitt team" />
           <Tabs.Tab value="myReports" label="Mine rapporter" />
         </Tabs.List>
-        <Tabs.Panel value="teamView" className="h-24 w-full bg-gray-50 p-4">
+        <Tabs.Panel value="teamView" className="h-24 w-full bg-ax-neutral-100 p-4">
           <div className={styles.myTeamHeader}>
             <Select
               className={styles.selector}
@@ -49,7 +49,7 @@ function MyTeam({ user }: MyTeamProps) {
 
           <TeamDashboard teamId={currentTeamId} isMyTeam={isMyTeam} />
         </Tabs.Panel>
-        <Tabs.Panel value="myReports" className="h-24 w-full bg-gray-50 p-4">
+        <Tabs.Panel value="myReports" className="h-24 w-full bg-ax-neutral-100 p-4">
           <header className={styles.myReportsHeader}>
             <CreateReportModal />
           </header>

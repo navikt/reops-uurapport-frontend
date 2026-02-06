@@ -10,7 +10,7 @@
 }
 
 .currentMembersListItem:hover {
-  background-color: var(--a-surface-neutral-subtle-hover);
+  background-color: var(--ax-bg-neutral-moderate-hover);
 }
 
 .modalFields {

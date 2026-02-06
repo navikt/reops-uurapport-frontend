@@ -4,7 +4,7 @@
   margin-right: auto;
   margin-top: 20px;
   border-radius: 10px;
-  background-color: var(--a-bg-default);
+  background-color: var(--ax-bg-default);
   box-shadow: var(--ax-shadow-small);
   padding: 20px;
 }
