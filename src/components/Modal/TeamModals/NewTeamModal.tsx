@@ -95,16 +95,13 @@ function NewTeamModal() {
               />
             ))}
 
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                addMemberField();
-              }}
-              style={{ display: "block", marginTop: "1rem" }}
+            <Button
+              variant="tertiary"
+              onClick={addMemberField}
+              style={{ marginTop: "1rem" }}
             >
               Legg til flere medlemmer
-            </a>
+            </Button>
           </form>
         </Modal.Body>
         <Modal.Footer>

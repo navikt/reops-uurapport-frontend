@@ -1,11 +1,17 @@
-import { BodyLong, Heading } from '@navikt/ds-react';
-import styles from './Footer.module.css';
+import { BodyLong, Heading, Box, HStack, VStack } from "@navikt/ds-react";
+import { Link } from "@/components/Link";
+import styles from "./Footer.module.css";
 
 function Footer() {
   return (
-    <footer className={styles.footerContainer}>
-      <div className={styles.contentGroups}>
-        <div className={styles.contentGroup}>
+    <Box
+      as="footer"
+      className={styles.footerContainer}
+      paddingBlock="space-32"
+      paddingInline="space-32"
+    >
+      <HStack gap="space-32" align="start" className={styles.contentGroups}>
+        <VStack gap="space-20" align="start" style={{ minWidth: "30%" }}>
           <Heading level="3" size="medium">
             Kontakt oss
           </Heading>
@@ -13,12 +19,17 @@ function Footer() {
             Har du spørsmål om universell utforming eller testing? Kontakt oss
             på e-post eller Slack.
           </BodyLong>
-          <span className={styles.footerLinks}>
-            <a href="mailto:uu@nav.no">E-post</a>
-            <a href="https://nav-it.slack.com/archives/C7MANSGLS">Slack</a>
-          </span>
-        </div>
-        <div className={styles.contentGroup}>
+          <VStack gap="space-12" align="start">
+            <Link href="mailto:uu@nav.no">E-post</Link>
+            <Link
+              href="https://nav-it.slack.com/archives/C7MANSGLS"
+              target="_blank"
+            >
+              Slack
+            </Link>
+          </VStack>
+        </VStack>
+        <VStack gap="space-20" align="start" style={{ minWidth: "30%" }}>
           <Heading level="3" size="medium">
             Har du tilbakemelding?
           </Heading>
@@ -26,25 +37,34 @@ function Footer() {
             Oppdager du feil eller har forslag til forbedringer? Legg inn en
             issue på GitHub.
           </BodyLong>
-          <a href="https://github.com/navikt/reops-uurapport-frontend">
+          <Link
+            href="https://github.com/navikt/reops-uurapport-frontend"
+            target="_blank"
+          >
             GitHub
-          </a>
-        </div>
-        <div className={styles.contentGroup}>
+          </Link>
+        </VStack>
+        <VStack gap="space-20" align="start" style={{ minWidth: "30%" }}>
           <Heading level="3" size="medium">
             Nyttige resurser
           </Heading>
-          <span className={styles.footerLinks}>
-            <a href="https://aksel.nav.no/god-praksis/universell-utforming">
+          <VStack gap="space-12" align="start">
+            <Link
+              href="https://aksel.nav.no/god-praksis/universell-utforming"
+              target="_blank"
+            >
               Universell utforming i NAV
-            </a>
-            <a href="https://chatgpt.com/g/g-KNxDmPfob-web-accessibility-expert">
+            </Link>
+            <Link
+              href="https://chatgpt.com/g/g-KNxDmPfob-web-accessibility-expert"
+              target="_blank"
+            >
               Web Accessibility Expert (GPT av Morten Tollefsen)
-            </a>
-          </span>
-        </div>
-      </div>
-    </footer>
+            </Link>
+          </VStack>
+        </VStack>
+      </HStack>
+    </Box>
   );
 }
 

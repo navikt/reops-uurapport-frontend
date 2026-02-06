@@ -5,6 +5,7 @@ import TeamList from "@/components/teamList/TeamList";
 import NewTeamModal from "@/components/Modal/TeamModals/NewTeamModal";
 import styles from "./teams.module.css";
 import type { Team, User } from "@src/types";
+import { VStack } from "@navikt/ds-react";
 
 async function getData() {
   const token = await getAuthToken();
@@ -39,12 +40,10 @@ export default async function TeamsPage() {
   const { user, teams } = await getData();
 
   return (
-    <>
-      <header className={styles.headingAndButton}>
-        <h1>Alle teams</h1>
-        <NewTeamModal />
-      </header>
+    <VStack gap="space-16">
+      <h1>Alle teams</h1>
+      <NewTeamModal />
       <TeamList teams={teams} isAdmin={user.isAdmin} />
-    </>
+    </VStack>
   );
 }
