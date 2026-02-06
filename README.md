@@ -42,7 +42,7 @@ docker run --rm -it -p 3000:3000 reops-uurapport-frontend
 
 Applikasjonen vil være tilgjengelig på http://localhost:3000
 
-Obs: Husk at den prøver å få tilgang til tokens, som du sikkert ikke har på lokal maskin. bruke heller mocking `pnpm run mock` for lokal utvikling / test for nå.
+Obs: Husk at den prøver å få tilgang til tokens, som du sikkert ikke har på lokal maskin. bruk heller mocking `pnpm run mock-dev` for lokal utvikling / test for nå.
 
 ## Endpoints
 
