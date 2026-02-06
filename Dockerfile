@@ -11,9 +11,9 @@ FROM base AS build
 WORKDIR /usr/src/app
 
 COPY --chown=node:node package.json pnpm-lock.yaml* .npmrc ./
-RUN --mount=type=secret,id=node_auth_token,uid=65532 \
-    --mount=type=cache,id=pnpm,target=/pnpm/store,uid=1000 \
-    export NODE_AUTH_TOKEN=$(cat /run/secrets/node_auth_token) && \
+RUN --mount=type=secret,id=NODE_AUTH_TOKEN,uid=65532 \
+    --mount=type=cache,id=pnpm,target=/pnpm/store,uid=65532 \
+    export NODE_AUTH_TOKEN=$(cat /run/secrets/NODE_AUTH_TOKEN) && \
     pnpm install --frozen-lockfile
 
 COPY --chown=node:node . .

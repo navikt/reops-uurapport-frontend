@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Button, Modal, TextField } from "@navikt/ds-react";
-import AddOrgBtn from "@components/buttons/AddOrgBtn.tsx";
-import { apiProxyUrl } from "@src/utils/client/urls.ts";
+import AddOrgBtn from "@components/buttons/AddOrgBtn";
+import { apiProxyUrl } from "@src/utils/client/urls";
 import type { NewTeam } from "@src/types";
 import { createNewTeam } from "@src/services/teamServices";
 import useSWRImmutable from "swr/immutable";

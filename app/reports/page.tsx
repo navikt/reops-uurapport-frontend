@@ -4,9 +4,9 @@ import { apiUrl } from "@/utils/server/urls";
 import ReportList from "@/components/ReportList/ReportList";
 import CreateReportModal from "@/components/Modal/createReportModal/CreateReportModal";
 import styles from "./reports.module.css";
-import type { Report } from "@src/types";
+import type { ReportSummary } from "@src/types";
 
-async function getReports(): Promise<Report[]> {
+async function getReports(): Promise<ReportSummary[]> {
   const token = await getAuthToken();
   const oboToken = await getOboToken(token);
 
