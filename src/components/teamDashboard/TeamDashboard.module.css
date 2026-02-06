@@ -41,7 +41,7 @@
 .teamInfo {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   background-color: white;
   border-radius: 1rem;
   box-shadow: var(--ax-shadow-small);

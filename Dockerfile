@@ -24,13 +24,15 @@ FROM cgr.dev/chainguard/node@sha256:d1af9eb3a1eab9d23c9f1d987313c1fd2444d8bdcbe2
 LABEL maintainer="team-researchops"
 WORKDIR /usr/src/app
 
-# Copy built dist and ALL node_modules (Astro needs full dependency tree at runtime)
+# Copy Next.js build output and node_modules
 COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/.next ./.next
+COPY --from=build /usr/src/app/public ./public
+COPY --from=build /usr/src/app/package.json ./package.json
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-CMD ["./dist/server/entry.mjs"]
+CMD ["node_modules/.bin/next", "start"]
 
 EXPOSE $PORT

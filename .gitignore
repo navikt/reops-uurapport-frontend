@@ -137,7 +137,6 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-/.astro/*
 /.idea/*
 .DS_Store
 

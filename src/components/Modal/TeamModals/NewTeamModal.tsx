@@ -1,19 +1,19 @@
-'use client';
-import { useEffect, useRef, useState } from 'react';
-import { Button, Modal, TextField } from '@navikt/ds-react';
-import AddOrgBtn from '@components/buttons/AddOrgBtn.tsx';
-import { apiProxyUrl } from '@src/utils/client/urls.ts';
-import type { NewTeam } from '@src/types';
-import { createNewTeam } from '@src/services/teamServices';
-import useSWRImmutable from 'swr/immutable';
-import { fetcher } from '@src/utils/client/api';
-import styles from '../Modal.module.css';
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { Button, Modal, TextField } from "@navikt/ds-react";
+import AddOrgBtn from "@components/buttons/AddOrgBtn.tsx";
+import { apiProxyUrl } from "@src/utils/client/urls.ts";
+import type { NewTeam } from "@src/types";
+import { createNewTeam } from "@src/services/teamServices";
+import useSWRImmutable from "swr/immutable";
+import { fetcher } from "@src/utils/client/api";
+import styles from "../Modal.module.css";
 
 function NewTeamModal() {
   const ref = useRef<HTMLDialogElement>(null);
-  const [teamName, setTeamName] = useState('');
-  const [teamEmail, setTeamEmail] = useState('');
-  const [members, setMembers] = useState<string[]>(['']);
+  const [teamName, setTeamName] = useState("");
+  const [teamEmail, setTeamEmail] = useState("");
+  const [members, setMembers] = useState<string[]>([""]);
 
   const { data: userDetails, isLoading } = useSWRImmutable(
     { url: `${apiProxyUrl}/users/details` },
@@ -21,7 +21,7 @@ function NewTeamModal() {
   );
 
   const addMemberField = () => {
-    setMembers([...members, '']);
+    setMembers([...members, ""]);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,12 +37,12 @@ function NewTeamModal() {
 
     try {
       await createNewTeam(newTeam);
-      setTeamName('');
-      setTeamEmail('');
-      setMembers(['']);
+      setTeamName("");
+      setTeamEmail("");
+      setMembers([""]);
       ref.current?.close();
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -50,7 +50,7 @@ function NewTeamModal() {
 
   useEffect(() => {
     setTeamEmail(userDetails?.email);
-  }, [isLoading]);
+  }, [isLoading, userDetails?.email]);
 
   return (
     <div className="py-12">
@@ -58,7 +58,7 @@ function NewTeamModal() {
 
       <Modal
         ref={ref}
-        header={{ heading: 'Legg til team' }}
+        header={{ heading: "Legg til team" }}
         width={400}
         closeOnBackdropClick={true}
       >
@@ -101,7 +101,7 @@ function NewTeamModal() {
                 e.preventDefault();
                 addMemberField();
               }}
-              style={{ display: 'block', marginTop: '1rem' }}
+              style={{ display: "block", marginTop: "1rem" }}
             >
               Legg til flere medlemmer
             </a>
@@ -114,9 +114,9 @@ function NewTeamModal() {
           <Button
             variant="secondary"
             onClick={() => {
-              setTeamName('');
-              setTeamEmail('');
-              setMembers(['']);
+              setTeamName("");
+              setTeamEmail("");
+              setMembers([""]);
               ref.current?.close();
             }}
           >

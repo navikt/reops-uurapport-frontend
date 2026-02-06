@@ -1,19 +1,19 @@
-'use client';
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 import {
   Button,
   Checkbox,
   CheckboxGroup,
   Textarea,
   TextField,
-} from '@navikt/ds-react';
+} from "@navikt/ds-react";
 import type {
   AggregatedReport,
   InitializeAggregatedReport,
   ReportSummary,
-} from '@src/types';
-import { createAggregatedReport } from '@src/services/reportServices';
-import styles from './CreateAggregatedReport.module.css';
+} from "@src/types";
+import { createAggregatedReport } from "@src/services/reportServices";
+import styles from "./CreateAggregatedReport.module.css";
 
 interface ReportListProps {
   reports: ReportSummary[];
@@ -23,9 +23,9 @@ interface ReportListProps {
 const Reports = ({ reports, aggregatedReport }: ReportListProps) => {
   const [selectedReports, setSelectedReports] = useState<string[]>([]);
   const [initialData, setInitialData] = useState<InitializeAggregatedReport>({
-    descriptiveName: aggregatedReport?.descriptiveName || '',
-    url: aggregatedReport?.url || '',
-    notes: aggregatedReport?.notes || '',
+    descriptiveName: aggregatedReport?.descriptiveName || "",
+    url: aggregatedReport?.url || "",
+    notes: aggregatedReport?.notes || "",
     reports: selectedReports,
   });
 
@@ -66,6 +66,7 @@ const Reports = ({ reports, aggregatedReport }: ReportListProps) => {
         reports: currentlySelectedReports,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectNavNo]);
 
   return (
@@ -91,7 +92,7 @@ const Reports = ({ reports, aggregatedReport }: ReportListProps) => {
         }}
       />
       <Checkbox onChange={handleSelectNavNo}>
-        Huk av alle "nav.no"-rapporter
+        Huk av alle &ldquo;nav.no&rdquo;-rapporter
       </Checkbox>
       <CheckboxGroup
         legend="Velg rapporter du ønsker å slå sammen"
@@ -107,7 +108,7 @@ const Reports = ({ reports, aggregatedReport }: ReportListProps) => {
       >
         {reports.map((report: ReportSummary) => (
           <Checkbox value={report.id} key={report.id}>
-            {report.title ? report.title : '(Uten navn)'}
+            {report.title ? report.title : "(Uten navn)"}
           </Checkbox>
         ))}
       </CheckboxGroup>
