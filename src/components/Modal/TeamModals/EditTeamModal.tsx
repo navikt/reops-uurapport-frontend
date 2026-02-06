@@ -133,16 +133,13 @@ function EditTeamModal(props: EditTeamModalProps) {
               />
             ))}
 
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                addMemberField();
-              }}
-              style={{ display: "block", marginTop: "1rem" }}
+            <Button
+              variant="tertiary"
+              onClick={addMemberField}
+              style={{ marginTop: "1rem" }}
             >
               Legg til medlem
-            </a>
+            </Button>
           </span>
         </Modal.Body>
         <Modal.Footer>

@@ -116,11 +116,39 @@ function TeamDashboard(props: TeamDashboardProps) {
 
   const total = COMPLIANT + NOT_COMPLIANT + NOT_APPLICABLE + NOT_TESTED;
 
+  // Get Aksel design tokens for chart colors at runtime
+  const getChartColors = () => {
+    if (typeof window === "undefined") {
+      // SSR fallback - use reasonable defaults
+      return {
+        success: "#00703C",
+        danger: "#C32F27",
+        neutral: "#595959",
+        warning: "#FF9100",
+      };
+    }
+
+    const root = getComputedStyle(document.documentElement);
+    return {
+      success:
+        root.getPropertyValue("--a-surface-success-strong").trim() || "#00703C",
+      danger:
+        root.getPropertyValue("--a-surface-danger-strong").trim() || "#C32F27",
+      neutral:
+        root.getPropertyValue("--a-surface-neutral-moderate").trim() ||
+        "#595959",
+      warning:
+        root.getPropertyValue("--a-surface-warning-strong").trim() || "#FF9100",
+    };
+  };
+
+  const colors = getChartColors();
+
   const chartData = [
-    { name: "Oppfylt", value: COMPLIANT, color: "#00703C" },
-    { name: "Ikke oppfylt", value: NOT_COMPLIANT, color: "#C32F27" },
-    { name: "Ikke aktuelle", value: NOT_APPLICABLE, color: "#595959" },
-    { name: "Ikke testet", value: NOT_TESTED, color: "#FF9100" },
+    { name: "Oppfylt", value: COMPLIANT, color: colors.success },
+    { name: "Ikke oppfylt", value: NOT_COMPLIANT, color: colors.danger },
+    { name: "Ikke aktuelle", value: NOT_APPLICABLE, color: colors.neutral },
+    { name: "Ikke testet", value: NOT_TESTED, color: colors.warning },
   ];
 
   return (
@@ -260,7 +288,6 @@ function TeamDashboard(props: TeamDashboardProps) {
                                         style={{
                                           fontSize: "16px",
                                           fontFamily: "Source Sans Pro",
-                                          color: "#23262a",
                                         }}
                                       >
                                         {entry.value}: {entry.payload.value}

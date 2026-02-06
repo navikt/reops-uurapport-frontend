@@ -1,5 +1,6 @@
-import { BodyLong, Heading } from '@navikt/ds-react';
-import styles from './Footer.module.css';
+import { BodyLong, Heading } from "@navikt/ds-react";
+import { Link } from "@/components/Link";
+import styles from "./Footer.module.css";
 
 function Footer() {
   return (
@@ -14,8 +15,13 @@ function Footer() {
             på e-post eller Slack.
           </BodyLong>
           <span className={styles.footerLinks}>
-            <a href="mailto:uu@nav.no">E-post</a>
-            <a href="https://nav-it.slack.com/archives/C7MANSGLS">Slack</a>
+            <Link href="mailto:uu@nav.no">E-post</Link>
+            <Link
+              href="https://nav-it.slack.com/archives/C7MANSGLS"
+              target="_blank"
+            >
+              Slack
+            </Link>
           </span>
         </div>
         <div className={styles.contentGroup}>
@@ -26,21 +32,30 @@ function Footer() {
             Oppdager du feil eller har forslag til forbedringer? Legg inn en
             issue på GitHub.
           </BodyLong>
-          <a href="https://github.com/navikt/reops-uurapport-frontend">
+          <Link
+            href="https://github.com/navikt/reops-uurapport-frontend"
+            target="_blank"
+          >
             GitHub
-          </a>
+          </Link>
         </div>
         <div className={styles.contentGroup}>
           <Heading level="3" size="medium">
             Nyttige resurser
           </Heading>
           <span className={styles.footerLinks}>
-            <a href="https://aksel.nav.no/god-praksis/universell-utforming">
+            <Link
+              href="https://aksel.nav.no/god-praksis/universell-utforming"
+              target="_blank"
+            >
               Universell utforming i NAV
-            </a>
-            <a href="https://chatgpt.com/g/g-KNxDmPfob-web-accessibility-expert">
+            </Link>
+            <Link
+              href="https://chatgpt.com/g/g-KNxDmPfob-web-accessibility-expert"
+              target="_blank"
+            >
               Web Accessibility Expert (GPT av Morten Tollefsen)
-            </a>
+            </Link>
           </span>
         </div>
       </div>

@@ -6,5 +6,5 @@
   align-items: center;
   font-size: 2rem;
   height: 80vh;
-  color: red;
+  color: var(--a-text-danger);
 }

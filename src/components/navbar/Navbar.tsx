@@ -1,10 +1,11 @@
-import { Link } from "@navikt/ds-react";
+import { Link } from "@/components/Link";
 import styles from "./Navbar.module.css";
 import { LeaveIcon } from "@navikt/aksel-icons";
 import { apiUrl } from "../../utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import MobileNavbar from "./MobileNavbar";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import type { User } from "@src/types";
 
 async function getUserDetails(): Promise<User> {
@@ -68,6 +69,9 @@ export default async function Navbar() {
               <p>
                 Innlogget som: <strong>{userDetails.email}</strong>
               </p>
+            </li>
+            <li>
+              <ThemeToggle />
             </li>
             <li className={styles.utlogging}>
               <Link underline={false} href="/oauth2/logout">

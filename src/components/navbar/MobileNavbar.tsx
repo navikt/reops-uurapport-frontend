@@ -1,5 +1,6 @@
 "use client";
 
+import NextLink from "next/link";
 import { MenuHamburgerIcon, LeaveIcon } from "@navikt/aksel-icons";
 import { Link, Button, Dropdown } from "@navikt/ds-react";
 import type { User } from "@src/types";
@@ -19,19 +20,23 @@ const MobileNavbar = ({ user }: MobileNavbarProps) => {
         />
         <Dropdown.Menu>
           <Dropdown.Menu.List>
-            <Dropdown.Menu.List.Item as="a" href="/">
-              Forside
-            </Dropdown.Menu.List.Item>
-            <Dropdown.Menu.List.Item as="a" href="/teams">
-              Alle team
-            </Dropdown.Menu.List.Item>
-            <Dropdown.Menu.List.Item as={Link} href="/reports">
-              Alle rapporter
-            </Dropdown.Menu.List.Item>
-            {user.isAdmin && (
-              <Dropdown.Menu.List.Item as={Link} href="/admin">
-                Admin
+            <NextLink href="/" passHref legacyBehavior>
+              <Dropdown.Menu.List.Item as="a">Forside</Dropdown.Menu.List.Item>
+            </NextLink>
+            <NextLink href="/teams" passHref legacyBehavior>
+              <Dropdown.Menu.List.Item as="a">
+                Alle team
               </Dropdown.Menu.List.Item>
+            </NextLink>
+            <NextLink href="/reports" passHref legacyBehavior>
+              <Dropdown.Menu.List.Item as="a">
+                Alle rapporter
+              </Dropdown.Menu.List.Item>
+            </NextLink>
+            {user.isAdmin && (
+              <NextLink href="/admin" passHref legacyBehavior>
+                <Dropdown.Menu.List.Item as="a">Admin</Dropdown.Menu.List.Item>
+              </NextLink>
             )}
             <Dropdown.Menu.Divider />
             <Dropdown.Menu.List.Item

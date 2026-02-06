@@ -2,11 +2,11 @@
   /* display: flex;
   flex-direction: column;
   align-items: center; */
-  background-color: #003453;
+  background-color: var(--a-surface-action-strong);
   margin-top: auto;
   width: 100%;
-  color: white;
-  font-family: 'Source Sans Pro', Arial, sans-serif;
+  color: var(--a-text-on-action);
+  font-family: "Source Sans Pro", Arial, sans-serif;
 }
 
 .contentGroups {
@@ -31,7 +31,7 @@
 }
 
 .contentGroup a {
-  color: white;
+  color: var(--a-text-on-action);
 }
 
 .footerLinks {

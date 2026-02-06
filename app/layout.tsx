@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import styles from "./layout.module.css";
 import Script from "next/script";
 import "@navikt/ds-css";
@@ -23,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="no">
+    <html lang="no" suppressHydrationWarning>
       <head>
         {/* Analytics script */}
         <Script
@@ -34,9 +35,11 @@ export default function RootLayout({
         />
       </head>
       <body className="body">
-        <Navbar />
-        <main className={styles.main}>{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <Navbar />
+          <main className={styles.main}>{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
