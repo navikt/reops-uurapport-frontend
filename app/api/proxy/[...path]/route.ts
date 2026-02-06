@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 
 const retrieveSourceApiUrl = (request: NextRequest) => {
   const proxyUrl = new URL(apiUrl);
-  const requestUrl = new URL(request.url.replace("/api/proxy", ""));
+  const requestUrl = new URL(request.url.replace("/api/proxy", "/api"));
   return new URL(requestUrl.pathname + requestUrl.search, proxyUrl);
 };
 

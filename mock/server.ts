@@ -73,7 +73,7 @@ const teams = [
 ];
 
 teams.forEach((team) => {
-  api.get(`api/teams/${team.id}`, (c) => {
+  api.get(`/api/teams/${team.id}`, (c) => {
     return c.json({
       id: team.id,
       name: team.name,
@@ -83,11 +83,11 @@ teams.forEach((team) => {
   });
 });
 
-api.get("api/teams", (c) => {
+api.get("/api/teams", (c) => {
   return c.json(teams);
 });
 
-api.get("api/users/details", (c) => {
+api.get("/api/users/details", (c) => {
   return c.json({
     email: "my.user@nav.no",
     name: "Hakaurlander, JasMaNi",
@@ -112,7 +112,7 @@ api.get("api/users/details", (c) => {
   });
 });
 
-api.get("api/user", (c) => {
+api.get("/api/user", (c) => {
   return c.json({
     reports: [
       {
@@ -314,7 +314,7 @@ api.get("/api/reports/aggregated", (c) => {
   ]);
 });
 
-api.get("api/teams/team-messi/reports", (c) => {
+api.get("/api/teams/team-messi/reports", (c) => {
   return c.json([
     {
       title: "Hmmm",
@@ -333,14 +333,14 @@ api.get("api/teams/team-messi/reports", (c) => {
   ]);
 });
 
-api.get("api/users/details", (c) => {
+api.get("/api/users/details", (c) => {
   return c.json({
     email: "nav@nav.no",
     oid: "01d97f04-270a-4aa6-bb98-cc093b855dab",
   });
 });
 
-api.get("api/teams/team-nav/reports", (c) => {
+api.get("/api/teams/team-nav/reports", (c) => {
   return c.json([
     {
       title: "Hmmm!",
@@ -359,7 +359,7 @@ api.get("api/teams/team-nav/reports", (c) => {
   ]);
 });
 
-api.get("api/teams/team-test/reports", (c) => {
+api.get("/api/teams/team-test/reports", (c) => {
   return c.json([]);
 });
 
@@ -438,15 +438,15 @@ api.get("/api/criteria", (c) => {
   ]);
 });
 
-api.get("api/reports/rykutxyrhterg-79", (c) => {
+api.get("/api/reports/rykutxyrhterg-79", (c) => {
   return c.json(jsonFile2);
 });
 
-api.get("api/reports/rykutxyrhterg-80", (c) => {
+api.get("/api/reports/rykutxyrhterg-80", (c) => {
   return c.json(jsonFile);
 });
 
-api.get("api/reports/rykutxyrhterg-70", (c) => {
+api.get("/api/reports/rykutxyrhterg-70", (c) => {
   return c.json(jsonFile);
 });
 
