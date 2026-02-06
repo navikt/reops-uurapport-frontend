@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable standalone output for Node.js deployment (similar to Astro's standalone mode)
+  // Enable standalone output for Node.js deployment
   output: "standalone",
 
   // Enable React strict mode

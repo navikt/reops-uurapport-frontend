@@ -9,7 +9,7 @@ Dette repoet bruker [PNPM](https://pnpm.io/), siden pnpm har [litt mer fokus på
 ## Kjøre applikasjonen lokalt med mock
 
 1. Installer dependencies: `pnpm install`
-2. Få opp astro-appen og mock-server: `pnpm run mock-dev`
+2. Få opp Next.js-appen og mock-server: `pnpm run mock-dev`
 
 bare mock server:
 
@@ -18,7 +18,7 @@ bare mock server:
 ## Kjøre applikasjonen lokalt med ekte backend
 
 1. Installer dependencies: `pnpm install`
-2. Få opp astro-appen: `pnpm run dev`
+2. Få opp Next.js-appen: `pnpm run dev`
 
 ## Lokal docker image
 
