@@ -26,14 +26,16 @@ FROM cgr.dev/chainguard/node@sha256:d1af9eb3a1eab9d23c9f1d987313c1fd2444d8bdcbe2
 LABEL maintainer="team-researchops"
 WORKDIR /usr/src/app
 
-# Copy Next.js build output and node_modules
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/.next ./.next
-COPY --from=build /usr/src/app/package.json ./package.json
+# Copy standalone server and dependencies
+COPY --from=build /usr/src/app/.next/standalone ./
+# Copy static files
+COPY --from=build /usr/src/app/.next/static ./.next/static
+# Copy public folder if it exists
+COPY --from=build /usr/src/app/public ./public
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-CMD ["./node_modules/next/dist/bin/next", "start"]
+CMD ["server.js"]
 
 EXPOSE $PORT
