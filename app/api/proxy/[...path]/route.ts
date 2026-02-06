@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { apiUrl } from "@/utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { headers } from "next/headers";
+import { getToken } from "@navikt/oasis";
 
 const retrieveSourceApiUrl = (request: NextRequest) => {
   const proxyUrl = new URL(apiUrl);
@@ -11,7 +12,15 @@ const retrieveSourceApiUrl = (request: NextRequest) => {
 
 async function fetchFromApi(request: NextRequest, targetUrl: URL) {
   const headersList = await headers();
-  const authToken = headersList.get("x-auth-token") || "";
+  const authToken = getToken(headersList);
+
+  if (!authToken) {
+    return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   const oboToken = await getOboToken(authToken);
 
   const method = request.method;
