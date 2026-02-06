@@ -1,5 +1,5 @@
 "use client";
-import { Link, Table, Box } from "@navikt/ds-react";
+import { Link, Table, Box, HStack } from "@navikt/ds-react";
 import { useState, useMemo } from "react";
 import type { Team } from "@src/types";
 import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
@@ -47,10 +47,9 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
               Team
             </Table.ColumnHeader>
             {isAdmin && (
-              <>
-                <Table.HeaderCell>Redigere team</Table.HeaderCell>
-                <Table.HeaderCell>Slette team</Table.HeaderCell>
-              </>
+              <Table.HeaderCell className="sr-only">
+                Handlinger
+              </Table.HeaderCell>
             )}
           </Table.Row>
         </Table.Header>
@@ -64,14 +63,12 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
                   </Link>
                 </Table.HeaderCell>
                 {isAdmin && (
-                  <>
-                    <Table.DataCell>
+                  <Table.DataCell>
+                    <HStack gap="space-2">
                       <EditTeamModal teamId={team.id} />
-                    </Table.DataCell>
-                    <Table.DataCell>
                       <DeleteTeamModal teamId={team.id} />
-                    </Table.DataCell>
-                  </>
+                    </HStack>
+                  </Table.DataCell>
                 )}
               </Table.Row>
             );
