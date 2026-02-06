@@ -9,6 +9,8 @@ import {
   Select,
   Alert,
   Loader,
+  Table,
+  Box,
 } from "@navikt/ds-react";
 import { fetcher } from "@src/utils/client/api";
 import ReportList from "@components/ReportList/ReportList";
@@ -135,8 +137,7 @@ function TeamDashboard(props: TeamDashboardProps) {
       danger:
         root.getPropertyValue("--a-surface-danger-strong").trim() || "#C32F27",
       neutral:
-        root.getPropertyValue("--ax-bg-neutral-moderate").trim() ||
-        "#595959",
+        root.getPropertyValue("--ax-bg-neutral-moderate").trim() || "#595959",
       warning:
         root.getPropertyValue("--a-surface-warning-strong").trim() || "#FF9100",
     };
@@ -326,15 +327,30 @@ function TeamDashboard(props: TeamDashboardProps) {
               <Heading level="3" size="small">
                 Teammedlemmer
               </Heading>
-              <ul className={styles.memberList}>
-                {teamData?.members?.length ? (
-                  teamData.members.map((member: string) => (
-                    <li key={member}>{member}</li>
-                  ))
-                ) : (
-                  <li>Ingen medlemmer registrert</li>
-                )}
-              </ul>
+              <Box>
+                <Table zebraStripes>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>Medlem</Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {teamData?.members?.length ? (
+                      teamData.members.map((member: string) => (
+                        <Table.Row key={member}>
+                          <Table.DataCell>{member}</Table.DataCell>
+                        </Table.Row>
+                      ))
+                    ) : (
+                      <Table.Row>
+                        <Table.DataCell>
+                          Ingen medlemmer registrert
+                        </Table.DataCell>
+                      </Table.Row>
+                    )}
+                  </Table.Body>
+                </Table>
+              </Box>
             </section>
           </div>
 

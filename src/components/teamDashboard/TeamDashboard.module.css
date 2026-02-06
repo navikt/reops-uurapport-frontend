@@ -54,12 +54,6 @@
   margin-top: 20px;
 }
 
-.memberList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .teamInfoHeader {
   display: flex;
   flex-direction: row;
