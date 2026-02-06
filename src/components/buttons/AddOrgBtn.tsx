@@ -1,6 +1,6 @@
-import React from 'react';
-import { PersonPlusIcon } from '@navikt/aksel-icons';
-import { Button } from '@navikt/ds-react';
+import React from "react";
+import { PersonPlusIcon } from "@navikt/aksel-icons";
+import { Button } from "@navikt/ds-react";
 
 interface AddOrgBtnProps {
   onClick: () => void;
@@ -8,8 +8,8 @@ interface AddOrgBtnProps {
 
 const AddOrgBtn: React.FC<AddOrgBtnProps> = ({ onClick }) => {
   return (
-    <Button icon={<PersonPlusIcon />} onClick={onClick}>
-      Legg til ditt team{' '}
+    <Button icon={<PersonPlusIcon aria-hidden />} onClick={onClick}>
+      Legg til ditt team{" "}
     </Button>
   );
 };

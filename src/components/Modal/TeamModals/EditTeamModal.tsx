@@ -67,7 +67,7 @@ function EditTeamModal(props: EditTeamModalProps) {
       <Button
         variant="secondary"
         onClick={() => ref.current?.showModal()}
-        icon={<PersonPencilIcon />}
+        icon={<PersonPencilIcon aria-hidden />}
       >
         Rediger
       </Button>

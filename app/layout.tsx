@@ -3,7 +3,6 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { Box } from "@navikt/ds-react";
-import styles from "./layout.module.css";
 import Script from "next/script";
 import "@navikt/ds-css";
 import "./globals.css";
@@ -38,7 +37,11 @@ export default function RootLayout({
       <body className="body">
         <ThemeProvider>
           <Navbar />
-          <main className={styles.main}>
+          <Box
+            as="main"
+            background="sunken"
+            padding={{ xs: "space-16", sm: "space-20" }}
+          >
             <Box
               background="raised"
               padding={{ xs: "space-16", sm: "space-20", md: "space-24" }}
@@ -48,7 +51,7 @@ export default function RootLayout({
             >
               {children}
             </Box>
-          </main>
+          </Box>
           <Footer />
         </ThemeProvider>
       </body>

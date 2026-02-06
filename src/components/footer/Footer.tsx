@@ -1,12 +1,17 @@
-import { BodyLong, Heading } from "@navikt/ds-react";
+import { BodyLong, Heading, Box, HStack, VStack } from "@navikt/ds-react";
 import { Link } from "@/components/Link";
 import styles from "./Footer.module.css";
 
 function Footer() {
   return (
-    <footer className={styles.footerContainer}>
-      <div className={styles.contentGroups}>
-        <div className={styles.contentGroup}>
+    <Box
+      as="footer"
+      className={styles.footerContainer}
+      paddingBlock="space-32"
+      paddingInline="space-32"
+    >
+      <HStack gap="space-32" align="start" className={styles.contentGroups}>
+        <VStack gap="space-20" align="start" style={{ minWidth: "30%" }}>
           <Heading level="3" size="medium">
             Kontakt oss
           </Heading>
@@ -14,7 +19,7 @@ function Footer() {
             Har du spørsmål om universell utforming eller testing? Kontakt oss
             på e-post eller Slack.
           </BodyLong>
-          <span className={styles.footerLinks}>
+          <VStack gap="space-12" align="start">
             <Link href="mailto:uu@nav.no">E-post</Link>
             <Link
               href="https://nav-it.slack.com/archives/C7MANSGLS"
@@ -22,9 +27,9 @@ function Footer() {
             >
               Slack
             </Link>
-          </span>
-        </div>
-        <div className={styles.contentGroup}>
+          </VStack>
+        </VStack>
+        <VStack gap="space-20" align="start" style={{ minWidth: "30%" }}>
           <Heading level="3" size="medium">
             Har du tilbakemelding?
           </Heading>
@@ -38,12 +43,12 @@ function Footer() {
           >
             GitHub
           </Link>
-        </div>
-        <div className={styles.contentGroup}>
+        </VStack>
+        <VStack gap="space-20" align="start" style={{ minWidth: "30%" }}>
           <Heading level="3" size="medium">
             Nyttige resurser
           </Heading>
-          <span className={styles.footerLinks}>
+          <VStack gap="space-12" align="start">
             <Link
               href="https://aksel.nav.no/god-praksis/universell-utforming"
               target="_blank"
@@ -56,10 +61,10 @@ function Footer() {
             >
               Web Accessibility Expert (GPT av Morten Tollefsen)
             </Link>
-          </span>
-        </div>
-      </div>
-    </footer>
+          </VStack>
+        </VStack>
+      </HStack>
+    </Box>
   );
 }
 
