@@ -29,7 +29,7 @@ For å bygge Docker imaget lokalt trenger du en `NODE_AUTH_TOKEN` miljøvariabel
 
 ```bash
 export NODE_AUTH_TOKEN=<your-github-token>
-docker build --secret id=NODE_AUTH_TOKEN . -t reops-uurapport-frontend:latest
+docker build --secret id=NODE_AUTH_TOKEN . -t reops-uurapport-frontend
 ```
 
 På CI/CD vil `NODE_AUTH_TOKEN` automatisk være tilgjengelig via `GITHUB_TOKEN`.
@@ -37,7 +37,7 @@ På CI/CD vil `NODE_AUTH_TOKEN` automatisk være tilgjengelig via `GITHUB_TOKEN`
 ### run
 
 ```bash
-docker run --rm -it -p 3000:3000 reops-uurapport-frontend:latest
+docker run --rm -it -p 3000:3000 reops-uurapport-frontend
 ```
 
 Applikasjonen vil være tilgjengelig på http://localhost:3000

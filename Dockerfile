@@ -29,7 +29,6 @@ WORKDIR /usr/src/app
 # Copy Next.js build output and node_modules
 COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/.next ./.next
-COPY --from=build /usr/src/app/public ./public
 COPY --from=build /usr/src/app/package.json ./package.json
 
 ENV HOST=0.0.0.0
