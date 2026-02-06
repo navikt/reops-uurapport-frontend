@@ -1,7 +1,7 @@
-import { Textarea, Radio, RadioGroup, Link, Heading } from '@navikt/ds-react';
-import type { CriterionType } from '@src/types.ts';
-import styles from './Criterion.module.css';
-import { Divider } from '@mui/material';
+import { Textarea, Radio, RadioGroup, Link, Heading } from "@navikt/ds-react";
+import type { CriterionType } from "@src/types";
+import styles from "./Criterion.module.css";
+import { Divider } from "@mui/material";
 
 type CriterionProps = {
   criterion: CriterionType;
@@ -30,25 +30,25 @@ const Criterion = ({
           }
           readOnly={!hasWriteAccess}
           onChange={(e) => {
-            handleChange(criterion.number, 'status', e as string);
+            handleChange(criterion.number, "status", e as string);
           }}
           description={
             <p className={styles.criterionHelpText}>
-              {criterion.description}{' '}
+              {criterion.description}{" "}
               <span>
-                Les mer på{' '}
+                Les mer på{" "}
                 {criterion.wcagUrl && <Link href={criterion.wcagUrl}>W3C</Link>}
               </span>
               {criterion.helpUrl && (
                 <span>
-                  {' '}
+                  {" "}
                   Hvordan teste: <Link href={criterion.helpUrl}> Aksel</Link>
                 </span>
               )}
             </p>
           }
           defaultValue={
-            criterion.status !== 'NOT_TESTED' ? criterion.status : 'NOT_TESTED'
+            criterion.status !== "NOT_TESTED" ? criterion.status : "NOT_TESTED"
           }
         >
           <Radio value="COMPLIANT">Ja</Radio>
@@ -57,7 +57,7 @@ const Criterion = ({
 
           <Radio value="NOT_APPLICABLE">Ikke aktuelt</Radio>
         </RadioGroup>
-        {criterion.status === 'NON_COMPLIANT' ? (
+        {criterion.status === "NON_COMPLIANT" ? (
           <div className={styles.textareaWrapper}>
             <Textarea
               className={styles.textarea}
@@ -66,7 +66,7 @@ const Criterion = ({
               defaultValue={criterion.breakingTheLaw}
               readOnly={!hasWriteAccess}
               onChange={(e) =>
-                handleChange(criterion.number, 'breakingTheLaw', e.target.value)
+                handleChange(criterion.number, "breakingTheLaw", e.target.value)
               }
             />
             <Textarea
@@ -78,7 +78,7 @@ const Criterion = ({
               onChange={(e) =>
                 handleChange(
                   criterion.number,
-                  'lawDoesNotApply',
+                  "lawDoesNotApply",
                   e.target.value,
                 )
               }
@@ -92,7 +92,7 @@ const Criterion = ({
               onChange={(e) =>
                 handleChange(
                   criterion.number,
-                  'tooHardToComply',
+                  "tooHardToComply",
                   e.target.value,
                 )
               }

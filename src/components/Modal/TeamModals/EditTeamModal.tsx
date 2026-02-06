@@ -1,12 +1,13 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import { Button, List, Modal, TextField, Box } from "@navikt/ds-react";
 import { PersonPencilIcon, XMarkIcon } from "@navikt/aksel-icons";
 import styles from "./EditTeamModal.module.css";
-import type { Team } from "@src/types.ts";
+import type { Team } from "@src/types";
 import { updateTeam } from "@src/services/teamServices";
 import useSWR from "swr";
-import { fetcher } from "@src/utils/client/api.ts";
-import { apiProxyUrl } from "@src/utils/client/urls.ts";
+import { fetcher } from "@src/utils/client/api";
+import { apiProxyUrl } from "@src/utils/client/urls";
 
 interface EditTeamModalProps {
   teamId: string;

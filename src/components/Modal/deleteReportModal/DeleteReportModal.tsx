@@ -1,3 +1,4 @@
+'use client';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { Modal, Button, BodyLong } from '@navikt/ds-react';
 import { deleteReport } from '@src/services/reportServices';

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import Criterion from './criterion/Criterion';
-import type { AggregatedReport, CriterionType, Report } from '@src/types.ts';
+"use client";
+import { useState, useEffect } from "react";
+import Criterion from "./criterion/Criterion";
+import type { AggregatedReport, CriterionType, Report } from "@src/types";
 import {
   updateAggregatedReport,
   updateReport,
-} from '@src/services/reportServices';
+} from "@src/services/reportServices";
 import {
   Tabs,
   TextField,
@@ -14,16 +15,16 @@ import {
   Link,
   Button,
   Checkbox,
-} from '@navikt/ds-react';
-import _, { set } from 'lodash';
-import styles from './CreateReport.module.css';
-import { formatDate } from '@src/utils/client/date';
-import { ArrowRightIcon } from '@navikt/aksel-icons';
-import DeleteReportModal from '@components/Modal/deleteReportModal/DeleteReportModal';
+} from "@navikt/ds-react";
+import _, { set } from "lodash";
+import styles from "./CreateReport.module.css";
+import { formatDate } from "@src/utils/client/date";
+import { ArrowRightIcon } from "@navikt/aksel-icons";
+import DeleteReportModal from "@components/Modal/deleteReportModal/DeleteReportModal";
 
 interface CreateReportProps {
   report: Report | AggregatedReport;
-  reportType: 'SINGLE' | 'AGGREGATED';
+  reportType: "SINGLE" | "AGGREGATED";
   isAdmin: boolean;
 }
 
@@ -31,24 +32,24 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
   const [criteriaData, setCriteriaData] = useState<CriterionType[]>(
     report.successCriteria,
   );
-  const [activeTab, setActiveTab] = useState('criteria');
+  const [activeTab, setActiveTab] = useState("criteria");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isPartOfNavNo, setIsPartOfNavNo] = useState<boolean>(
     report.isPartOfNavNo,
   );
 
   const filterOptions: Record<string, string> = {
-    COMPLIANT: 'Tilfredsstilt',
-    NON_COMPLIANT: 'Ikke tilfredsstilt',
-    NOT_TESTED: 'Ikke testet',
-    NOT_APPLICABLE: 'Ikke aktuelt',
+    COMPLIANT: "Tilfredsstilt",
+    NON_COMPLIANT: "Ikke tilfredsstilt",
+    NOT_TESTED: "Ikke testet",
+    NOT_APPLICABLE: "Ikke aktuelt",
   };
 
   const updateReportData = async (
     updates: Partial<Report> | Partial<AggregatedReport>,
   ) => {
     try {
-      reportType === 'SINGLE'
+      reportType === "SINGLE"
         ? await updateReport(report.reportId, updates)
         : await updateAggregatedReport(report.reportId, updates);
     } catch (error) {
@@ -132,7 +133,7 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
                 </Chips.Toggle>
               ))}
             </Chips>
-            {reportType === 'AGGREGATED' && (
+            {reportType === "AGGREGATED" && (
               <Button
                 as={Link}
                 variant="secondary"
@@ -189,7 +190,7 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
             defaultValue={report?.descriptiveName}
             readOnly={!report?.hasWriteAccess}
             onChange={(e) =>
-              handleMetadataChange('descriptiveName', e.target.value)
+              handleMetadataChange("descriptiveName", e.target.value)
             }
           />
           <TextField
@@ -198,7 +199,7 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
             name="report-url"
             defaultValue={report?.url}
             readOnly={!report?.hasWriteAccess}
-            onChange={(e) => handleMetadataChange('url', e.target.value)}
+            onChange={(e) => handleMetadataChange("url", e.target.value)}
           />
           <Textarea
             label="Notater"
@@ -206,9 +207,9 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
             name="notes"
             defaultValue={report?.notes}
             readOnly={!report?.hasWriteAccess}
-            onChange={(e) => handleMetadataChange('notes', e.target.value)}
+            onChange={(e) => handleMetadataChange("notes", e.target.value)}
           />
-          {reportType === 'SINGLE' && (
+          {reportType === "SINGLE" && (
             <Checkbox
               description="Hvis rapporten er for en applikasjon som er en del av NAV.no rettet mot eksterne brukere, huk av her."
               name="isPartOfNavNo"

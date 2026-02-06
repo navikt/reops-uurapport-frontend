@@ -1,6 +1,8 @@
-import { MenuHamburgerIcon, LeaveIcon } from '@navikt/aksel-icons';
-import { Link, Button, Dropdown } from '@navikt/ds-react';
-import type { User } from '@src/types';
+"use client";
+
+import { MenuHamburgerIcon, LeaveIcon } from "@navikt/aksel-icons";
+import { Link, Button, Dropdown } from "@navikt/ds-react";
+import type { User } from "@src/types";
 
 interface MobileNavbarProps {
   user: User;

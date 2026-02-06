@@ -1,19 +1,21 @@
-import ReportList from '@components/ReportList/ReportList';
-import CreateReportModal from '@components/Modal/createReportModal/CreateReportModal';
-import { Tabs, Select, Heading } from '@navikt/ds-react';
-import { useState } from 'react';
-import TeamDashboard from './TeamDashboard';
-import styles from './MyTeam.module.css';
-import type { Team, User } from '@src/types.ts';
+"use client";
+
+import ReportList from "@components/ReportList/ReportList";
+import CreateReportModal from "@components/Modal/createReportModal/CreateReportModal";
+import { Tabs, Select, Heading } from "@navikt/ds-react";
+import { useState } from "react";
+import TeamDashboard from "./TeamDashboard";
+import styles from "./MyTeam.module.css";
+import type { Team, User } from "@src/types";
 
 interface MyTeamProps {
   user: User;
 }
 
 function MyTeam({ user }: MyTeamProps) {
-  const [tabState, setTabState] = useState('teamView');
+  const [tabState, setTabState] = useState("teamView");
   const [currentTeamId, setCurrentTeamId] = useState(user.teams[0].id); //Hvilken team som sees
-  const userName = user.name.split(',');
+  const userName = user.name.split(",");
   const isMyTeam = user.teams.map((team) => team.id).includes(currentTeamId);
 
   return (

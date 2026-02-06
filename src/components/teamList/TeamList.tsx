@@ -1,8 +1,9 @@
-import { Link, Table, Button } from '@navikt/ds-react';
-import styles from './TeamList.module.css';
-import type { Team } from '@src/types';
-import EditTeamModal from '@components/Modal/TeamModals/EditTeamModal';
-import DeleteTeamModal from '@components/Modal/deleteTeam/DeleteTeamModal';
+"use client";
+import { Link, Table, Button } from "@navikt/ds-react";
+import styles from "./TeamList.module.css";
+import type { Team } from "@src/types";
+import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
+import DeleteTeamModal from "@components/Modal/deleteTeam/DeleteTeamModal";
 
 interface TeamListProps {
   teams: Team[];

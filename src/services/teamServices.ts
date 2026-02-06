@@ -1,29 +1,29 @@
-import type { NewTeam, Team } from '@src/types.ts';
-import { apiProxyUrl } from '@src/utils/client/urls.ts';
+import type { NewTeam, Team } from "@src/types";
+import { apiProxyUrl } from "@src/utils/client/urls";
 
 export const updateTeam = async (teamId: string, updates: Team) => {
   console.log(9999999999999, teamId);
   const response = await fetch(`${apiProxyUrl}/teams/${teamId}/update`, {
-    method: 'PUT',
+    method: "PUT",
     body: JSON.stringify(updates),
-    credentials: 'include',
+    credentials: "include",
   });
   if (response.ok) {
-    console.log('Team updated', response.status);
+    console.log("Team updated", response.status);
   } else {
-    console.log('Failed to update team-', response.status);
-    throw new Error('Failed to update team');
+    console.log("Failed to update team-", response.status);
+    throw new Error("Failed to update team");
   }
 };
 
 export const createNewTeam = async (newTeam: NewTeam) => {
   console.log(newTeam);
   const response = await fetch(`${apiProxyUrl}/teams/new`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(newTeam),
-    credentials: 'include',
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
   if (response.ok) {
@@ -34,20 +34,20 @@ export const createNewTeam = async (newTeam: NewTeam) => {
   }
 
   if (!response.ok) {
-    throw new Error('Failed to create team');
+    throw new Error("Failed to create team");
   }
 };
 
 export const deleteTeam = async (teamId: string) => {
   const response = await fetch(`${apiProxyUrl}/admin/teams/${teamId}`, {
-    method: 'DELETE',
-    credentials: 'include',
+    method: "DELETE",
+    credentials: "include",
   });
   if (response.ok) {
-    console.log('Team deleted', response.status);
+    console.log("Team deleted", response.status);
     window.location.reload();
   } else {
-    console.log('Failed to delete team-', response.status);
-    throw new Error('Failed to delete team');
+    console.log("Failed to delete team-", response.status);
+    throw new Error("Failed to delete team");
   }
 };

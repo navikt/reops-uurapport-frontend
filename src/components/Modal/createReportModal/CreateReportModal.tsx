@@ -1,19 +1,20 @@
-import { useRef, useState, useEffect } from 'react';
-import { Button, Modal, Select, TextField, Checkbox } from '@navikt/ds-react';
-import { createReport } from '@src/services/reportServices';
-import { FilePlusIcon } from '@navikt/aksel-icons';
-import { fetcher } from '@src/utils/client/api.ts';
-import useSWRImmutable from 'swr/immutable';
-import type { InitialReport, Team } from '@src/types.ts';
-import styles from '../Modal.module.css';
-import { apiProxyUrl } from '@src/utils/client/urls.ts';
+"use client";
+import { useRef, useState, useEffect } from "react";
+import { Button, Modal, Select, TextField, Checkbox } from "@navikt/ds-react";
+import { createReport } from "@src/services/reportServices";
+import { FilePlusIcon } from "@navikt/aksel-icons";
+import { fetcher } from "@src/utils/client/api";
+import useSWRImmutable from "swr/immutable";
+import type { InitialReport, Team } from "@src/types";
+import styles from "../Modal.module.css";
+import { apiProxyUrl } from "@src/utils/client/urls";
 
 const CreateReportModal = () => {
   const ref = useRef<HTMLDialogElement>(null);
   const [reportDetails, setReportDetails] = useState<InitialReport>({
-    name: '',
-    urlTilSiden: '',
-    teamId: '',
+    name: "",
+    urlTilSiden: "",
+    teamId: "",
     isPartOfNavNo: true,
   });
   const handleSubmit = () => {
@@ -52,14 +53,14 @@ const CreateReportModal = () => {
         icon={<FilePlusIcon />}
         onClick={() => {
           ref.current?.showModal();
-          console.log('Modal opened');
+          console.log("Modal opened");
         }}
       >
         Opprett en ny rapport
       </Button>
       <Modal
         ref={ref}
-        header={{ heading: 'Opprett rapport' }}
+        header={{ heading: "Opprett rapport" }}
         closeOnBackdropClick={true}
       >
         <Modal.Body className={styles.modalBody}>
