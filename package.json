@@ -10,13 +10,14 @@
     "build": "next build",
     "mock": "tsx mock/server.ts",
     "lint": "next lint",
+    "knip": "knip",
+    "knip:production": "knip --production",
     "prepare": "husky"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.3.7",
-    "@mui/x-charts": "^8.26.0",
     "@navikt/aksel-icons": "8.1.0",
     "@navikt/ds-css": "8.1.0",
     "@navikt/ds-react": "8.1.0",
@@ -30,7 +31,6 @@
   },
   "devDependencies": {
     "@hono/node-server": "1.19.9",
-    "@navikt/ds-tokens": "^8.1.0",
     "@types/lodash": "^4.17.23",
     "@types/node": "25.0.10",
     "@types/react": "19.2.9",
@@ -40,6 +40,7 @@
     "eslint-config-next": "^15.1.6",
     "hono": "4.11.7",
     "husky": "^9.1.7",
+    "knip": "^5.83.0",
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "tsx": "4.21.0",
