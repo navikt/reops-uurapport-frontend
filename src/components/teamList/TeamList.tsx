@@ -64,7 +64,7 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
                 </Table.HeaderCell>
                 {isAdmin && (
                   <Table.DataCell>
-                    <HStack gap="space-2">
+                    <HStack justify="end" gap="space-2">
                       <EditTeamModal teamId={team.id} />
                       <DeleteTeamModal teamId={team.id} />
                     </HStack>
