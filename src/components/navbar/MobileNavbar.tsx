@@ -20,23 +20,19 @@ const MobileNavbar = ({ user }: MobileNavbarProps) => {
         />
         <Dropdown.Menu>
           <Dropdown.Menu.List>
-            <NextLink href="/" passHref legacyBehavior>
-              <Dropdown.Menu.List.Item as="a">Forside</Dropdown.Menu.List.Item>
-            </NextLink>
-            <NextLink href="/teams" passHref legacyBehavior>
-              <Dropdown.Menu.List.Item as="a">
-                Alle team
-              </Dropdown.Menu.List.Item>
-            </NextLink>
-            <NextLink href="/reports" passHref legacyBehavior>
-              <Dropdown.Menu.List.Item as="a">
-                Alle rapporter
-              </Dropdown.Menu.List.Item>
-            </NextLink>
+            <Dropdown.Menu.List.Item as={NextLink} href="/">
+              Forside
+            </Dropdown.Menu.List.Item>
+            <Dropdown.Menu.List.Item as={NextLink} href="/teams">
+              Alle team
+            </Dropdown.Menu.List.Item>
+            <Dropdown.Menu.List.Item as={NextLink} href="/reports">
+              Alle rapporter
+            </Dropdown.Menu.List.Item>
             {user.isAdmin && (
-              <NextLink href="/admin" passHref legacyBehavior>
-                <Dropdown.Menu.List.Item as="a">Admin</Dropdown.Menu.List.Item>
-              </NextLink>
+              <Dropdown.Menu.List.Item as={NextLink} href="/admin">
+                Admin
+              </Dropdown.Menu.List.Item>
             )}
             <Dropdown.Menu.Divider />
             <Dropdown.Menu.List.Item

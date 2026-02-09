@@ -64,14 +64,10 @@ export default async function AdminPage() {
     <span>
       <div className={styles.headingAndButton}>
         <h1>Admin</h1>
-        <NextLink href="/admin/create-report" passHref legacyBehavior>
+        <NextLink href="/admin/create-report">
           <Button as="a">Opprett en samslått rapport</Button>
         </NextLink>
-        <NextLink
-          href="https://myaccount.microsoft.com/groups/07bca51b-e5dc-484a-ac09-685e61244b6b"
-          passHref
-          legacyBehavior
-        >
+        <NextLink href="https://myaccount.microsoft.com/groups/07bca51b-e5dc-484a-ac09-685e61244b6b">
           <Button as="a">Legg til admin i Azure</Button>
         </NextLink>
       </div>
