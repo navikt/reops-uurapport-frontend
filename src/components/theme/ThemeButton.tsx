@@ -1,57 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { ThemeIcon } from "@navikt/aksel-icons";
 import { Button, Tooltip } from "@navikt/ds-react";
 
 function ThemeButton() {
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
-  const [isMounted, setIsMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
+  // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
-    setIsMounted(true);
-
-    // Check system preference and localStorage
-    const storedTheme = localStorage.getItem("felgen-theme") as
-      | "light"
-      | "dark"
-      | null;
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-
-    const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
-    setResolvedTheme(initialTheme);
-    applyTheme(initialTheme);
+    setMounted(true);
   }, []);
 
-  const applyTheme = (newTheme: "light" | "dark") => {
-    const root = document.documentElement;
-    const themeElement = document.querySelector(".aksel-theme");
-
-    // Remove both classes first
-    root.classList.remove("light", "dark");
-    if (themeElement) {
-      themeElement.classList.remove("light", "dark");
-    }
-
-    // Add the new theme class
-    root.classList.add(newTheme);
-    if (themeElement) {
-      themeElement.classList.add(newTheme);
-    }
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "light" ? "dark" : "light");
   };
 
-  const setTheme = (newTheme: "light" | "dark") => {
-    setResolvedTheme(newTheme);
-    localStorage.setItem("felgen-theme", newTheme);
-    applyTheme(newTheme);
-  };
+  // Prevent hydration mismatch by rendering nothing during SSR
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Tooltip
       content={
-        isMounted && resolvedTheme === "dark"
+        resolvedTheme === "dark"
           ? "Endre til lyst tema"
           : "Endre til mørkt tema"
       }
@@ -59,7 +34,7 @@ function ThemeButton() {
       <Button
         variant="tertiary"
         icon={<ThemeIcon aria-hidden />}
-        onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+        onClick={toggleTheme}
       />
     </Tooltip>
   );
