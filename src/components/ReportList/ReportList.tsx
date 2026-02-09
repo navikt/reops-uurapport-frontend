@@ -1,9 +1,9 @@
-'use client';
-import { Link, Table } from '@navikt/ds-react';
-import { useEffect, useState } from 'react';
-import { formatDate } from '@src/utils/client/date';
-import type { SortState } from '@navikt/ds-react';
-import type { ReportSummary } from '@src/types';
+"use client";
+import { Link, Table } from "@navikt/ds-react";
+import { useEffect, useState } from "react";
+import { formatDate } from "@src/utils/client/date";
+import type { SortState } from "@navikt/ds-react";
+import type { ReportSummary } from "@src/types";
 
 interface ReportListProps {
   reports: ReportSummary[];
@@ -14,14 +14,14 @@ const ReportList = ({ reports }: ReportListProps) => {
 
   const handleSort = (sortKey: string) => {
     setSort(
-      sort && sortKey === sort.orderBy && sort.direction === 'descending'
+      sort && sortKey === sort.orderBy && sort.direction === "descending"
         ? undefined
         : {
             orderBy: sortKey,
             direction:
-              sort && sortKey === sort.orderBy && sort.direction === 'ascending'
-                ? 'descending'
-                : 'ascending',
+              sort && sortKey === sort.orderBy && sort.direction === "ascending"
+                ? "descending"
+                : "ascending",
           },
     );
   };
@@ -44,8 +44,8 @@ const ReportList = ({ reports }: ReportListProps) => {
     ?.slice()
     .sort((a: ReportSummary, b: ReportSummary) => {
       if (sort) {
-        console.log(a, 'hei', b);
-        return sort.direction === 'ascending'
+        console.log(a, "hei", b);
+        return sort.direction === "ascending"
           ? comparator(b, a, sort.orderBy as keyof ReportSummary)
           : comparator(a, b, sort.orderBy as keyof ReportSummary);
       }
@@ -75,16 +75,16 @@ const ReportList = ({ reports }: ReportListProps) => {
             return (
               <Table.Row key={report.id}>
                 <Table.HeaderCell>
-                  {report.teamId !== '' ? (
+                  {report.teamId !== "" ? (
                     <Link data-color="accent" href={`/reports/${report.id}`}>
-                      {report.title === '' ? 'Uten navn' : report.title}
+                      {report.title === "" ? "Uten navn" : report.title}
                     </Link>
                   ) : (
                     <Link
                       data-color="accent"
                       href={`/reports/aggregated/${report.id}`}
                     >
-                      {report.title === '' ? '(Uten navn)' : report.title}
+                      {report.title === "" ? "(Uten navn)" : report.title}
                     </Link>
                   )}
                 </Table.HeaderCell>

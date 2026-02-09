@@ -1,0 +1,3 @@
+# NAIS YAML files - special templating syntax like {{image}}
+**/*.yaml
+**/*.yml
