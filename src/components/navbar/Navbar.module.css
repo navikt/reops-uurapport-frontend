@@ -1,37 +1,14 @@
-.navBarContainer {
-  align-items: center;
-  padding: 1rem 1rem;
-  width: 100%;
-  background-color: white;
-  box-shadow: var(--ax-shadow-xsmall);
-}
-
-.contentWrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.links {
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 1rem;
-  align-items: center;
-}
-
 .mobileNavbar {
   margin: 16px;
   display: none;
 }
 
+.desktopNavbar {
+  display: block;
+}
+
 @media (max-width: 768px) {
-  .navBarContainer {
+  .desktopNavbar {
     display: none;
   }
 

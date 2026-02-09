@@ -82,8 +82,7 @@ const CreateReportModal = () => {
             description="Hvis rapporten er for en applikasjon som er en del av NAV.no, huk av her."
             name="isPartOfNavNo"
             onChange={handleCheckboxChange}
-            value={!reportDetails.isPartOfNavNo}
-            defaultChecked={reportDetails.isPartOfNavNo}
+            checked={reportDetails.isPartOfNavNo}
           >
             Tjenesten er under NAV.no
           </Checkbox>

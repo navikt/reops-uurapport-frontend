@@ -1,6 +1,6 @@
 "use client";
-import { Link, Table, Button } from "@navikt/ds-react";
-import styles from "./TeamList.module.css";
+import { Link, Table, Box, HStack } from "@navikt/ds-react";
+import { useState, useMemo } from "react";
 import type { Team } from "@src/types";
 import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
 import DeleteTeamModal from "@components/Modal/deleteTeam/DeleteTeamModal";
@@ -10,52 +10,72 @@ interface TeamListProps {
   isAdmin: boolean;
 }
 
+type SortState = {
+  orderBy: string;
+  direction: "ascending" | "descending";
+};
+
 const TeamList = ({ teams, isAdmin }: TeamListProps) => {
+  const [sort, setSort] = useState<SortState>({
+    orderBy: "name",
+    direction: "ascending",
+  });
+
+  const sortedTeams = useMemo(() => {
+    return [...teams].sort((a, b) => {
+      const comparator = a.name.localeCompare(b.name, "no");
+      return sort.direction === "ascending" ? comparator : -comparator;
+    });
+  }, [teams, sort]);
+
+  const handleSort = (sortKey: string) => {
+    setSort((prevSort) => ({
+      orderBy: sortKey,
+      direction:
+        prevSort.orderBy === sortKey && prevSort.direction === "ascending"
+          ? "descending"
+          : "ascending",
+    }));
+  };
+
   return (
-    <section className={styles.wrapper}>
-      {isAdmin ? (
-        <Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Team</Table.HeaderCell>
-              <Table.HeaderCell>Redigere team</Table.HeaderCell>
-              <Table.HeaderCell>Slette team</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {teams.map((team: Team) => {
-              return (
-                <Table.Row key={team.id}>
-                  <Table.HeaderCell scope="row">
-                    <Link data-color="neutral" href={`/teams/${team.id}`}>
-                      {team.name}
-                    </Link>
-                  </Table.HeaderCell>
-                  <Table.DataCell>
-                    <EditTeamModal teamId={team.id} />
-                  </Table.DataCell>
-                  <Table.DataCell>
-                    <DeleteTeamModal teamId={team.id} />
-                  </Table.DataCell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
-      ) : (
-        <ul className={styles.list}>
-          {teams.map((team: Team) => {
+    <Box>
+      <Table sort={sort} onSortChange={handleSort} zebraStripes>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeader sortKey="name" sortable>
+              Team
+            </Table.ColumnHeader>
+            {isAdmin && (
+              <Table.HeaderCell className="sr-only">
+                Handlinger
+              </Table.HeaderCell>
+            )}
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {sortedTeams.map((team: Team) => {
             return (
-              <li key={team.id} className={styles.listItem}>
-                <Link data-color="neutral" href={`/teams/${team.id}`}>
-                  {team.name}
-                </Link>
-              </li>
+              <Table.Row key={team.id}>
+                <Table.HeaderCell scope="row">
+                  <Link data-color="neutral" href={`/teams/${team.id}`}>
+                    {team.name}
+                  </Link>
+                </Table.HeaderCell>
+                {isAdmin && (
+                  <Table.DataCell>
+                    <HStack justify="end" gap="space-2">
+                      <EditTeamModal teamId={team.id} />
+                      <DeleteTeamModal teamId={team.id} />
+                    </HStack>
+                  </Table.DataCell>
+                )}
+              </Table.Row>
             );
           })}
-        </ul>
-      )}
-    </section>
+        </Table.Body>
+      </Table>
+    </Box>
   );
 };
 

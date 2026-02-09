@@ -1,4 +1,5 @@
-import { Button, Link } from "@navikt/ds-react";
+import NextLink from "next/link";
+import { Button } from "@navikt/ds-react";
 import { apiUrl } from "@src/utils/server/urls";
 import { getOboToken } from "@src/utils/server/getOboToken";
 import { getAuthToken } from "@src/utils/server/getAuthToken";
@@ -63,22 +64,12 @@ export default async function AdminPage() {
     <span>
       <div className={styles.headingAndButton}>
         <h1>Admin</h1>
-        <Button
-          as={Link}
-          variant="primary"
-          href="/admin/create-report"
-          className={styles.buttonAsLink}
-        >
-          Opprett en samslått rapport
-        </Button>
-        <Button
-          as={Link}
-          variant="primary"
-          href="https://myaccount.microsoft.com/groups/07bca51b-e5dc-484a-ac09-685e61244b6b"
-          className={styles.buttonAsLink}
-        >
-          Legg til admin i Azure
-        </Button>
+        <NextLink href="/admin/create-report">
+          <Button as="a">Opprett en samslått rapport</Button>
+        </NextLink>
+        <NextLink href="https://myaccount.microsoft.com/groups/07bca51b-e5dc-484a-ac09-685e61244b6b">
+          <Button as="a">Legg til admin i Azure</Button>
+        </NextLink>
       </div>
       <div className={styles.content}>
         <ReportList reports={reports} />
