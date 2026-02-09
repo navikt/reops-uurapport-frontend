@@ -1,6 +1,6 @@
 "use client";
 import { Link, Table } from "@navikt/ds-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { formatDate } from "@src/utils/client/date";
 import type { SortState } from "@navikt/ds-react";
 import type { ReportSummary } from "@src/types";
@@ -64,7 +64,9 @@ const ReportList = ({ reports }: ReportListProps) => {
             <Table.ColumnHeader sortKey="title" sortable>
               Navn
             </Table.ColumnHeader>
-            <Table.ColumnHeader>Team</Table.ColumnHeader>
+            <Table.ColumnHeader sortKey="teamName" sortable>
+              Team
+            </Table.ColumnHeader>
             <Table.ColumnHeader sortKey="date" sortable>
               Sist endret
             </Table.ColumnHeader>
