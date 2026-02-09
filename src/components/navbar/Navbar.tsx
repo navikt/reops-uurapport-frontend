@@ -6,7 +6,7 @@ import { apiUrl } from "../../utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import MobileNavbar from "./MobileNavbar";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { ThemeButton } from "@/components/theme/ThemeButton";
 import type { User } from "@src/types";
 
 async function getUserDetails(): Promise<User> {
@@ -95,7 +95,7 @@ export default async function Navbar() {
               </p>
             </li>
             <li>
-              <ThemeToggle />
+              <ThemeButton />
             </li>
             <li>
               <Link underline={false} href="/oauth2/logout">
