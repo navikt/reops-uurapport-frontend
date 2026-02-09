@@ -1,10 +1,12 @@
-import { Link } from "@navikt/ds-react";
+import { Link } from "@/components/Link";
+import { Box, HStack } from "@navikt/ds-react";
 import styles from "./Navbar.module.css";
 import { LeaveIcon } from "@navikt/aksel-icons";
 import { apiUrl } from "../../utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import MobileNavbar from "./MobileNavbar";
+import { ThemeButton } from "@/components/theme/ThemeButton";
 import type { User } from "@src/types";
 
 async function getUserDetails(): Promise<User> {
@@ -37,9 +39,27 @@ export default async function Navbar() {
       <header className={styles.mobileNavbar}>
         <MobileNavbar user={userDetails} />
       </header>
-      <header className={styles.navBarContainer}>
-        <span className={styles.contentWrapper}>
-          <ul className={styles.links}>
+      <Box
+        as="header"
+        background="default"
+        borderWidth="0 0 1"
+        borderColor="neutral-subtle"
+        paddingBlock="space-16"
+        paddingInline="space-16"
+        className={styles.desktopNavbar}
+      >
+        <HStack
+          justify="space-between"
+          align="center"
+          gap="space-16"
+          style={{ maxWidth: "1280px", margin: "0 auto" }}
+        >
+          <HStack
+            as="ul"
+            gap="space-16"
+            align="center"
+            style={{ listStyle: "none" }}
+          >
             <li>
               <Link underline={false} data-color="neutral" href="/">
                 Forside
@@ -62,21 +82,29 @@ export default async function Navbar() {
                 </Link>
               </li>
             )}
-          </ul>
-          <ul className={styles.links}>
+          </HStack>
+          <HStack
+            as="ul"
+            gap="space-16"
+            align="center"
+            style={{ listStyle: "none" }}
+          >
             <li>
               <p>
                 Innlogget som: <strong>{userDetails.email}</strong>
               </p>
             </li>
-            <li className={styles.utlogging}>
+            <li>
+              <ThemeButton />
+            </li>
+            <li>
               <Link underline={false} href="/oauth2/logout">
-                <LeaveIcon /> Logg Ut
+                <LeaveIcon aria-hidden /> Logg Ut
               </Link>
             </li>
-          </ul>
-        </span>
-      </header>
+          </HStack>
+        </HStack>
+      </Box>
     </span>
   );
 }

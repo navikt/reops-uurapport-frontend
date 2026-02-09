@@ -2,7 +2,7 @@
 
 .section1 {
   width: 100%;
-  background-color: white;
+  background-color: var(--ax-bg-default);
   height: auto;
   min-height: 50vh;
   text-align: center;
@@ -34,7 +34,7 @@
 
 .article {
   padding: 1rem 0 0 1rem;
-  background-color: white;
+  background-color: var(--ax-bg-default);
   border-radius: 1rem;
   width: 30%;
   min-height: 10rem;

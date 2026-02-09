@@ -9,6 +9,8 @@ import {
   Select,
   Alert,
   Loader,
+  Table,
+  Box,
 } from "@navikt/ds-react";
 import { fetcher } from "@src/utils/client/api";
 import ReportList from "@components/ReportList/ReportList";
@@ -116,11 +118,38 @@ function TeamDashboard(props: TeamDashboardProps) {
 
   const total = COMPLIANT + NOT_COMPLIANT + NOT_APPLICABLE + NOT_TESTED;
 
+  // Get Aksel design tokens for chart colors at runtime
+  const getChartColors = () => {
+    if (typeof window === "undefined") {
+      // SSR fallback - use reasonable defaults
+      return {
+        success: "#00703C",
+        danger: "#C32F27",
+        neutral: "#595959",
+        warning: "#FF9100",
+      };
+    }
+
+    const root = getComputedStyle(document.documentElement);
+    return {
+      success:
+        root.getPropertyValue("--a-surface-success-strong").trim() || "#00703C",
+      danger:
+        root.getPropertyValue("--a-surface-danger-strong").trim() || "#C32F27",
+      neutral:
+        root.getPropertyValue("--ax-bg-neutral-moderate").trim() || "#595959",
+      warning:
+        root.getPropertyValue("--a-surface-warning-strong").trim() || "#FF9100",
+    };
+  };
+
+  const colors = getChartColors();
+
   const chartData = [
-    { name: "Oppfylt", value: COMPLIANT, color: "#00703C" },
-    { name: "Ikke oppfylt", value: NOT_COMPLIANT, color: "#C32F27" },
-    { name: "Ikke aktuelle", value: NOT_APPLICABLE, color: "#595959" },
-    { name: "Ikke testet", value: NOT_TESTED, color: "#FF9100" },
+    { name: "Oppfylt", value: COMPLIANT, color: colors.success },
+    { name: "Ikke oppfylt", value: NOT_COMPLIANT, color: colors.danger },
+    { name: "Ikke aktuelle", value: NOT_APPLICABLE, color: colors.neutral },
+    { name: "Ikke testet", value: NOT_TESTED, color: colors.warning },
   ];
 
   return (
@@ -260,7 +289,6 @@ function TeamDashboard(props: TeamDashboardProps) {
                                         style={{
                                           fontSize: "16px",
                                           fontFamily: "Source Sans Pro",
-                                          color: "#23262a",
                                         }}
                                       >
                                         {entry.value}: {entry.payload.value}
@@ -299,15 +327,30 @@ function TeamDashboard(props: TeamDashboardProps) {
               <Heading level="3" size="small">
                 Teammedlemmer
               </Heading>
-              <ul className={styles.memberList}>
-                {teamData?.members?.length ? (
-                  teamData.members.map((member: string) => (
-                    <li key={member}>{member}</li>
-                  ))
-                ) : (
-                  <li>Ingen medlemmer registrert</li>
-                )}
-              </ul>
+              <Box>
+                <Table zebraStripes>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>Medlem</Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {teamData?.members?.length ? (
+                      teamData.members.map((member: string) => (
+                        <Table.Row key={member}>
+                          <Table.DataCell>{member}</Table.DataCell>
+                        </Table.Row>
+                      ))
+                    ) : (
+                      <Table.Row>
+                        <Table.DataCell>
+                          Ingen medlemmer registrert
+                        </Table.DataCell>
+                      </Table.Row>
+                    )}
+                  </Table.Body>
+                </Table>
+              </Box>
             </section>
           </div>
 
