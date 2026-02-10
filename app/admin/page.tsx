@@ -66,7 +66,7 @@ export default async function AdminPage() {
         <LinkButton href="/admin/create-report">
           Opprett en samslått rapport
         </LinkButton>
-        <LinkButton href="https://myaccount.microsoft.com/groups/07bca51b-e5dc-484a-ac09-685e61244b6b">
+        <LinkButton href="https://myaccount.microsoft.com/groups/95fa4c83-0d92-4aa0-83b0-c80487350318">
           Legg til admin i Azure
         </LinkButton>
       </div>
