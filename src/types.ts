@@ -75,6 +75,7 @@ export type ReportSummary = {
   teamName: string;
   date: string;
   isPartOfNavNo: boolean;
+  reportType?: "SINGLE" | "AGGREGATED";
 };
 
 export type InitialReport = {
