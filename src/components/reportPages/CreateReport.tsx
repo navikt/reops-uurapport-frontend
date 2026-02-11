@@ -177,11 +177,15 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
         <Tabs.Panel value="metadata" className={styles.tabContent}>
           <section className={styles.metadata}>
             {report?.created && <p>Opprettet: {formatDate(report?.created)}</p>}
-            <p>Opprettet av: {report?.author.email}</p>
+            {report?.author?.email && (
+              <p>Opprettet av: {report.author.email}</p>
+            )}
             {report?.lastChanged && (
               <p>Sist endret: {formatDate(report?.lastChanged)}</p>
             )}
-            <p>Sist endret av: {report?.lastUpdatedBy}</p>
+            {report?.lastUpdatedBy && (
+              <p>Sist endret av: {report.lastUpdatedBy}</p>
+            )}
           </section>
           <TextField
             label="Rapportnavn"

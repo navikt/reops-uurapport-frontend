@@ -1,4 +1,5 @@
 import CreateReport from "@/components/reportPages/CreateReport";
+import NotFound from "@/components/notFound/NotFound";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import { apiUrl } from "@/utils/server/urls";
@@ -27,11 +28,15 @@ async function getData(id: string) {
     }),
   ]);
 
+  if (!aggregatedReportResponse.ok) {
+    return { aggregatedReport: null, user: null, notFound: true };
+  }
+
   const aggregatedReport: AggregatedReport =
     await aggregatedReportResponse.json();
   const user: User = await userResponse.json();
 
-  return { aggregatedReport, user };
+  return { aggregatedReport, user, notFound: false };
 }
 
 export default async function AggregatedReportPage({
@@ -40,7 +45,11 @@ export default async function AggregatedReportPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { aggregatedReport, user } = await getData(id);
+  const { aggregatedReport, user, notFound } = await getData(id);
+
+  if (notFound || !aggregatedReport || !user) {
+    return <NotFound resourceType="rapport" />;
+  }
 
   return (
     <CreateReport

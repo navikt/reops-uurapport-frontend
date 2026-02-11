@@ -91,9 +91,13 @@ const ReportList = ({ reports }: ReportListProps) => {
                   )}
                 </Table.HeaderCell>
                 <Table.DataCell>
-                  <Link href={`/teams/${report.teamId}`}>
-                    {report.teamName}
-                  </Link>
+                  {report.teamId && report.teamName ? (
+                    <Link href={`/teams/${report.teamId}`}>
+                      {report.teamName}
+                    </Link>
+                  ) : (
+                    <span>-</span>
+                  )}
                 </Table.DataCell>
                 <Table.DataCell>{formatDate(report.date)}</Table.DataCell>
               </Table.Row>

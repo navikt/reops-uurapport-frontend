@@ -88,10 +88,10 @@ export type AggregatedReport = {
   reportId: string;
   url: string;
   descriptiveName: string;
-  team: Team;
+  team?: Team;
   version: string; // Ask Rannveig what this is?
   testData: string; // Ask Rannveig what this is???
-  author: Author;
+  author?: Author;
   filters: string[];
   created: string; // Ask Rannveig why string?
   successCriteria: CriterionType[];

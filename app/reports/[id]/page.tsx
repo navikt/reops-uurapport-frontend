@@ -1,4 +1,5 @@
 import CreateReport from "@/components/reportPages/CreateReport";
+import NotFound from "@/components/notFound/NotFound";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import { apiUrl } from "@/utils/server/urls";
@@ -30,7 +31,7 @@ async function getData(id: string) {
   if (!reportResponse.ok) {
     const reportText = await reportResponse.text();
     console.error(`Report API error (${reportResponse.status}):`, reportText);
-    throw new Error(`Failed to fetch report: ${reportResponse.status}`);
+    return { report: null, user: null, notFound: true };
   }
 
   if (!userResponse.ok) {
@@ -42,7 +43,7 @@ async function getData(id: string) {
   const report: Report = await reportResponse.json();
   const user: User = await userResponse.json();
 
-  return { report, user };
+  return { report, user, notFound: false };
 }
 
 export default async function ReportPage({
@@ -51,7 +52,11 @@ export default async function ReportPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { report, user } = await getData(id);
+  const { report, user, notFound } = await getData(id);
+
+  if (notFound || !report || !user) {
+    return <NotFound resourceType="rapport" />;
+  }
 
   return (
     <CreateReport report={report} reportType="SINGLE" isAdmin={user.isAdmin} />
