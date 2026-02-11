@@ -21,6 +21,7 @@ import styles from "./CreateReport.module.css";
 import { formatDate } from "@src/utils/client/date";
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import DeleteReportModal from "@components/Modal/deleteReportModal/DeleteReportModal";
+import { ValidationWarnings } from "@components/ValidationWarnings/ValidationWarnings";
 
 interface CreateReportProps {
   report: Report | AggregatedReport;
@@ -102,6 +103,9 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
 
   return (
     <div className={styles.reportContent}>
+      {report?.validationWarnings && report.validationWarnings.length > 0 && (
+        <ValidationWarnings warnings={report.validationWarnings} />
+      )}
       <Heading level="1" size="xlarge">
         {report?.descriptiveName}
       </Heading>

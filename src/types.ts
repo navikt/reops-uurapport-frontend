@@ -41,14 +41,20 @@ export type Author = {
   email: string;
 };
 
+export type ValidationWarning = {
+  field: string;
+  message: string;
+  severity: "warning" | "error";
+};
+
 export type Report = {
   reportId: string;
   url: string;
   descriptiveName: string;
-  team: Team;
+  team?: Team | null;
   version: string; // Ask Rannveig what this is?
   testData: string; // Ask Rannveig what this is???
-  author: Author;
+  author?: Author | null;
   filters: string[];
   created: string; // Ask Rannveig why string?
   successCriteria: CriterionType[];
@@ -59,6 +65,7 @@ export type Report = {
   hasWriteAccess: boolean;
   notes: string;
   isPartOfNavNo: boolean;
+  validationWarnings?: ValidationWarning[];
 };
 
 export type ReportSummary = {
@@ -88,10 +95,10 @@ export type AggregatedReport = {
   reportId: string;
   url: string;
   descriptiveName: string;
-  team?: Team;
+  team?: Team | null;
   version: string; // Ask Rannveig what this is?
   testData: string; // Ask Rannveig what this is???
-  author?: Author;
+  author?: Author | null;
   filters: string[];
   created: string; // Ask Rannveig why string?
   successCriteria: CriterionType[];
@@ -113,6 +120,7 @@ export type AggregatedReport = {
   ];
   notes: string;
   isPartOfNavNo: boolean;
+  validationWarnings?: ValidationWarning[];
 };
 
 export type User = {
@@ -121,4 +129,17 @@ export type User = {
   teams: Team[];
   reports: ReportSummary[];
   isAdmin: boolean;
+};
+
+export type DiagnosticReportInfo = {
+  reportId: string;
+  url: string;
+  descriptiveName: string;
+  reportType: "SINGLE" | "AGGREGATED";
+};
+
+export type ReportDiagnostics = {
+  totalReports: number;
+  reportsWithNullOrganizationUnit: number;
+  nullOrgReportIds: DiagnosticReportInfo[];
 };

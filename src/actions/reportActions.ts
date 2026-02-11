@@ -1,6 +1,6 @@
 "use server";
 
-import type { ReportSummary } from "@src/types";
+import type { ReportSummary, ReportDiagnostics } from "@src/types";
 import { apiUrl } from "@src/utils/server/urls";
 import { getOboToken } from "@src/utils/server/getOboToken";
 import { getAuthToken } from "@src/utils/server/getAuthToken";
@@ -24,6 +24,30 @@ export async function getReports(): Promise<ReportSummary[]> {
 
   if (!response.ok) {
     throw new Error(`Failed to fetch reports: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Server Action to fetch report diagnostics (admin only)
+ * Returns information about reports with null organizationUnit
+ */
+export async function getReportDiagnostics(): Promise<ReportDiagnostics> {
+  const token = await getAuthToken();
+  const oboToken = await getOboToken(token);
+
+  const response = await fetch(`${apiUrl}/admin/reports/diagnostics`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${oboToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch report diagnostics: ${response.status}`);
   }
 
   return response.json();

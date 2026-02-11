@@ -775,6 +775,212 @@ api.get("/api/reports/123456789", (c) => {
   return c.json(initializedReport); // Send the custom object as the response
 });
 
+// Mock report with MANGLED DATA - null team and validation warnings
+api.get("/api/reports/mangled-no-team", (c) => {
+  const mangledReport = {
+    reportId: "mangled-no-team",
+    descriptiveName: "Rapport uten team (mangled data)",
+    url: "https://www.nav.no/mangled-report",
+    team: null,
+    author: {
+      email: "someone@nav.no",
+      oid: "01d97f04-270a-4aa6-bb98-cc093b855dab",
+    },
+    validationWarnings: [
+      {
+        field: "team",
+        message:
+          "This report currently has no team assigned. If it belongs to your team, please update it.",
+        severity: "warning",
+      },
+    ],
+    successCriteria: [
+      {
+        name: "Ikke-tekstlig innhold",
+        description:
+          "Gi brukeren et tekstalternativ for innhold som ikke er tekst.",
+        principle: "1. Mulig å oppfatte",
+        guideline: "1.1 Tekstalternativer",
+        tools: "ARC Toolkit",
+        number: "1.1.1",
+        breakingTheLaw: "",
+        lawDoesNotApply: "",
+        tooHardToComply: "",
+        contentGroup: "Ikoner, bilder, grafer",
+        status: "NOT_TESTED",
+        wcagUrl:
+          "https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html",
+        helpUrl: "aksel.no",
+        wcagVersion: "2.1",
+        wcagLevel: "A",
+        successCriterionNumber: "1.1.1",
+      },
+    ],
+    created: "2023-10-04T15:24:18.000Z",
+    lastChanged: "2023-10-04T15:24:18.000Z",
+    notes: "Dette er en rapport uten team",
+    hasWriteAccess: true,
+    isPartOfNavNo: false,
+  };
+
+  return c.json(mangledReport);
+});
+
+// Mock report with MANGLED DATA - null author and validation warnings
+api.get("/api/reports/mangled-no-author", (c) => {
+  const mangledReport = {
+    reportId: "mangled-no-author",
+    descriptiveName: "Rapport uten forfatter (mangled data)",
+    url: "https://www.nav.no/mangled-author",
+    team: {
+      id: "team-mock",
+      name: "Mock Team",
+      email: "mock@nav.no",
+      members: [],
+    },
+    author: null,
+    validationWarnings: [
+      {
+        field: "author",
+        message: "This report has no author information.",
+        severity: "warning",
+      },
+    ],
+    successCriteria: [
+      {
+        name: "Informasjon og relasjoner",
+        description: "Ting skal være kodet som det ser ut som.",
+        principle: "1. Mulig å oppfatte",
+        guideline: "1.3 Mulig å tilpasse",
+        tools: "DevTools/headingsMap",
+        number: "1.3.1",
+        breakingTheLaw: "",
+        lawDoesNotApply: "",
+        tooHardToComply: "",
+        contentGroup: "",
+        status: "NOT_APPLICABLE",
+        wcagUrl:
+          "https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships",
+        helpUrl: null,
+        wcagVersion: "2.1",
+        wcagLevel: "A",
+        successCriterionNumber: "1.3.1",
+      },
+    ],
+    created: "2023-10-04T15:24:18.000Z",
+    lastChanged: "2023-10-04T15:24:18.000Z",
+    notes: "Dette er en rapport uten forfatter",
+    hasWriteAccess: true,
+    isPartOfNavNo: true,
+  };
+
+  return c.json(mangledReport);
+});
+
+// Mock AGGREGATED report with MANGLED DATA - both null team and author
+api.get("/api/reports/aggregated/mangled-aggregated", (c) => {
+  const mangledAggregatedReport = {
+    reportId: "mangled-aggregated",
+    descriptiveName: "Samslått rapport uten team og forfatter",
+    url: "https://www.nav.no/aggregated-mangled",
+    team: null,
+    author: null,
+    validationWarnings: [
+      {
+        field: "team",
+        message:
+          "This report currently has no team assigned. If it belongs to your team, please update it.",
+        severity: "warning",
+      },
+      {
+        field: "author",
+        message: "This report has no author information.",
+        severity: "warning",
+      },
+    ],
+    fromTeams: [],
+    fromReports: [
+      {
+        reportId: "123456789",
+        descriptiveNmae: "Subrapport 1",
+        url: "https://www.nav.no/sub1",
+        team: {
+          id: "team-mock",
+          name: "Mock Team",
+          email: "mock@nav.no",
+        },
+        reportType: "SINGLE",
+        lastChanged: "2024-01-15T10:00:00.000Z",
+      },
+    ],
+    successCriteria: [
+      {
+        name: "Ikke-tekstlig innhold",
+        description:
+          "Gi brukeren et tekstalternativ for innhold som ikke er tekst.",
+        principle: "1. Mulig å oppfatte",
+        guideline: "1.1 Tekstalternativer",
+        tools: "ARC Toolkit",
+        number: "1.1.1",
+        breakingTheLaw: "",
+        lawDoesNotApply: "",
+        tooHardToComply: "",
+        contentGroup: "Ikoner, bilder, grafer",
+        status: "COMPLIANT",
+        wcagUrl:
+          "https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html",
+        helpUrl: "aksel.no",
+        wcagVersion: "2.1",
+        wcagLevel: "A",
+        successCriterionNumber: "1.1.1",
+      },
+    ],
+    created: "2024-01-10T09:00:00.000Z",
+    lastChanged: "2024-01-15T14:30:00.000Z",
+    notes: "Aggregert rapport med manglende metadata",
+    hasWriteAccess: true,
+    filters: [],
+    contributers: [],
+    lastUpdatedBy: "system@nav.no",
+    reportType: "AGGREGATED",
+    version: "1.0",
+    testData: "",
+    isPartOfNavNo: false,
+  };
+
+  return c.json(mangledAggregatedReport);
+});
+
+// Mock admin diagnostics endpoint
+api.get("/admin/reports/diagnostics", (c) => {
+  const diagnostics = {
+    totalReports: 25,
+    reportsWithNullOrganizationUnit: 3,
+    nullOrgReportIds: [
+      {
+        reportId: "mangled-no-team",
+        url: "https://www.nav.no/mangled-report",
+        descriptiveName: "Rapport uten team (mangled data)",
+        reportType: "SINGLE",
+      },
+      {
+        reportId: "mangled-aggregated",
+        url: "https://www.nav.no/aggregated-mangled",
+        descriptiveName: "Samslått rapport uten team og forfatter",
+        reportType: "AGGREGATED",
+      },
+      {
+        reportId: "old-orphaned-report",
+        url: "https://www.nav.no/orphaned",
+        descriptiveName: "Gammel rapport uten eier",
+        reportType: "SINGLE",
+      },
+    ],
+  };
+
+  return c.json(diagnostics);
+});
+
 // Generic route for any report ID (catches all remaining report IDs)
 api.get("/api/reports/:id", (c) => {
   const id = c.req.param("id");
