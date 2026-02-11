@@ -7,7 +7,10 @@ const NotFound = ({ resourceType = "side" }: { resourceType?: string }) => {
       <Heading size="xlarge" level="1">
         404 - Ikke funnet
       </Heading>
-      <BodyLong>Beklager, denne {resourceType} finnes ikke.</BodyLong>
+      <BodyLong>
+        Beklager, denne resursen av type <code>{resourceType}</code> finnes
+        ikke.
+      </BodyLong>
       <Link href="/reports">Tilbake til rapporter</Link>
     </div>
   );
