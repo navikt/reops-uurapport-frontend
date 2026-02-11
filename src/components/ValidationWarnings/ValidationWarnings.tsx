@@ -13,12 +13,12 @@ const getWarningMessage = (warning: ValidationWarning): string => {
     warning.field === "team" ||
     warning.field.toLowerCase().includes("organizationunit")
   ) {
-    return "Denne rapporten mangler et team. Kjenner du igjen denne rapporten? Ta kontakt med oss og del lenken med oss, samt hvem eller hvilket team som burde eie den.";
+    return "Denne rapporten mangler et team! 😱 Kjenner du igjen denne rapporten? Ta gjerne kontakt med oss og del lenken med oss, samt hvem eller hvilket team som burde eie den ❤️.";
   }
 
   // Custom Norwegian message for author-related warnings
   if (warning.field === "author") {
-    return "Denne rapporten mangler forfatterinformasjon. Hvis du vet hvem som opprettet denne rapporten, ta gjerne kontakt med oss.";
+    return "Denne rapporten mangler forfatterinformasjon 😱. Hvis du vet hvem som opprettet denne rapporten, ta gjerne kontakt med oss ❤️.";
   }
 
   // Fallback to backend message
