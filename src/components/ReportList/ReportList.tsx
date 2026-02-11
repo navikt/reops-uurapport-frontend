@@ -31,10 +31,22 @@ const ReportList = ({ reports }: ReportListProps) => {
     b: ReportSummary,
     orderBy: keyof ReportSummary,
   ) => {
-    if (b[orderBy] < a[orderBy] || b[orderBy] === undefined) {
+    const aValue = a[orderBy];
+    const bValue = b[orderBy];
+
+    if (bValue === undefined && aValue === undefined) {
+      return 0;
+    }
+    if (bValue === undefined) {
       return -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if (aValue === undefined) {
+      return 1;
+    }
+    if (bValue < aValue) {
+      return -1;
+    }
+    if (bValue > aValue) {
       return 1;
     }
     return 0;
