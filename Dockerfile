@@ -22,7 +22,7 @@ COPY --chown=node:node . .
 RUN pnpm run build
 
 # Production stage - minimal Node.js image (no Go stdlib, no pnpm)
-FROM cgr.dev/chainguard/node@sha256:3ec58ec2b5cd33a2579b6ce526ad2d5d8c3e31fd23d3b9d62cd327890985bf58 AS production
+FROM cgr.dev/chainguard/node@sha256:cda73bfe1b58599d2cc887465916250abd0f777536d13806b6375ade7055dd8c AS production
 LABEL maintainer="team-researchops"
 WORKDIR /usr/src/app
 
