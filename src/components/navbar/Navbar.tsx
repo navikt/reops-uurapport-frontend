@@ -1,12 +1,13 @@
 import { Link } from "@/components/Link";
 import { Box, HStack } from "@navikt/ds-react";
 import styles from "./Navbar.module.css";
-import { LeaveIcon } from "@navikt/aksel-icons";
+import { LeaveIcon, GavelSoundBlockIcon } from "@navikt/aksel-icons";
 import { apiUrl } from "../../utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import MobileNavbar from "./MobileNavbar";
 import { ThemeButton } from "@/components/theme/ThemeButton";
+import { NavbarLink } from "./NavbarLink";
 import type { User } from "@src/types";
 
 async function getUserDetails(): Promise<User> {
@@ -61,25 +62,22 @@ export default async function Navbar() {
             style={{ listStyle: "none" }}
           >
             <li>
-              <Link underline={false} data-color="neutral" href="/">
-                Forside
-              </Link>
+              <NavbarLink href="/">Forside</NavbarLink>
             </li>
             <li>
-              <Link underline={false} data-color="neutral" href="/teams">
-                Teams
-              </Link>
+              <NavbarLink href="/teams">Teams</NavbarLink>
             </li>
             <li>
-              <Link underline={false} data-color="neutral" href="/reports">
-                Alle rapporter
-              </Link>
+              <NavbarLink href="/reports">Alle rapporter</NavbarLink>
             </li>
             {userDetails?.isAdmin && (
               <li>
-                <Link underline={false} href="/admin">
+                <NavbarLink
+                  href="/admin"
+                  icon={<GavelSoundBlockIcon fontSize="30" aria-hidden />}
+                >
                   Admin
-                </Link>
+                </NavbarLink>
               </li>
             )}
           </HStack>

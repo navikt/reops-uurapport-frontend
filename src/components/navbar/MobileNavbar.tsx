@@ -1,7 +1,11 @@
 "use client";
 
 import NextLink from "next/link";
-import { MenuHamburgerIcon, LeaveIcon } from "@navikt/aksel-icons";
+import {
+  MenuHamburgerIcon,
+  LeaveIcon,
+  GavelSoundBlockIcon,
+} from "@navikt/aksel-icons";
 import { Link, Button, Dropdown } from "@navikt/ds-react";
 import type { User } from "@src/types";
 
@@ -31,6 +35,7 @@ const MobileNavbar = ({ user }: MobileNavbarProps) => {
             </Dropdown.Menu.List.Item>
             {user.isAdmin && (
               <Dropdown.Menu.List.Item as={NextLink} href="/admin">
+                <GavelSoundBlockIcon />
                 Admin
               </Dropdown.Menu.List.Item>
             )}
