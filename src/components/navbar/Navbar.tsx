@@ -26,6 +26,10 @@ async function getUserDetails(): Promise<User> {
   });
 
   if (!response.ok) {
+    const errorBody = await response.text();
+    console.error(
+      `Failed to fetch user from ${apiUrl}/api/user. Status: ${response.status}, Body: ${errorBody}`,
+    );
     throw new Error(`Failed to fetch user: ${response.status}`);
   }
 

@@ -19,8 +19,10 @@ export const getOboToken = async (token: string): Promise<string> => {
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Token fetch failed: ${response.status} ${errorText}`);
       throw new Error(
-        "Failed to fetch docker auth token while running local backend",
+        `Failed to fetch docker auth token while running local backend: ${response.status}`,
       );
     }
 

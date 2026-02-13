@@ -3,7 +3,7 @@ import { apiUrl } from "@/utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { headers } from "next/headers";
 import { getToken } from "@navikt/oasis";
-import { isMock } from "@/utils/server/environment";
+import { isMock, isLocal } from "@/utils/server/environment";
 
 const retrieveSourceApiUrl = (request: NextRequest) => {
   const proxyUrl = new URL(apiUrl);
@@ -53,14 +53,14 @@ async function fetchFromApi(request: NextRequest, targetUrl: URL) {
   const headersList = await headers();
   const authToken = getToken(headersList);
 
-  if (!authToken) {
+  if (!authToken && !isLocal) {
     return new NextResponse(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
     });
   }
 
-  const oboToken = await getOboToken(authToken);
+  const oboToken = await getOboToken(authToken || "");
 
   const method = request.method;
   const body =
