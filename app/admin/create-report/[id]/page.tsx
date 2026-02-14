@@ -3,8 +3,8 @@ import { getOboToken } from "@src/utils/server/getOboToken";
 import { getAuthToken } from "@src/utils/server/getAuthToken";
 import CreateAggregatedReport from "@src/components/aggregated-reports/CreateAggregatedReport";
 import Forbidden from "@src/components/forbidden/Forbidden";
-import { getReports } from "@src/actions/reportActions";
-import type { AggregatedReport, User } from "@src/types";
+import { getReports, getUserDetails } from "@src/actions/reportActions";
+import type { AggregatedReport } from "@src/types";
 import styles from "../create-report.module.css";
 
 async function getAggregatedReport(id: string): Promise<AggregatedReport> {
@@ -24,28 +24,6 @@ async function getAggregatedReport(id: string): Promise<AggregatedReport> {
 
   if (!response.ok) {
     throw new Error(`Failed to fetch aggregated report: ${response.status}`);
-  }
-
-  return response.json();
-}
-
-async function getUserDetails(): Promise<User> {
-  const token = await getAuthToken();
-  const oboToken = await getOboToken(token);
-
-  const response = await fetch(`${apiUrl}/api/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${oboToken}`,
-    },
-    // @ts-expect-error - This is a valid option for duplex streaming
-    duplex: "half",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch user: ${response.status}`);
   }
 
   return response.json();
@@ -75,6 +53,7 @@ export default async function EditAggregatedReportPage({ params }: PageProps) {
       <CreateAggregatedReport
         reports={reports}
         aggregatedReport={aggregatedReport}
+        userTeams={user.teams}
       />
     </span>
   );

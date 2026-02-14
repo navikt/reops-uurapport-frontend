@@ -35,9 +35,13 @@ async function fetchFromApi(request: NextRequest, targetUrl: URL) {
         `Failed to fetch data from api ${targetUrl.href} status text: ${response.statusText} and status code: ${response.status}`,
       );
 
-      return new NextResponse(JSON.stringify({}), {
+      const errorText = await response.text();
+      return new NextResponse(errorText || JSON.stringify({}), {
         status: response.status,
-        headers: response.headers,
+        headers: {
+          "Content-Type":
+            response.headers.get("Content-Type") || "application/json",
+        },
       });
     }
 
@@ -85,9 +89,13 @@ async function fetchFromApi(request: NextRequest, targetUrl: URL) {
       `Failed to fetch data from api ${targetUrl.href} status text: ${response.statusText} and status code: ${response.status}`,
     );
 
-    return new NextResponse(JSON.stringify({}), {
+    const errorText = await response.text();
+    return new NextResponse(errorText || JSON.stringify({}), {
       status: response.status,
-      headers: response.headers,
+      headers: {
+        "Content-Type":
+          response.headers.get("Content-Type") || "application/json",
+      },
     });
   }
 

@@ -184,6 +184,7 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
             {report?.author?.email && (
               <p>Opprettet av: {report.author.email}</p>
             )}
+            {report?.team?.name && <p>Ansvarlig team: {report.team.name}</p>}
             {report?.lastChanged && (
               <p>Sist endret: {formatDate(report?.lastChanged)}</p>
             )}

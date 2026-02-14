@@ -454,7 +454,7 @@ api.post("/api/reports/new", (c) => {
   return c.json({ id: "123456789" });
 });
 
-api.post("/api/admin/aggregated-reports/new", (c) => {
+api.post("/api/admin/reports/aggregated/new", (c) => {
   return c.json({ id: "1234567890" });
 });
 

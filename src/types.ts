@@ -90,6 +90,7 @@ export type InitializeAggregatedReport = {
   url: string;
   notes: string;
   reports: string[];
+  teamId: string;
 };
 
 export type AggregatedReport = {
@@ -108,17 +109,15 @@ export type AggregatedReport = {
   lastUpdatedBy: string;
   reportType: string;
   hasWriteAccess: boolean;
-  fromTeams: [{ id: string; name: string }];
-  fromReports: [
-    {
-      reportId: string;
-      descriptiveNmae: string;
-      url: string;
-      team: Team;
-      reportType: string;
-      lastChanged: string;
-    },
-  ];
+  fromTeams: { id: string; name: string }[];
+  fromReports: {
+    reportId: string;
+    descriptiveName: string;
+    url: string;
+    team: Team;
+    reportType: string;
+    lastChanged: string;
+  }[];
   notes: string;
   isPartOfNavNo: boolean;
   validationWarnings?: ValidationWarning[];
