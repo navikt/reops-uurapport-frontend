@@ -73,6 +73,7 @@ const CreateReportModal = () => {
           />
           <TextField
             label="URL"
+            description="URL til siden som rapporten gjelder for."
             type="text"
             id="url"
             name="urlTilSiden"

@@ -84,7 +84,7 @@ const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
     <div className={styles.createReportContainer}>
       <TextField
         label="Tittel"
-        description="Tittel på den nye rapporten"
+        description="Tittel på den nye samlerapporten"
         onChange={handleChange}
         name="descriptiveName"
         value={initialData.descriptiveName}
