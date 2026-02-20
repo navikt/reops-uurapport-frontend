@@ -64,7 +64,7 @@ const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
         const dateString = date ? date.toISOString().split("T")[0] : undefined;
         setInitialData((prev) => ({ ...prev, startDate: dateString }));
         if (useDataFilter && dateString && initialData.endDate) {
-          filterReportsByDate(dateString, initialData.endDate);
+          filterReports(dateString, initialData.endDate, selectNavNo);
         }
       },
     });
@@ -75,7 +75,7 @@ const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
         const dateString = date ? date.toISOString().split("T")[0] : undefined;
         setInitialData((prev) => ({ ...prev, endDate: dateString }));
         if (useDataFilter && initialData.startDate && dateString) {
-          filterReportsByDate(initialData.startDate, dateString);
+          filterReports(initialData.startDate, dateString, selectNavNo);
         }
       },
     });
@@ -86,74 +86,98 @@ const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
     setInitialData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const filterReportsByDate = (startDate: string, endDate: string) => {
-    const filteredReports = reports
-      .filter((report) => {
+  const filterReports = (
+    startDate?: string,
+    endDate?: string,
+    navNoOnly?: boolean,
+  ) => {
+    let filteredReports = reports;
+
+    // Apply nav.no filter if enabled
+    if (navNoOnly) {
+      filteredReports = filteredReports.filter(
+        (report) => report.isPartOfNavNo,
+      );
+    }
+
+    // Apply date filter if both dates are provided
+    if (startDate && endDate) {
+      filteredReports = filteredReports.filter((report) => {
         if (!report.date) return false;
         const reportDate = new Date(report.date);
         const start = new Date(startDate);
         const end = new Date(endDate);
         return reportDate >= start && reportDate <= end;
-      })
-      .map((report) => report.id);
+      });
+    }
 
-    setInitialData((prev) => ({ ...prev, reports: filteredReports }));
+    const reportIds = filteredReports.map((report) => report.id);
+    setInitialData((prev) => ({ ...prev, reports: reportIds }));
   };
 
   const handleDateFilterToggle = (checked: boolean) => {
     setUseDataFilter(checked);
     if (!checked) {
-      // Reset to original reports when date filter is disabled
-      setSelectNavNo(false);
-      const originalReports = aggregatedReport
-        ? reports
-            .filter((report) =>
-              aggregatedReport.fromReports
-                .map((r) => r.reportId)
-                .includes(report.id),
-            )
-            .map((report) => report.id)
-        : [];
-      setInitialData((prev) => ({
-        ...prev,
-        reports: originalReports,
-        startDate: undefined,
-        endDate: undefined,
-      }));
+      // When disabling date filter, apply nav.no filter if it's still enabled
+      if (selectNavNo) {
+        filterReports(undefined, undefined, true);
+      } else {
+        // Reset to original reports when both filters are disabled
+        const originalReports = aggregatedReport
+          ? reports
+              .filter((report) =>
+                aggregatedReport.fromReports
+                  .map((r) => r.reportId)
+                  .includes(report.id),
+              )
+              .map((report) => report.id)
+          : [];
+        setInitialData((prev) => ({
+          ...prev,
+          reports: originalReports,
+          startDate: undefined,
+          endDate: undefined,
+        }));
+      }
     } else if (initialData.startDate && initialData.endDate) {
-      filterReportsByDate(initialData.startDate, initialData.endDate);
+      // Apply both filters if dates are already set
+      filterReports(initialData.startDate, initialData.endDate, selectNavNo);
+    } else if (selectNavNo) {
+      // Apply just nav.no filter if no dates are set yet
+      filterReports(undefined, undefined, true);
     }
   };
 
   const handleSelectNavNo = (checked: boolean) => {
     setSelectNavNo(checked);
-    setUseDataFilter(false);
+
     if (checked) {
-      const navNoReports = reports
-        .filter((report) => report.isPartOfNavNo)
-        .map((report) => report.id);
-      setInitialData((prev) => ({
-        ...prev,
-        reports: navNoReports,
-        startDate: undefined,
-        endDate: undefined,
-      }));
+      // Apply nav.no filter, and also date filter if dates are set
+      if (useDataFilter && initialData.startDate && initialData.endDate) {
+        filterReports(initialData.startDate, initialData.endDate, true);
+      } else {
+        filterReports(undefined, undefined, true);
+      }
     } else {
-      const originalReports = aggregatedReport
-        ? reports
-            .filter((report) =>
-              aggregatedReport.fromReports
-                .map((r) => r.reportId)
-                .includes(report.id),
-            )
-            .map((report) => report.id)
-        : [];
-      setInitialData((prev) => ({
-        ...prev,
-        reports: originalReports,
-        startDate: undefined,
-        endDate: undefined,
-      }));
+      // When disabling nav.no, apply date filter if it's still enabled
+      if (useDataFilter && initialData.startDate && initialData.endDate) {
+        filterReports(initialData.startDate, initialData.endDate, false);
+      } else {
+        // Reset to original reports when both filters are disabled
+        const originalReports = aggregatedReport
+          ? reports
+              .filter((report) =>
+                aggregatedReport.fromReports
+                  .map((r) => r.reportId)
+                  .includes(report.id),
+              )
+              .map((report) => report.id)
+          : [];
+        setInitialData((prev) => ({
+          ...prev,
+          reports: originalReports,
+        }));
+      }
     }
   };
 
@@ -215,7 +239,6 @@ const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
       <Checkbox
         checked={selectNavNo}
         onChange={(e) => handleSelectNavNo(e.target.checked)}
-        disabled={useDataFilter}
       >
         Huk av alle &ldquo;nav.no&rdquo;-rapporter
       </Checkbox>
@@ -224,6 +247,7 @@ const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
         size="small"
         value={initialData.reports}
         onChange={(e) => {
+          // Manual selection disables both filters
           setSelectNavNo(false);
           setUseDataFilter(false);
           setInitialData((prev) => ({
