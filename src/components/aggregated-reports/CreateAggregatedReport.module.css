@@ -8,3 +8,15 @@
 .createReportButton {
   align-self: start;
 }
+
+.dateFilterContainer {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.dateFilterContainer > * {
+  flex: 1;
+  min-width: 200px;
+}
+
