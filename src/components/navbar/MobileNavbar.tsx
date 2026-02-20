@@ -6,7 +6,7 @@ import {
   LeaveIcon,
   GavelSoundBlockIcon,
 } from "@navikt/aksel-icons";
-import { Link, Button, Dropdown } from "@navikt/ds-react";
+import { Button, Dropdown } from "@navikt/ds-react";
 import type { User } from "@src/types";
 
 interface MobileNavbarProps {
@@ -41,9 +41,8 @@ const MobileNavbar = ({ user }: MobileNavbarProps) => {
             )}
             <Dropdown.Menu.Divider />
             <Dropdown.Menu.List.Item
-              as={Link}
+              as="a"
               href="/oauth2/logout"
-              target="_blank"
             >
               <LeaveIcon />
               Logg ut

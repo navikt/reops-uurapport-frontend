@@ -1,4 +1,3 @@
-import { Link } from "@/components/Link";
 import { Box, HStack } from "@navikt/ds-react";
 import styles from "./Navbar.module.css";
 import { LeaveIcon, GavelSoundBlockIcon } from "@navikt/aksel-icons";
@@ -100,9 +99,9 @@ export default async function Navbar() {
               <ThemeButton />
             </li>
             <li>
-              <Link underline={false} href="/oauth2/logout">
+              <a href="/oauth2/logout" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <LeaveIcon aria-hidden /> Logg Ut
-              </Link>
+              </a>
             </li>
           </HStack>
         </HStack>
