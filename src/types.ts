@@ -91,6 +91,8 @@ export type InitializeAggregatedReport = {
   notes: string;
   reports: string[];
   teamId: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 export type AggregatedReport = {
