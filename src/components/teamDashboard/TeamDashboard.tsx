@@ -53,8 +53,16 @@ function TeamDashboard(props: TeamDashboardProps) {
     isLoading: isLoadingTeamData,
   } = useSWR({ url: `${apiProxyUrl}/teams/${props.teamId}` }, fetcher);
 
-  const reportRequest = currentReportId
-    ? { url: `${apiProxyUrl}/reports/${currentReportId}` }
+  const selectedReport = reportListData?.find(
+    (report: ReportSummary) => report.id === currentReportId
+  );
+
+  const reportRequest = currentReportId && selectedReport
+    ? {
+        url: selectedReport.reportType === "AGGREGATED"
+          ? `${apiProxyUrl}/reports/aggregated/${currentReportId}`
+          : `${apiProxyUrl}/reports/${currentReportId}`
+      }
     : null;
 
   const {
