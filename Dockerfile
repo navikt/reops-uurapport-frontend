@@ -14,7 +14,7 @@ COPY --chown=node:node package.json pnpm-lock.yaml* .npmrc ./
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN,uid=65532,required=false \
     --mount=type=cache,id=pnpm,target=/pnpm/store,uid=65532 \
     if [ -f /run/secrets/NODE_AUTH_TOKEN ]; then \
-        export NODE_AUTH_TOKEN=$(cat /run/secrets/NODE_AUTH_TOKEN); \
+        pnpm config set "//npm.pkg.github.com/:_authToken" "$(cat /run/secrets/NODE_AUTH_TOKEN)"; \
     fi && \
     pnpm install --frozen-lockfile
 
