@@ -10,7 +10,7 @@ USER node
 FROM base AS build
 WORKDIR /usr/src/app
 
-COPY --chown=node:node package.json pnpm-lock.yaml* .npmrc ./
+COPY --chown=node:node package.json pnpm-lock.yaml* pnpm-workspace.yaml .npmrc ./
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN,uid=65532,required=false \
     --mount=type=cache,id=pnpm,target=/pnpm/store,uid=65532 \
     if [ -f /run/secrets/NODE_AUTH_TOKEN ]; then \
