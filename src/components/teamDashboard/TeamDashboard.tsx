@@ -19,7 +19,10 @@ import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
 import CreateReportModal from "@components/Modal/createReportModal/CreateReportModal";
 import { apiProxyUrl } from "@src/utils/client/urls";
 import type { ReportSummary } from "@src/types";
-import type { NameType } from "recharts/types/component/DefaultTooltipContent";
+import type {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 interface TeamDashboardProps {
   teamId: string;
@@ -243,7 +246,7 @@ function TeamDashboard(props: TeamDashboardProps) {
                             ))}
                           </Pie>
                           <Tooltip
-                            formatter={(value?: number, _name?: NameType) => {
+                            formatter={(value?: ValueType, _name?: NameType) => {
                               const safeValue =
                                 typeof value === "number" ? value : 0;
 
