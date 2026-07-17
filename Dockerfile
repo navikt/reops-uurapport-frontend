@@ -4,25 +4,27 @@ USER root
 RUN apk update && apk add --no-cache pnpm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+RUN mkdir -p "$PNPM_HOME" && chown -R node:node "$PNPM_HOME"
 USER node
 
 # Build stage - install all deps and build
 FROM base AS build
 WORKDIR /usr/src/app
 
-COPY --chown=node:node package.json pnpm-lock.yaml* .npmrc ./
+COPY --chown=node:node package.json pnpm-lock.yaml* pnpm-workspace.yaml .npmrc ./
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN,uid=65532,required=false \
     --mount=type=cache,id=pnpm,target=/pnpm/store,uid=65532 \
     if [ -f /run/secrets/NODE_AUTH_TOKEN ]; then \
-        export NODE_AUTH_TOKEN=$(cat /run/secrets/NODE_AUTH_TOKEN); \
+        pnpm config set "//npm.pkg.github.com/:_authToken" "$(cat /run/secrets/NODE_AUTH_TOKEN)"; \
     fi && \
     pnpm install --frozen-lockfile
 
 COPY --chown=node:node . .
+ENV CI=true
 RUN pnpm run build
 
 # Production stage - minimal Node.js image (no Go stdlib, no pnpm)
-FROM cgr.dev/chainguard/node@sha256:3ec58ec2b5cd33a2579b6ce526ad2d5d8c3e31fd23d3b9d62cd327890985bf58 AS production
+FROM cgr.dev/chainguard/node@sha256:0836196ff6d65a19e1dc68abaa84d4eddc2cd69d9daacbbed750d4b2fb0c2dbb AS production
 LABEL maintainer="team-researchops"
 WORKDIR /usr/src/app
 
