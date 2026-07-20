@@ -1,7 +1,6 @@
 import { Textarea, Radio, RadioGroup, Link, Heading } from "@navikt/ds-react";
 import type { CriterionType } from "@src/types";
 import styles from "./Criterion.module.css";
-import { Divider } from "@mui/material";
 
 type CriterionProps = {
   criterion: CriterionType;
@@ -100,7 +99,6 @@ const Criterion = ({
           </div>
         ) : null}
       </div>
-      <Divider />
     </div>
   );
 };
