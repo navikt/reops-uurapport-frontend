@@ -13,16 +13,25 @@ async function getUserDetails(): Promise<User> {
   const token = await getAuthToken();
   const oboToken = await getOboToken(token);
 
-  const response = await fetch(`${apiUrl}/api/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${oboToken}`,
-    },
-    // @ts-expect-error - This is a valid option for duplex streaming
-    duplex: "half",
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${apiUrl}/api/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${oboToken}`,
+      },
+      // @ts-expect-error - This is a valid option for duplex streaming
+      duplex: "half",
+    });
+  } catch (cause) {
+    throw new Error(
+      `Could not reach backend at ${apiUrl}. Is it running? ` +
+        `Tip: use "pnpm run mock-dev" instead if you don't have it set up locally.`,
+      { cause },
+    );
+  }
 
   if (!response.ok) {
     const errorBody = await response.text();
@@ -36,7 +45,23 @@ async function getUserDetails(): Promise<User> {
 }
 
 export default async function Navbar() {
-  const userDetails = await getUserDetails();
+  let userDetails: User;
+  try {
+    userDetails = await getUserDetails();
+  } catch (error) {
+    console.error("Navbar failed to load user details:", error);
+    return (
+      <Box
+        as="header"
+        background="danger-moderate"
+        paddingBlock="space-16"
+        paddingInline="space-16"
+      >
+        <strong>Klarte ikke å laste innloggingsinfo.</strong>{" "}
+        {error instanceof Error ? error.message : "Ukjent feil"}
+      </Box>
+    );
+  }
 
   return (
     <span>

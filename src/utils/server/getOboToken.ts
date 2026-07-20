@@ -10,13 +10,22 @@ export const getOboToken = async (token: string): Promise<string> => {
   }
 
   if (isLocal) {
-    const response = await fetch(tokenEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: tokenRequestBody.toString(),
-    });
+    let response: Response;
+    try {
+      response = await fetch(tokenEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: tokenRequestBody.toString(),
+      });
+    } catch (cause) {
+      throw new Error(
+        `Could not reach local auth token server at ${tokenEndpoint}. Is it running? ` +
+          `Tip: use "pnpm run mock-dev" instead if you don't have it set up locally.`,
+        { cause },
+      );
+    }
 
     if (!response.ok) {
       const errorText = await response.text();

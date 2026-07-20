@@ -40,10 +40,7 @@ const getEnvironment = (): ENV => {
   ) {
     return ENV.development;
   }
-  if (
-    typeof window !== "undefined" &&
-    window.location.href.includes("ansatt.nav.no")
-  ) {
+  if (typeof window !== "undefined") {
     return ENV.production;
   }
   return ENV.mock;
