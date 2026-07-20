@@ -5,7 +5,7 @@ import {
   Link as AkselLink,
   LinkProps as AkselLinkProps,
 } from "@navikt/ds-react";
-import { ComponentPropsWithoutRef, forwardRef } from "react";
+import { forwardRef } from "react";
 
 // Combine props from both Next.js Link and Aksel Link
 type LinkProps = Omit<AkselLinkProps, "as"> & {

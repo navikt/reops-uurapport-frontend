@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Criterion from "./criterion/Criterion";
 import type { AggregatedReport, CriterionType, Report } from "@src/types";
 import {
@@ -16,7 +16,7 @@ import {
   Button,
   Checkbox,
 } from "@navikt/ds-react";
-import _, { set } from "lodash";
+import _ from "lodash";
 import styles from "./CreateReport.module.css";
 import { formatDate } from "@src/utils/client/date";
 import { ArrowRightIcon } from "@navikt/aksel-icons";
@@ -50,48 +50,64 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
     updates: Partial<Report> | Partial<AggregatedReport>,
   ) => {
     try {
-      reportType === "SINGLE"
-        ? await updateReport(report.reportId, updates)
-        : await updateAggregatedReport(report.reportId, updates);
+      if (reportType === "SINGLE") {
+        await updateReport(report.reportId, updates);
+      } else {
+        await updateAggregatedReport(report.reportId, updates);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleCriterionChange = _.debounce(
-    (WCAGId: string, fieldToUpdate: string, updatedData: string) => {
-      setCriteriaData((prev) => {
-        const index = prev.findIndex(
-          (criterion) => criterion.number === WCAGId,
-        );
-        if (index !== -1) {
-          const newCriteriaData = [...prev];
-          newCriteriaData[index] = {
-            ...newCriteriaData[index],
-            [fieldToUpdate]: updatedData,
-          };
-          updateReportData({
-            successCriteria: [
-              {
+  const handleCriterionChange = useMemo(
+    () =>
+      _.debounce(
+        (WCAGId: string, fieldToUpdate: string, updatedData: string) => {
+          setCriteriaData((prev) => {
+            const index = prev.findIndex(
+              (criterion) => criterion.number === WCAGId,
+            );
+            if (index !== -1) {
+              const newCriteriaData = [...prev];
+              newCriteriaData[index] = {
                 ...newCriteriaData[index],
                 [fieldToUpdate]: updatedData,
-              },
-            ],
+              };
+              updateReportData({
+                successCriteria: [
+                  {
+                    ...newCriteriaData[index],
+                    [fieldToUpdate]: updatedData,
+                  },
+                ],
+              });
+              return newCriteriaData;
+            }
+            return prev;
           });
-          return newCriteriaData;
-        }
-        return prev;
-      });
-    },
-    500,
+        },
+        500,
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [report.reportId, reportType],
   );
 
-  const handleMetadataChange = _.debounce(
-    (fieldToUpdate: string, updatedData: string) => {
-      updateReportData({ [fieldToUpdate]: updatedData });
-    },
-    500,
+  const handleMetadataChange = useMemo(
+    () =>
+      _.debounce((fieldToUpdate: string, updatedData: string) => {
+        updateReportData({ [fieldToUpdate]: updatedData });
+      }, 500),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [report.reportId, reportType],
   );
+
+  useEffect(() => {
+    return () => {
+      handleCriterionChange.cancel();
+      handleMetadataChange.cancel();
+    };
+  }, [handleCriterionChange, handleMetadataChange]);
 
   const handleCheckboxChange = () => {
     setIsPartOfNavNo((prev) => {

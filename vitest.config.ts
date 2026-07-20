@@ -18,7 +18,7 @@ export default defineConfig({
         "vitest.config.ts",
         "vitest.setup.ts",
         "next.config.js",
-        "next.config.analyze.js",
+        "next.config.analyze.mjs",
       ],
     },
   },

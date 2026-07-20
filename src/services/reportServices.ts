@@ -71,38 +71,61 @@ export const createAggregatedReport = async (
 };
 
 // UPDATE operations
-export const updateReport = async (id: string, updates: Partial<Report>) => {
-  const response = await fetch(`${apiProxyUrl}/reports/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify(updates),
-    credentials: "include",
-  });
-  if (response.ok) {
-    console.log("Report updated", response.status);
-  } else {
-    console.log("Failed to update report-", response.status);
-    throw new Error("Failed to update report");
-  }
+
+// Serializes PATCH calls per report so a new update always waits for the
+// previous one to settle, instead of firing concurrently and racing the
+// backend (which can reject overlapping writes to the same report).
+const pendingUpdates = new Map<string, Promise<void>>();
+
+const serializeReportUpdate = (id: string, run: () => Promise<void>) => {
+  const previous = pendingUpdates.get(id) ?? Promise.resolve();
+  const next = previous.catch(() => {}).then(run);
+  pendingUpdates.set(id, next);
+  return next;
 };
 
-export const updateAggregatedReport = async (
+export const updateReport = (id: string, updates: Partial<Report>) => {
+  return serializeReportUpdate(id, async () => {
+    const response = await fetch(`${apiProxyUrl}/reports/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updates),
+      credentials: "include",
+    });
+    if (response.ok) {
+      console.log("Report updated", response.status);
+    } else {
+      console.log("Failed to update report-", response.status);
+      throw new Error("Failed to update report");
+    }
+  });
+};
+
+export const updateAggregatedReport = (
   id: string,
   updates: Partial<AggregatedReport>,
 ) => {
-  const response = await fetch(
-    `${apiProxyUrl}/admin/reports/aggregated/${id}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify(updates),
-      credentials: "include",
-    },
-  );
-  if (response.ok) {
-    console.log("Report updated", response.status);
-  } else {
-    console.log("Failed to update report-", response.status);
-    throw new Error("Failed to update report");
-  }
+  return serializeReportUpdate(id, async () => {
+    const response = await fetch(
+      `${apiProxyUrl}/admin/reports/aggregated/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updates),
+        credentials: "include",
+      },
+    );
+    if (response.ok) {
+      console.log("Report updated", response.status);
+    } else {
+      console.log("Failed to update report-", response.status);
+      throw new Error("Failed to update report");
+    }
+  });
 };
 
 // DELETE operations

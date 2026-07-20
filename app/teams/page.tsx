@@ -3,7 +3,6 @@ import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import TeamList from "@/components/teamList/TeamList";
 import NewTeamModal from "@/components/Modal/TeamModals/NewTeamModal";
-import styles from "./teams.module.css";
 import type { Team, User } from "@src/types";
 import { VStack } from "@navikt/ds-react";
 

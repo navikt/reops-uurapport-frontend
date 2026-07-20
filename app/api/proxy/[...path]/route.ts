@@ -107,42 +107,27 @@ async function fetchFromApi(request: NextRequest, targetUrl: URL) {
   });
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> },
-) {
+export async function GET(request: NextRequest) {
   const proxyUrl = retrieveSourceApiUrl(request);
   return fetchFromApi(request, proxyUrl);
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> },
-) {
+export async function POST(request: NextRequest) {
   const proxyUrl = retrieveSourceApiUrl(request);
   return fetchFromApi(request, proxyUrl);
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> },
-) {
+export async function PUT(request: NextRequest) {
   const proxyUrl = retrieveSourceApiUrl(request);
   return fetchFromApi(request, proxyUrl);
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> },
-) {
+export async function DELETE(request: NextRequest) {
   const proxyUrl = retrieveSourceApiUrl(request);
   return fetchFromApi(request, proxyUrl);
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> },
-) {
+export async function PATCH(request: NextRequest) {
   const proxyUrl = retrieveSourceApiUrl(request);
   return fetchFromApi(request, proxyUrl);
 }

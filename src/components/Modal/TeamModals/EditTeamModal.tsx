@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button, List, Modal, TextField, Box } from "@navikt/ds-react";
 import { PersonPencilIcon, XMarkIcon } from "@navikt/aksel-icons";
 import styles from "./EditTeamModal.module.css";
@@ -24,11 +24,10 @@ function EditTeamModal(props: EditTeamModalProps) {
     setNewMembers([...newMembers, ""]);
   };
 
-  const {
-    data: teamData,
-    isLoading: isLoadingTeamData,
-    mutate,
-  } = useSWR({ url: `${apiProxyUrl}/teams/${props.teamId}` }, fetcher);
+  const { data: teamData, mutate } = useSWR(
+    { url: `${apiProxyUrl}/teams/${props.teamId}` },
+    fetcher,
+  );
 
   const updateTeamData = async () => {
     const editedTeam: Team = {
@@ -54,11 +53,13 @@ function EditTeamModal(props: EditTeamModalProps) {
     }
   };
 
-  useEffect(() => {
+  const [prevTeamData, setPrevTeamData] = useState(teamData);
+  if (teamData !== prevTeamData) {
+    setPrevTeamData(teamData);
     setTeamEmail(teamData?.email);
     setCurrentMembers(teamData?.members);
     setTeamName(teamData?.name);
-  }, [teamData]);
+  }
 
   const isValid = teamName && teamEmail;
 
@@ -102,8 +103,8 @@ function EditTeamModal(props: EditTeamModalProps) {
                         icon={<XMarkIcon />}
                         className={styles.currentMembersListItem}
                         onClick={() => {
-                          let membersCopy = [...currentMembers];
-                          let index = membersCopy.indexOf(member);
+                          const membersCopy = [...currentMembers];
+                          const index = membersCopy.indexOf(member);
                           console.log(membersCopy, "********1111");
                           membersCopy.splice(index, 1);
                           console.log(membersCopy, "*********2222");

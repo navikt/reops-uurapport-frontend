@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Modal, TextField } from "@navikt/ds-react";
 import AddOrgBtn from "@components/buttons/AddOrgBtn";
 import { apiProxyUrl } from "@src/utils/client/urls";
@@ -48,9 +48,11 @@ function NewTeamModal() {
 
   const isValid = teamName && teamEmail;
 
-  useEffect(() => {
+  const [prevUserEmail, setPrevUserEmail] = useState(userDetails?.email);
+  if (!isLoading && userDetails?.email !== prevUserEmail) {
+    setPrevUserEmail(userDetails?.email);
     setTeamEmail(userDetails?.email);
-  }, [isLoading, userDetails?.email]);
+  }
 
   return (
     <div className="py-12">

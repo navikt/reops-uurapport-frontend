@@ -23,6 +23,7 @@ import type {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
+import type { LegendPayload } from "recharts/types/component/DefaultLegendContent";
 
 interface TeamDashboardProps {
   teamId: string;
@@ -110,11 +111,9 @@ function TeamDashboard(props: TeamDashboardProps) {
       { NOT_COMPLIANT: 0, COMPLIANT: 0, NOT_APPLICABLE: 0, NOT_TESTED: 0 },
     ) ?? { NOT_COMPLIANT: 0, COMPLIANT: 0, NOT_APPLICABLE: 0, NOT_TESTED: 0 };
 
-  useEffect(() => {
-    if (hasReport && !currentReportId) {
-      setCurrentReportId(reportListData[0].id);
-    }
-  }, [hasReport, reportListData, currentReportId]);
+  if (hasReport && !currentReportId && reportListData?.[0]?.id) {
+    setCurrentReportId(reportListData[0].id);
+  }
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -278,7 +277,13 @@ function TeamDashboard(props: TeamDashboardProps) {
                                     gap: "12px",
                                   }}
                                 >
-                                  {payload?.map((entry: any, index: number) => (
+                                  {payload?.map(
+                                    (
+                                      entry: LegendPayload & {
+                                        payload?: { value?: number };
+                                      },
+                                      index: number,
+                                    ) => (
                                     <li
                                       key={`item-${index}`}
                                       style={{
@@ -302,7 +307,7 @@ function TeamDashboard(props: TeamDashboardProps) {
                                           fontFamily: "Source Sans Pro",
                                         }}
                                       >
-                                        {entry.value}: {entry.payload.value}
+                                        {entry.value}: {entry.payload?.value}
                                       </span>
                                     </li>
                                   ))}

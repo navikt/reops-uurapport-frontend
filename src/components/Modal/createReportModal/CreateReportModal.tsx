@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { Button, Modal, Select, TextField, Checkbox } from "@navikt/ds-react";
 import { createReport } from "@src/services/reportServices";
 import { FilePlusIcon } from "@navikt/aksel-icons";
@@ -23,7 +23,7 @@ const CreateReportModal = () => {
     ref.current?.close();
   };
 
-  const { data: userDetails, isLoading } = useSWRImmutable(
+  const { data: userDetails } = useSWRImmutable(
     { url: `${apiProxyUrl}/users/details` },
     fetcher,
   );

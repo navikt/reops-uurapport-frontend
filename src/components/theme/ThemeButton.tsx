@@ -1,18 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import { ThemeIcon } from "@navikt/aksel-icons";
 import { Button, Tooltip } from "@navikt/ds-react";
 
+const emptySubscribe = () => () => {};
+
+// Only true once the client has hydrated. Avoids SSR/client hydration
+// mismatch without calling setState from an effect.
+function useIsClient() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+}
+
 function ThemeButton() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // useEffect only runs on the client, so now we can safely show the UI
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsClient();
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === "light" ? "dark" : "light");

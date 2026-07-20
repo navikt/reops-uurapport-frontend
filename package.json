@@ -13,7 +13,7 @@
     "knip": "knip",
     "knip:production": "knip --production",
     "prepare": "husky",
-    "analyze": "ANALYZE=true next build -c next.config.analyze.js",
+    "analyze": "ANALYZE=true next build -c next.config.analyze.mjs",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
