@@ -24,7 +24,7 @@ ENV CI=true
 RUN pnpm run build
 
 # Production stage - minimal Node.js image (no Go stdlib, no pnpm)
-FROM cgr.dev/chainguard/node@sha256:0836196ff6d65a19e1dc68abaa84d4eddc2cd69d9daacbbed750d4b2fb0c2dbb AS production
+FROM cgr.dev/chainguard/node@sha256:c002402b355201714dfbeb3b1a7ca99152cccced4b334496db2442a3a9bf4883 AS production
 LABEL maintainer="team-researchops"
 WORKDIR /usr/src/app
 
