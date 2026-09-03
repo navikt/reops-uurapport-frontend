@@ -3,6 +3,7 @@ import { TrashIcon } from "@navikt/aksel-icons";
 import { Modal, Button, BodyLong } from "@navikt/ds-react";
 import { deleteTeam } from "@src/services/teamServices";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import styles from "../Modal.module.css";
 
 interface DeleteTeamModalProps {
@@ -11,6 +12,17 @@ interface DeleteTeamModalProps {
 
 const DeleteTeamModal = ({ teamId }: DeleteTeamModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    try {
+      await deleteTeam(teamId);
+      ref.current?.close();
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -32,9 +44,7 @@ const DeleteTeamModal = ({ teamId }: DeleteTeamModalProps) => {
             data-color="danger"
             type="button"
             variant="primary"
-            onClick={() => {
-              deleteTeam(teamId);
-            }}
+            onClick={handleDelete}
           >
             Slett
           </Button>

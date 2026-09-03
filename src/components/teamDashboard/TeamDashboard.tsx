@@ -181,7 +181,7 @@ function TeamDashboard(props: TeamDashboardProps) {
       {!isLoading && !hasError && (
         <>
           <div className={styles.teamHeader}>
-            <Heading level="2" size="large">
+            <Heading level="1" size="large">
               {teamData?.name ?? "Ukjent team"}
             </Heading>
             {props.isMyTeam && (

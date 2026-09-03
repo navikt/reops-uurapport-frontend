@@ -98,22 +98,21 @@ function EditTeamModal(props: EditTeamModalProps) {
                 <List data-aksel-migrated-v8>
                   {currentMembers?.map((member: string) => {
                     return (
-                      <List.Item
-                        key={member}
-                        icon={<XMarkIcon />}
-                        className={styles.currentMembersListItem}
-                        onClick={() => {
-                          const membersCopy = [...currentMembers];
-                          const index = membersCopy.indexOf(member);
-                          console.log(membersCopy, "********1111");
-                          membersCopy.splice(index, 1);
-                          console.log(membersCopy, "*********2222");
-                          setCurrentMembers(membersCopy);
-
-                          console.log(membersCopy);
-                        }}
-                      >
-                        Fjern {member}
+                      <List.Item key={member}>
+                        <Button
+                          variant="tertiary"
+                          size="small"
+                          icon={<XMarkIcon aria-hidden />}
+                          className={styles.removeMemberButton}
+                          onClick={() => {
+                            const membersCopy = [...currentMembers];
+                            const index = membersCopy.indexOf(member);
+                            membersCopy.splice(index, 1);
+                            setCurrentMembers(membersCopy);
+                          }}
+                        >
+                          Fjern {member}
+                        </Button>
                       </List.Item>
                     );
                   })}

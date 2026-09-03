@@ -22,6 +22,7 @@ import { formatDate } from "@src/utils/client/date";
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import DeleteReportModal from "@components/Modal/deleteReportModal/DeleteReportModal";
 import { ValidationWarnings } from "@components/ValidationWarnings/ValidationWarnings";
+import SaveStatus, { type SaveState } from "./SaveStatus";
 
 interface CreateReportProps {
   report: Report | AggregatedReport;
@@ -38,6 +39,7 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
   const [isPartOfNavNo, setIsPartOfNavNo] = useState<boolean>(
     report.isPartOfNavNo,
   );
+  const [saveState, setSaveState] = useState<SaveState>("idle");
 
   const filterOptions: Record<string, string> = {
     COMPLIANT: "Tilfredsstilt",
@@ -49,14 +51,17 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
   const updateReportData = async (
     updates: Partial<Report> | Partial<AggregatedReport>,
   ) => {
+    setSaveState("saving");
     try {
       if (reportType === "SINGLE") {
         await updateReport(report.reportId, updates);
       } else {
         await updateAggregatedReport(report.reportId, updates);
       }
+      setSaveState("saved");
     } catch (error) {
       console.error(error);
+      setSaveState("error");
     }
   };
 
@@ -125,6 +130,7 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
       <Heading level="1" size="xlarge">
         {report?.descriptiveName}
       </Heading>
+      <SaveStatus state={saveState} />
       <Tabs value={activeTab} onChange={setActiveTab} className={styles.tabs}>
         <div className={styles.tabListButton}>
           <Tabs.List>
@@ -160,7 +166,7 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
                 href={`/admin/create-report/${report?.reportId}`}
                 underline={false}
                 iconPosition="right"
-                icon={<ArrowRightIcon />}
+                icon={<ArrowRightIcon aria-hidden />}
               >
                 Bruk som mal
               </Button>

@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button, Modal, TextField } from "@navikt/ds-react";
 import AddOrgBtn from "@components/buttons/AddOrgBtn";
 import { apiProxyUrl } from "@src/utils/client/urls";
@@ -11,6 +12,7 @@ import styles from "../Modal.module.css";
 
 function NewTeamModal() {
   const ref = useRef<HTMLDialogElement>(null);
+  const router = useRouter();
   const [teamName, setTeamName] = useState("");
   const [teamEmail, setTeamEmail] = useState("");
   const [members, setMembers] = useState<string[]>([""]);
@@ -41,6 +43,7 @@ function NewTeamModal() {
       setTeamEmail("");
       setMembers([""]);
       ref.current?.close();
+      router.refresh();
     } catch (error) {
       console.error("Error:", error);
     }

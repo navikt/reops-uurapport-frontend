@@ -46,7 +46,6 @@ export const deleteTeam = async (teamId: string) => {
   });
   if (response.ok) {
     console.log("Team deleted", response.status);
-    window.location.reload();
   } else {
     console.log("Failed to delete team-", response.status);
     throw new Error("Failed to delete team");
