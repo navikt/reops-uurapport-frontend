@@ -23,19 +23,21 @@ COPY --chown=node:node . .
 ENV CI=true
 RUN pnpm run build
 
-# Production stage - minimal Node.js image (no Go stdlib, no pnpm)
-FROM cgr.dev/chainguard/node@sha256:c002402b355201714dfbeb3b1a7ca99152cccced4b334496db2442a3a9bf4883 AS production
+# Production stage - wolfi-base with nodejs only (no npm/node-gyp shipped)
+FROM cgr.dev/chainguard/wolfi-base@sha256:103eb3f4444c68ea2453bf3aad09d860eaa5a698effb3e656cd607f630f0e46d AS production
 LABEL maintainer="team-researchops"
+RUN apk update && apk add --no-cache nodejs
 WORKDIR /usr/src/app
 
 # Copy standalone server and dependencies
-COPY --from=build /usr/src/app/.next/standalone ./
+COPY --from=build --chown=65532:65532 /usr/src/app/.next/standalone ./
 # Copy static files
-COPY --from=build /usr/src/app/.next/static ./.next/static
+COPY --from=build --chown=65532:65532 /usr/src/app/.next/static ./.next/static
 
+USER 65532
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-CMD ["server.js"]
+CMD ["node", "server.js"]
 
 EXPOSE $PORT
