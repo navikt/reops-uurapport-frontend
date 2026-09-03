@@ -48,19 +48,21 @@ const getEnvironment = (): ENV => {
 
 const BASE_URL: { [key in ENV]: string } = {
   mock: "http://localhost:3000",
-  local: "http://localhost:3000",
+  local: "http://localhost:8787",
   development: resolveHostedBase(),
   production: resolveHostedBase(),
 };
 
-const withProxyPath = (base: string) => {
+const withProxyPath = (base: string, env: ENV) => {
+  if (env === ENV.local) {
+    return `${sanitizeBase(base)}/api`;
+  }
   if (!base) {
     return "/api/proxy";
   }
-
   return `${sanitizeBase(base)}/api/proxy`;
 };
 
-const API_PROXY_URL = withProxyPath(BASE_URL[getEnvironment()]);
+const API_PROXY_URL = withProxyPath(BASE_URL[getEnvironment()], getEnvironment());
 
 export const apiProxyUrl = API_PROXY_URL;

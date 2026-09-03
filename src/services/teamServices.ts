@@ -21,7 +21,6 @@ export const createNewTeam = async (newTeam: NewTeam) => {
   const response = await fetch(`${apiProxyUrl}/teams/new`, {
     method: "POST",
     body: JSON.stringify(newTeam),
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -34,7 +33,9 @@ export const createNewTeam = async (newTeam: NewTeam) => {
   }
 
   if (!response.ok) {
-    throw new Error("Failed to create team");
+    const text = await response.text();
+    console.error("Failed to create team", response.status, text);
+    throw new Error(`Failed to create team: ${response.status} ${text}`);
   }
 };
 

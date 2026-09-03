@@ -17,8 +17,13 @@ bare mock server:
 
 ## Kjøre applikasjonen lokalt med ekte backend
 
+Forutsetning: backend kjører lokalt med `SKIP_AUTH=true` (se [reops-uurapport-backend](../reops-uurapport-backend))
+
 1. Installer dependencies: `pnpm install`
-2. Få opp Next.js-appen: `pnpm run dev`
+2. Start Next.js: `pnpm run dev`
+3. Åpne `http://localhost:3001`
+
+I `local`-modus går API-kall direkte til backend på `http://localhost:8787` — ingen wonderwall, ingen innlogging. Backend injiserer en mock-admin-bruker når `SKIP_AUTH=true`.
 
 ## Lokal docker image
 
