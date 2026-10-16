@@ -9,12 +9,17 @@ import type { InitialReport, Team } from "@src/types";
 import styles from "../Modal.module.css";
 import { apiProxyUrl } from "@src/utils/client/urls";
 
-const CreateReportModal = () => {
+interface CreateReportModalProps {
+  /** Team to preselect in the team dropdown (e.g. the team currently viewed). */
+  preselectedTeamId?: string;
+}
+
+const CreateReportModal = ({ preselectedTeamId }: CreateReportModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
   const [reportDetails, setReportDetails] = useState<InitialReport>({
     name: "",
     urlTilSiden: "",
-    teamId: "",
+    teamId: preselectedTeamId ?? "",
     isPartOfNavNo: true,
   });
   const handleSubmit = () => {
@@ -26,6 +31,11 @@ const CreateReportModal = () => {
   const { data: userDetails } = useSWRImmutable(
     { url: `${apiProxyUrl}/users/details` },
     fetcher,
+  );
+
+  // Only prefill teams the user is actually a member of.
+  const prefillIsValid = userDetails?.teams.some(
+    (team: Team) => team.id === reportDetails.teamId,
   );
 
   const handleChange = (
@@ -90,6 +100,7 @@ const CreateReportModal = () => {
           <Select
             label="Hvilket team er ansvarlig for løsningen?"
             name="teamId"
+            value={prefillIsValid ? reportDetails.teamId : ""}
             onChange={handleChange}
           >
             <option value="">Velg team</option>

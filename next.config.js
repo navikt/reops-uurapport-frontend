@@ -33,6 +33,12 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: "2mb",
     },
+    // Keep client Router Cache entries warm for 5 min so back/forward
+    // navigation is instant and browser-native scroll restoration applies
+    // (default dynamic staleTime is 0 = refetch on every back-nav).
+    staleTimes: {
+      dynamic: 300,
+    },
   },
 };
 

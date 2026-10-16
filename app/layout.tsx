@@ -41,6 +41,7 @@ export default function RootLayout({
             as="main"
             background="sunken"
             padding={{ xs: "space-16", sm: "space-20" }}
+            style={{ flex: 1 }}
           >
             <Box
               background="raised"

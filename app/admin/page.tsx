@@ -6,6 +6,7 @@ import ReportList from "@src/components/ReportList/ReportList";
 import Forbidden from "@src/components/forbidden/Forbidden";
 import type { ReportSummary, User } from "@src/types";
 import styles from "./admin.module.css";
+import { Suspense } from "react";
 
 async function getUserDetails(): Promise<User> {
   const token = await getAuthToken();
@@ -72,7 +73,9 @@ export default async function AdminPage() {
         </LinkButton>
       </div>
       <div className={styles.content}>
-        <ReportList reports={reports} />
+        <Suspense fallback={null}>
+          <ReportList reports={reports} />
+        </Suspense>
       </div>
     </span>
   );

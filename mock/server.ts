@@ -278,8 +278,35 @@ api.get("/api/reports", (c) => {
       date: "2024-09-11T08:12:38.000Z",
       isPartOfNavNo: true,
     },
+    ...generateBulkReports(100),
   ]);
 });
+
+const BULK_TEAMS = [
+  { teamId: "sommer-a11y", teamName: "Sommer a11y" },
+  { teamId: "team-presentasjon", teamName: "Team Presentasjon" },
+  { teamId: "min-side", teamName: "min side" },
+  { teamId: "team-uu-sommer", teamName: "Team UU Sommer" },
+  { teamId: "team-demo", teamName: "Team Demo" },
+  { teamId: "finnhjelpemiddel", teamName: "Finnhjelpemiddel" },
+];
+
+function generateBulkReports(count: number) {
+  return Array.from({ length: count }, (_, i) => {
+    const team = BULK_TEAMS[i % BULK_TEAMS.length];
+    // Spread dates backwards from 2024-10-01, one day apart.
+    const date = new Date(Date.UTC(2024, 9, 1) - i * 86_400_000).toISOString();
+    return {
+      id: `bulk-report-${String(i + 1).padStart(3, "0")}`,
+      title: `Bulkrapport ${i + 1}`,
+      url: `https://bulk-${i + 1}.nav.no/`,
+      teamId: team.teamId,
+      teamName: team.teamName,
+      date,
+      isPartOfNavNo: i % 2 === 0,
+    };
+  });
+}
 
 api.get("/api/reports/aggregated", (c) => {
   return c.json([

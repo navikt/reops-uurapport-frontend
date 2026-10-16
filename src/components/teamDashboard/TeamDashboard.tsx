@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import styles from "./TeamDashboard.module.css";
 import {
   BodyLong,
@@ -18,6 +18,7 @@ import useSWR from "swr";
 import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
 import CreateReportModal from "@components/Modal/createReportModal/CreateReportModal";
 import { apiProxyUrl } from "@src/utils/client/urls";
+import { useQueryParam } from "@src/hooks/useQueryParam";
 import type { ReportSummary } from "@src/types";
 import type {
   NameType,
@@ -40,7 +41,7 @@ import {
 } from "recharts";
 
 function TeamDashboard(props: TeamDashboardProps) {
-  const [currentReportId, setCurrentReportId] = useState<string>("");
+  const [currentReportId, setCurrentReportId] = useQueryParam("report", "");
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false,
   );
@@ -111,9 +112,11 @@ function TeamDashboard(props: TeamDashboardProps) {
       { NOT_COMPLIANT: 0, COMPLIANT: 0, NOT_APPLICABLE: 0, NOT_TESTED: 0 },
     ) ?? { NOT_COMPLIANT: 0, COMPLIANT: 0, NOT_APPLICABLE: 0, NOT_TESTED: 0 };
 
-  if (hasReport && !currentReportId && reportListData?.[0]?.id) {
-    setCurrentReportId(reportListData[0].id);
-  }
+  useEffect(() => {
+    if (hasReport && !currentReportId && reportListData?.[0]?.id) {
+      setCurrentReportId(reportListData[0].id);
+    }
+  }, [hasReport, currentReportId, reportListData, setCurrentReportId]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -186,7 +189,7 @@ function TeamDashboard(props: TeamDashboardProps) {
             </Heading>
             {props.isMyTeam && (
               <div className={styles.buttons}>
-                <CreateReportModal />
+                <CreateReportModal preselectedTeamId={props.teamId} />
               </div>
             )}
           </div>
@@ -374,7 +377,9 @@ function TeamDashboard(props: TeamDashboardProps) {
             <Heading level="3" size="small">
               Rapporter
             </Heading>
-            <ReportList reports={reportListData ?? []} />
+            <Suspense fallback={null}>
+              <ReportList reports={reportListData ?? []} />
+            </Suspense>
           </section>
         </>
       )}

@@ -3,6 +3,7 @@ import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
 import TeamDashboard from "@/components/teamDashboard/TeamDashboard";
 import type { User } from "@src/types";
+import { Suspense } from "react";
 
 async function getUser() {
   const token = await getAuthToken();
@@ -31,5 +32,9 @@ export default async function TeamPage({
   const isMyTeam =
     user.teams.some((team) => team.id === teamId) || user.isAdmin;
 
-  return <TeamDashboard teamId={teamId} isMyTeam={isMyTeam} />;
+  return (
+    <Suspense fallback={null}>
+      <TeamDashboard teamId={teamId} isMyTeam={isMyTeam} />
+    </Suspense>
+  );
 }

@@ -3,18 +3,24 @@
 import ReportList from "@components/ReportList/ReportList";
 import CreateReportModal from "@components/Modal/createReportModal/CreateReportModal";
 import { Tabs, Select, Heading } from "@navikt/ds-react";
-import { useState } from "react";
+import { Suspense } from "react";
 import TeamDashboard from "./TeamDashboard";
 import styles from "./MyTeam.module.css";
 import type { Team, User } from "@src/types";
+import { useQueryParam } from "@src/hooks/useQueryParam";
 
 interface MyTeamProps {
   user: User;
 }
 
-function MyTeam({ user }: MyTeamProps) {
-  const [tabState, setTabState] = useState("teamView");
-  const [currentTeamId, setCurrentTeamId] = useState(user.teams[0].id); //Hvilken team som sees
+function MyTeamInner({ user }: MyTeamProps) {
+  const [tabState, setTabState] = useQueryParam("tab", "teamView", {
+    history: "push",
+  });
+  const [currentTeamId, setCurrentTeamId] = useQueryParam(
+    "team",
+    user.teams[0].id,
+  );
   const userName = user.name.split(",");
   const isMyTeam = user.teams.map((team) => team.id).includes(currentTeamId);
 
@@ -57,7 +63,7 @@ function MyTeam({ user }: MyTeamProps) {
           className="h-24 w-full bg-ax-neutral-100 p-4"
         >
           <header className={styles.myReportsHeader}>
-            <CreateReportModal />
+            <CreateReportModal preselectedTeamId={currentTeamId} />
           </header>
           <section className={styles.myReportsContainer}>
             <section>
@@ -68,6 +74,14 @@ function MyTeam({ user }: MyTeamProps) {
         </Tabs.Panel>
       </Tabs>
     </div>
+  );
+}
+
+function MyTeam({ user }: MyTeamProps) {
+  return (
+    <Suspense fallback={null}>
+      <MyTeamInner user={user} />
+    </Suspense>
   );
 }
 

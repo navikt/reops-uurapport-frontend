@@ -1,6 +1,8 @@
 "use client";
-import { Link, Table, Box, HStack } from "@navikt/ds-react";
-import { useState, useMemo } from "react";
+import { Link, HStack } from "@navikt/ds-react";
+import { DataGrid } from "@navikt/ds-react/PREVIEW";
+import { useMemo } from "react";
+import { useQueryParam } from "@src/hooks/useQueryParam";
 import type { Team } from "@src/types";
 import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
 import DeleteTeamModal from "@components/Modal/deleteTeam/DeleteTeamModal";
@@ -10,72 +12,92 @@ interface TeamListProps {
   isAdmin: boolean;
 }
 
-type SortState = {
-  orderBy: string;
-  direction: "ascending" | "descending";
-};
+type SortOrder = NonNullable<DataGrid.Table.Sorting["sortOrder"]>;
+
+function parseSortOrder(raw: string): SortOrder {
+  if (raw === "") return [];
+  const [columnId, direction] = raw.split(":");
+  if (
+    columnId === "name" &&
+    (direction === "asc" || direction === "desc")
+  ) {
+    return [{ columnId, direction }];
+  }
+  return [];
+}
 
 const TeamList = ({ teams, isAdmin }: TeamListProps) => {
-  const [sort, setSort] = useState<SortState>({
-    orderBy: "name",
-    direction: "ascending",
-  });
+  const [sortParam, setSortParam] = useQueryParam("sort", "name:asc");
+  const sortOrder = useMemo(() => parseSortOrder(sortParam), [sortParam]);
 
-  const sortedTeams = useMemo(() => {
-    return [...teams].sort((a, b) => {
-      const comparator = a.name.localeCompare(b.name, "no");
-      return sort.direction === "ascending" ? comparator : -comparator;
-    });
-  }, [teams, sort]);
-
-  const handleSort = (sortKey: string) => {
-    setSort((prevSort) => ({
-      orderBy: sortKey,
-      direction:
-        prevSort.orderBy === sortKey && prevSort.direction === "ascending"
-          ? "descending"
-          : "ascending",
-    }));
+  const handleSortOrderChange: DataGrid.Table.Sorting["onSortOrderChange"] = (
+    newSortOrder,
+  ) => {
+    const first = newSortOrder[0];
+    setSortParam(first ? `${first.columnId}:${first.direction}` : undefined);
   };
 
+  const columns = useMemo<DataGrid.Columns<Team>>(() => {
+    const cols: DataGrid.Columns<Team> = [
+      {
+        id: "name",
+        header: "Team",
+        isRowHeader: true,
+        isSortable: true,
+        bodyCell: (team) => (
+          <Link data-color="neutral" href={`/teams/${team.id}`}>
+            {team.name}
+          </Link>
+        ),
+      },
+      {
+        id: "members",
+        header: "Medlemmer",
+        align: "right",
+        bodyCell: (team) => `${team.members?.length ?? 0}`,
+      },
+    ];
+    if (isAdmin) {
+      cols.push({
+        id: "actions",
+        header: "Handlinger",
+        align: "right",
+        bodyCell: (team) => (
+          <HStack justify="end" gap="space-8" wrap={false}>
+            <EditTeamModal teamId={team.id} size="small" />
+            <DeleteTeamModal teamId={team.id} size="small" />
+          </HStack>
+        ),
+      });
+    }
+    return cols;
+  }, [isAdmin]);
+
+  const sortedTeams = useMemo(() => {
+    const first = sortOrder[0];
+    if (!first) return teams;
+    return teams.slice().sort((a, b) => {
+      const result = a.name.localeCompare(b.name, "no");
+      return first.direction === "asc" ? result : -result;
+    });
+  }, [teams, sortOrder]);
+
   return (
-    <Box>
-      <Table sort={sort} onSortChange={handleSort} zebraStripes>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader sortKey="name" sortable>
-              Team
-            </Table.ColumnHeader>
-            {isAdmin && (
-              <Table.HeaderCell className="sr-only">
-                Handlinger
-              </Table.HeaderCell>
-            )}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {sortedTeams.map((team: Team) => {
-            return (
-              <Table.Row key={team.id}>
-                <Table.HeaderCell scope="row">
-                  <Link data-color="neutral" href={`/teams/${team.id}`}>
-                    {team.name}
-                  </Link>
-                </Table.HeaderCell>
-                {isAdmin && (
-                  <Table.DataCell>
-                    <HStack justify="end" gap="space-2">
-                      <EditTeamModal teamId={team.id} />
-                      <DeleteTeamModal teamId={team.id} />
-                    </HStack>
-                  </Table.DataCell>
-                )}
-              </Table.Row>
-            );
-          })}
-        </Table.Body>
-      </Table>
-    </Box>
+    <DataGrid
+      columns={columns}
+      data={sortedTeams}
+      getRowId={(row) => row.id}
+      defaultSettings={{ zebraStripes: true }}
+    >
+      <DataGrid.Table
+        layout="auto"
+        sorting={{
+          allowMultiSort: false,
+          sortOrder,
+          onSortOrderChange: handleSortOrderChange,
+        }}
+      />
+    </DataGrid>
   );
 };
 

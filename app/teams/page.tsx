@@ -5,6 +5,7 @@ import TeamList from "@/components/teamList/TeamList";
 import NewTeamModal from "@/components/Modal/TeamModals/NewTeamModal";
 import type { Team, User } from "@src/types";
 import { VStack } from "@navikt/ds-react";
+import { Suspense } from "react";
 
 async function getData() {
   const token = await getAuthToken();
@@ -42,7 +43,9 @@ export default async function TeamsPage() {
     <VStack gap="space-16">
       <h1>Alle teams</h1>
       <NewTeamModal />
-      <TeamList teams={teams} isAdmin={user.isAdmin} />
+      <Suspense fallback={null}>
+        <TeamList teams={teams} isAdmin={user.isAdmin} />
+      </Suspense>
     </VStack>
   );
 }

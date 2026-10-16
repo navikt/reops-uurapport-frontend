@@ -11,6 +11,8 @@ import { apiProxyUrl } from "@src/utils/client/urls";
 
 interface EditTeamModalProps {
   teamId: string;
+  /** Button size for the trigger (e.g. "small" inside tables). */
+  size?: "medium" | "small" | "xsmall";
 }
 
 function EditTeamModal(props: EditTeamModalProps) {
@@ -67,6 +69,7 @@ function EditTeamModal(props: EditTeamModalProps) {
     <div className="py-12">
       <Button
         variant="secondary"
+        size={props.size}
         onClick={() => ref.current?.showModal()}
         icon={<PersonPencilIcon aria-hidden />}
       >

@@ -11,6 +11,11 @@ vi.mock("@src/services/reportServices", () => ({
 vi.mock("@components/Modal/deleteReportModal/DeleteReportModal", () => ({
   default: () => null,
 }));
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+  usePathname: () => "/reports/r1",
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 const report = {
   reportId: "r1",

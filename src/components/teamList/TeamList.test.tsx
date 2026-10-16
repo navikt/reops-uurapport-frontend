@@ -4,6 +4,12 @@ import { axe } from "vitest-axe";
 import TeamList from "./TeamList";
 import type { Team } from "@src/types";
 
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+  usePathname: () => "/teams",
+  useSearchParams: () => new URLSearchParams(),
+}));
+
 vi.mock("@components/Modal/TeamModals/EditTeamModal", () => ({
   default: () => null,
 }));

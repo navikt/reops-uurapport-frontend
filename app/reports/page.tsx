@@ -2,6 +2,7 @@ import ReportList from "@/components/ReportList/ReportList";
 import CreateReportModal from "@/components/Modal/createReportModal/CreateReportModal";
 import { getReports } from "@src/actions/reportActions";
 import styles from "./reports.module.css";
+import { Suspense } from "react";
 
 export default async function ReportsPage() {
   const reports = await getReports();
@@ -13,7 +14,9 @@ export default async function ReportsPage() {
         <CreateReportModal />
       </div>
       <div className={styles.content}>
-        <ReportList reports={reports} />
+        <Suspense fallback={null}>
+          <ReportList reports={reports} />
+        </Suspense>
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Criterion from "./criterion/Criterion";
 import type { AggregatedReport, CriterionType, Report } from "@src/types";
 import {
@@ -23,6 +23,7 @@ import { ArrowRightIcon } from "@navikt/aksel-icons";
 import DeleteReportModal from "@components/Modal/deleteReportModal/DeleteReportModal";
 import { ValidationWarnings } from "@components/ValidationWarnings/ValidationWarnings";
 import SaveStatus, { type SaveState } from "./SaveStatus";
+import { useQueryParam, useQueryParamList } from "@src/hooks/useQueryParam";
 
 interface CreateReportProps {
   report: Report | AggregatedReport;
@@ -30,12 +31,28 @@ interface CreateReportProps {
   isAdmin: boolean;
 }
 
-const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
+const VALID_FILTERS = new Set([
+  "COMPLIANT",
+  "NON_COMPLIANT",
+  "NOT_TESTED",
+  "NOT_APPLICABLE",
+]);
+
+const CreateReportInner = ({
+  report,
+  reportType,
+  isAdmin,
+}: CreateReportProps) => {
   const [criteriaData, setCriteriaData] = useState<CriterionType[]>(
     report.successCriteria,
   );
-  const [activeTab, setActiveTab] = useState("criteria");
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useQueryParam("tab", "criteria", {
+    history: "push",
+  });
+  const [rawFilters, setSelectedFilters] = useQueryParamList("filter");
+  const selectedFilters = rawFilters.filter((filter) =>
+    VALID_FILTERS.has(filter),
+  );
   const [isPartOfNavNo, setIsPartOfNavNo] = useState<boolean>(
     report.isPartOfNavNo,
   );
@@ -148,10 +165,10 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
                   key={option}
                   selected={selectedFilters.includes(option)}
                   onClick={() => {
-                    setSelectedFilters((prev) =>
-                      prev.includes(option)
-                        ? prev.filter((filter) => filter !== option)
-                        : [...prev, option],
+                    setSelectedFilters(
+                      selectedFilters.includes(option)
+                        ? selectedFilters.filter((filter) => filter !== option)
+                        : [...selectedFilters, option],
                     );
                   }}
                 >
@@ -254,6 +271,14 @@ const CreateReport = ({ report, reportType, isAdmin }: CreateReportProps) => {
         </Tabs.Panel>
       </Tabs>
     </div>
+  );
+};
+
+const CreateReport = (props: CreateReportProps) => {
+  return (
+    <Suspense fallback={null}>
+      <CreateReportInner {...props} />
+    </Suspense>
   );
 };
 

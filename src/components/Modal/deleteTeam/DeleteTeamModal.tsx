@@ -8,9 +8,11 @@ import styles from "../Modal.module.css";
 
 interface DeleteTeamModalProps {
   teamId: string;
+  /** Button size for the trigger (e.g. "small" inside tables). */
+  size?: "medium" | "small" | "xsmall";
 }
 
-const DeleteTeamModal = ({ teamId }: DeleteTeamModalProps) => {
+const DeleteTeamModal = ({ teamId, size }: DeleteTeamModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
   const router = useRouter();
 
@@ -29,6 +31,7 @@ const DeleteTeamModal = ({ teamId }: DeleteTeamModalProps) => {
       <Button
         data-color="danger"
         variant="primary"
+        size={size}
         icon={<TrashIcon aria-hidden />}
         className={styles.button}
         onClick={() => ref.current?.showModal()}
