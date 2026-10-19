@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: "actions/checkout@v7"
       - name: "Deploy to Dev"
-        uses: "nais/deploy/actions/deploy@v2"
+        uses: "nais/deploy/actions/deploy@v3"
         env:
           CLUSTER: "dev-gcp"
           RESOURCE: .nais/nais-dev.yaml
@@ -78,7 +78,7 @@ jobs:
     steps:
       - uses: "actions/checkout@v7"
       - name: "Deploy to Prod"
-        uses: "nais/deploy/actions/deploy@v2"
+        uses: "nais/deploy/actions/deploy@v3"
         env:
           CLUSTER: "prod-gcp"
           RESOURCE: .nais/nais-prod.yaml
