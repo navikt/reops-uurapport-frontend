@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { formatDate } from "@src/utils/client/date";
 import { useQueryParam } from "@src/hooks/useQueryParam";
 import type { ReportSummary } from "@src/types";
+import cell from "@components/cellText.module.css";
 
 interface ReportListProps {
   reports: ReportSummary[];
@@ -34,11 +35,19 @@ const columns: DataGrid.Columns<ReportSummary> = [
     isSortable: true,
     bodyCell: (report) =>
       report.reportType === "AGGREGATED" ? (
-        <Link data-color="accent" href={`/reports/aggregated/${report.id}`}>
+        <Link
+          className={cell.wrap}
+          data-color="accent"
+          href={`/reports/aggregated/${report.id}`}
+        >
           {report.title === "" ? "(Uten navn)" : report.title}
         </Link>
       ) : (
-        <Link data-color="accent" href={`/reports/${report.id}`}>
+        <Link
+          className={cell.wrap}
+          data-color="accent"
+          href={`/reports/${report.id}`}
+        >
           {report.title === "" ? "Uten navn" : report.title}
         </Link>
       ),
@@ -49,7 +58,9 @@ const columns: DataGrid.Columns<ReportSummary> = [
     isSortable: true,
     bodyCell: (report) =>
       report.teamId && report.teamName ? (
-        <Link href={`/teams/${report.teamId}`}>{report.teamName}</Link>
+        <Link className={cell.wrap} href={`/teams/${report.teamId}`}>
+          {report.teamName}
+        </Link>
       ) : (
         <span>-</span>
       ),
@@ -104,7 +115,7 @@ const ReportList = ({ reports }: ReportListProps) => {
       columns={columns}
       data={sortedData}
       getRowId={(row) => row.id}
-      defaultSettings={{ zebraStripes: true }}
+      defaultSettings={{ zebraStripes: true, truncateContent: false }}
     >
       <DataGrid.Table
         layout="auto"

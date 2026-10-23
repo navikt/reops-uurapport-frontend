@@ -70,6 +70,46 @@ const teams = [
     name: "Team tull, men med lenger navn...",
     email: "teamtulllenger@example.com",
   },
+  {
+    id: 'team-"enda-en-test"',
+    name: 'Team "Enda en test"',
+    email: "teamendaentest@example.com",
+  },
+  {
+    id: "team-edge-long-words",
+    name: "Team Tilgjengelighetsrådgivningsavdelingen for brukerrettede digitale selvbetjeningsløsninger og kunngjøringer",
+    email: "edge-long-words@example.com",
+  },
+  {
+    id: "team-edge-no-spaces",
+    name: "Team_med_et_veldig_langt_navn_uten_mellomrom_som_aldri_bryter_av_seg_selv_1234567890_abcdefghijklmnopqrstuvwxyz",
+    email: "edge-no-spaces@example.com",
+  },
+  {
+    id: "team-edge-hyphenated",
+    name: "Team-Plattform-Infrastruktur-Observability-Sikkerhet-Tilgjengelighet-Brukerinnsikt-Drift",
+    email: "edge-hyphenated@example.com",
+  },
+  {
+    id: "team-edge-short",
+    name: "UU",
+    email: "edge-short@example.com",
+  },
+  {
+    id: "team-edge-special",
+    name: "Team Æøå & <Co> \"Quotes\" 'single' – løsninger/utvikling (2024–2026) 🚀",
+    email: "edge-special@example.com",
+  },
+  {
+    id: "team-edge-whitespace",
+    name: "  Team   med   rare    mellomrom  ",
+    email: "edge-whitespace@example.com",
+  },
+  {
+    id: "team-edge-url-like",
+    name: "https://www.nav.no/team/en-veldig-lang-url-som-er-brukt-som-teamnavn/med/mange/segmenter?og=query&params=true",
+    email: "edge-url-like@example.com",
+  },
 ];
 
 teams.forEach((team) => {
@@ -143,6 +183,79 @@ api.get("/api/user", (c) => {
 
 api.get("/api/reports", (c) => {
   return c.json([
+    {
+      id: "edge-report-long-words",
+      title:
+        "Universell utforming av selvbetjeningsløsningen for søknad om dagpenger, inkludert kvittering, feilmeldinger og veiledning for brukere med skjermleser",
+      url: "https://www.nav.no/edge/long-words",
+      teamId: "team-edge-long-words",
+      teamName:
+        "Team Tilgjengelighetsrådgivningsavdelingen for brukerrettede digitale selvbetjeningsløsninger og kunngjøringer",
+      date: "2026-01-10T09:00:00.000Z",
+      isPartOfNavNo: true,
+    },
+    {
+      id: "edge-report-no-spaces",
+      title:
+        "Rapport_med_et_veldig_langt_navn_uten_mellomrom_som_aldri_bryter_av_seg_selv_1234567890_abcdefghijklmnopqrstuvwxyz",
+      url: "https://www.nav.no/edge/no-spaces",
+      teamId: "team-edge-no-spaces",
+      teamName:
+        "Team_med_et_veldig_langt_navn_uten_mellomrom_som_aldri_bryter_av_seg_selv_1234567890_abcdefghijklmnopqrstuvwxyz",
+      date: "2026-01-11T09:00:00.000Z",
+      isPartOfNavNo: true,
+    },
+    {
+      id: "edge-report-hyphenated",
+      title:
+        "Tilgjengelighetserklæring-Hovedside-Søk-Skjema-Navigasjon-Tabeller-Dialoger-Varsler-Kontrast-Tastatur",
+      url: "https://www.nav.no/edge/hyphenated",
+      teamId: "team-edge-hyphenated",
+      teamName:
+        "Team-Plattform-Infrastruktur-Observability-Sikkerhet-Tilgjengelighet-Brukerinnsikt-Drift",
+      date: "2026-01-12T09:00:00.000Z",
+      isPartOfNavNo: false,
+    },
+    {
+      id: "edge-report-short",
+      title: "A",
+      url: "a.no",
+      teamId: "team-edge-short",
+      teamName: "UU",
+      date: "2026-01-13T09:00:00.000Z",
+      isPartOfNavNo: false,
+    },
+    {
+      id: "edge-report-special",
+      title:
+        "Æøå & <script>alert(1)</script> \"Quotes\" 'single' – løsninger/utvikling (2024–2026) 🚀",
+      url: "https://www.nav.no/edge/special",
+      teamId: "team-edge-special",
+      teamName:
+        "Team Æøå & <Co> \"Quotes\" 'single' – løsninger/utvikling (2024–2026) 🚀",
+      date: "2026-01-14T09:00:00.000Z",
+      isPartOfNavNo: true,
+    },
+    {
+      id: "edge-report-whitespace",
+      title: "  Rapport   med   rare    mellomrom  ",
+      url: "https://www.nav.no/edge/whitespace",
+      teamId: "team-edge-whitespace",
+      teamName: "  Team   med   rare    mellomrom  ",
+      date: "2026-01-15T09:00:00.000Z",
+      isPartOfNavNo: true,
+    },
+    {
+      id: "edge-report-url-like",
+      title:
+        "https://www.nav.no/rapport/en-veldig-lang-url-som-er-brukt-som-rapporttittel/med/mange/segmenter?og=query&params=true",
+      url: "https://www.nav.no/edge/url-like",
+      teamId: "team-edge-url-like",
+      teamName:
+        "https://www.nav.no/team/en-veldig-lang-url-som-er-brukt-som-teamnavn/med/mange/segmenter?og=query&params=true",
+      date: "2026-01-16T09:00:00.000Z",
+      isPartOfNavNo: false,
+    },
     {
       id: "56b00314-b0a4-44f8-b841-97d97349f3c2",
       title: "Nytt navn på rapport",

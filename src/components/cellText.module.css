@@ -1,0 +1,6 @@
+.wrap {
+  display: inline-block;
+  vertical-align: top;
+  max-inline-size: min(40ch, 50vw);
+  overflow-wrap: anywhere;
+}

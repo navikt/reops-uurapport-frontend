@@ -4,6 +4,7 @@ import { DataGrid } from "@navikt/ds-react/PREVIEW";
 import { useMemo } from "react";
 import { useQueryParam } from "@src/hooks/useQueryParam";
 import type { Team } from "@src/types";
+import cell from "@components/cellText.module.css";
 import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
 import DeleteTeamModal from "@components/Modal/deleteTeam/DeleteTeamModal";
 
@@ -45,7 +46,11 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
         isRowHeader: true,
         isSortable: true,
         bodyCell: (team) => (
-          <Link data-color="neutral" href={`/teams/${team.id}`}>
+          <Link
+            className={cell.wrap}
+            data-color="neutral"
+            href={`/teams/${team.id}`}
+          >
             {team.name}
           </Link>
         ),
@@ -87,7 +92,7 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
       columns={columns}
       data={sortedTeams}
       getRowId={(row) => row.id}
-      defaultSettings={{ zebraStripes: true }}
+      defaultSettings={{ zebraStripes: true, truncateContent: false }}
     >
       <DataGrid.Table
         layout="auto"
