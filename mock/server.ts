@@ -6,6 +6,11 @@ import * as jsonFile2 from "./report2.json";
 
 const api = new Hono();
 
+// Pick the logged-in role with MOCK_ROLE=admin|user (default admin), see
+// `pnpm run mock-dev:admin` / `pnpm run mock-dev:user`.
+const mockRole = process.env.MOCK_ROLE === "user" ? "user" : "admin";
+const isAdmin = mockRole === "admin";
+
 api.use(
   "/*",
   cors({
@@ -132,7 +137,7 @@ api.get("/api/users/details", (c) => {
     email: "my.user@nav.no",
     name: "Hakaurlander, JasMaNi",
     teams: teams,
-    isAdmin: true,
+    isAdmin,
     reports: [
       {
         title: "Ayyyy",
@@ -175,9 +180,9 @@ api.get("/api/user", (c) => {
       },
     ],
     teams: teams,
-    name: "Hakimi, Nima",
-    email: "Nima.Hakimi@nav.no",
-    isAdmin: true,
+    name: isAdmin ? "Hakimi, Nima (admin)" : "Bruker, Vanlig",
+    email: isAdmin ? "Nima.Hakimi@nav.no" : "vanlig.bruker@nav.no",
+    isAdmin,
   });
 });
 
@@ -614,6 +619,68 @@ api.delete("/api/reports/123456789", (c) => {
   return c.json({ message: "Report deleted" });
 });
 
+api.get("/api/contacts/deletion", (c) => {
+  return c.json({
+    contacts: [
+      {
+        navIdent: "Z000001",
+        fullName: "Kari Kontaktperson",
+        role: "kontaktperson",
+      },
+    ],
+    slackChannelId: null,
+  });
+});
+
+api.get("/api/admins", (c) => {
+  return c.json([{ name: "Ada Admin", email: "ada.admin@nav.no" }]);
+});
+
+api.get("/api/reports/archived", (c) => {
+  return c.json([
+    {
+      id: "archived-1",
+      title: "Gammel søknadsløsning",
+      url: "https://example.nav.no/gammel",
+      teamId: "team-nav",
+      teamName: "Team Nav",
+      reportType: "SINGLE",
+      archive: {
+        archivedAt: "2026-09-01T10:00:00.000Z",
+        archivedBy: "bruker@nav.no",
+        reason: "Tjenesten er lagt ned",
+      },
+      canRestore: true,
+    },
+    {
+      id: "archived-2",
+      title: "Duplikatrapport",
+      url: "https://example.nav.no/duplikat",
+      teamId: "",
+      teamName: "",
+      reportType: "SINGLE",
+      archive: {
+        archivedAt: "2026-09-15T08:30:00.000Z",
+        archivedBy: "annen@nav.no",
+        reason: null,
+      },
+      canRestore: false,
+    },
+  ]);
+});
+
+api.post("/api/reports/:id/archive", (c) => {
+  return c.json({ message: "Report archived" });
+});
+
+api.delete("/api/reports/:id/archive", (c) => {
+  return c.json({ message: "Report restored" });
+});
+
+api.delete("/api/admin/reports/:id", (c) => {
+  return c.json({ message: "Report deleted" });
+});
+
 api.delete("/api/admin/reports/aggregated/1234567890", (c) => {
   return c.json({ message: "Report deleted" });
 });
@@ -764,7 +831,7 @@ api.get("/api/reports/aggregated/123456789", (c) => {
     ],
     created: "2023-10-04T15:24:18.000Z",
     lastChanged: "2023-10-04T15:24:18.000Z",
-    hasWriteAccess: true,
+    hasWriteAccess: isAdmin,
   };
 
   return c.json(initializedReport); // Send the custom object as the response
@@ -916,6 +983,21 @@ api.get("/api/reports/123456789", (c) => {
 });
 
 // Mock report with MANGLED DATA - null team and validation warnings
+// Archived report, to explore the archived banner / restore flow
+api.get("/api/reports/archived-1", async (c) => {
+  const base = await (await api.request("/api/reports/123456789")).json();
+  return c.json({
+    ...base,
+    reportId: "archived-1",
+    descriptiveName: "Gammel søknadsløsning",
+    archive: {
+      archivedAt: "2026-09-01T10:00:00.000Z",
+      archivedBy: "bruker@nav.no",
+      reason: "Tjenesten er lagt ned",
+    },
+  });
+});
+
 api.get("/api/reports/mangled-no-team", (c) => {
   const mangledReport = {
     reportId: "mangled-no-team",
@@ -959,7 +1041,7 @@ api.get("/api/reports/mangled-no-team", (c) => {
     created: "2023-10-04T15:24:18.000Z",
     lastChanged: "2023-10-04T15:24:18.000Z",
     notes: "Dette er en rapport uten team",
-    hasWriteAccess: true,
+    hasWriteAccess: isAdmin,
     isPartOfNavNo: false,
   };
 
@@ -1010,7 +1092,7 @@ api.get("/api/reports/mangled-no-author", (c) => {
     created: "2023-10-04T15:24:18.000Z",
     lastChanged: "2023-10-04T15:24:18.000Z",
     notes: "Dette er en rapport uten forfatter",
-    hasWriteAccess: true,
+    hasWriteAccess: isAdmin,
     isPartOfNavNo: true,
   };
 
@@ -1078,7 +1160,7 @@ api.get("/api/reports/aggregated/mangled-aggregated", (c) => {
     created: "2024-01-10T09:00:00.000Z",
     lastChanged: "2024-01-15T14:30:00.000Z",
     notes: "Aggregert rapport med manglende metadata",
-    hasWriteAccess: true,
+    hasWriteAccess: isAdmin,
     filters: [],
     contributers: [],
     lastUpdatedBy: "system@nav.no",
@@ -1185,7 +1267,7 @@ api.get("/api/reports/:id", (c) => {
     created: "2023-10-04T15:24:18.000Z",
     lastChanged: "2023-10-04T15:24:18.000Z",
     notes: "Dette er en mock-rapport",
-    hasWriteAccess: true,
+    hasWriteAccess: true, // team reports are editable for the user role too
     isPartOfNavNo: false,
   };
 

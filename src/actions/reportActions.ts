@@ -1,6 +1,11 @@
 "use server";
 
-import type { ReportSummary, ReportDiagnostics, User } from "@src/types";
+import type {
+  ArchivedReportSummary,
+  ReportSummary,
+  ReportDiagnostics,
+  User,
+} from "@src/types";
 import { apiUrl } from "@src/utils/server/urls";
 import { getOboToken } from "@src/utils/server/getOboToken";
 import { getAuthToken } from "@src/utils/server/getAuthToken";
@@ -47,6 +52,26 @@ export async function getReports(): Promise<ReportSummary[]> {
 
   if (!response.ok) {
     throw new Error(`Failed to fetch reports: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function getArchivedReports(): Promise<ArchivedReportSummary[]> {
+  const token = await getAuthToken();
+  const oboToken = await getOboToken(token);
+
+  const response = await fetch(`${apiUrl}/api/reports/archived`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${oboToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch archived reports: ${response.status}`);
   }
 
   return response.json();

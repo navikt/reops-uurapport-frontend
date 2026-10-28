@@ -1,0 +1,30 @@
+.section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 1rem;
+  background-color: var(--ax-bg-default);
+  box-shadow: var(--ax-shadow-small);
+}
+
+.intro {
+  margin-block: 1rem;
+}
+
+.status {
+  min-height: 1.5rem;
+}
+
+.secondary {
+  color: var(--ax-text-neutral-subtle);
+}
+
+.tag {
+  margin-left: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

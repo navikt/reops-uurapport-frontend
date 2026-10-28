@@ -42,20 +42,12 @@
   margin-bottom: 3rem;
 }
 
-.tabListButton {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 @media (max-width: 768px) {
   .reportContent {
     padding: 16px;
   }
+}
 
-  .tabListButton {
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-  }
+.archivedBanner {
+  margin-bottom: 1rem;
 }

@@ -1,4 +1,5 @@
 import { Box, HStack } from "@navikt/ds-react";
+import { PageBlock } from "@/components/layout/PageBlock";
 import styles from "./Navbar.module.css";
 import { LeaveIcon, GavelSoundBlockIcon } from "@navikt/aksel-icons";
 import { apiUrl } from "../../utils/server/urls";
@@ -28,7 +29,7 @@ async function getUserDetails(): Promise<User> {
   } catch (cause) {
     throw new Error(
       `Could not reach backend at ${apiUrl}. Is it running? ` +
-        `Tip: use "pnpm run mock-dev" instead if you don't have it set up locally.`,
+        `Tip: start the backend first, see the README ("Kjøre applikasjonen lokalt").`,
       { cause },
     );
   }
@@ -74,62 +75,71 @@ export default async function Navbar() {
         borderWidth="0 0 1"
         borderColor="neutral-subtle"
         paddingBlock="space-16"
-        paddingInline="space-16"
         className={styles.desktopNavbar}
       >
-        <HStack
-          justify="space-between"
-          align="center"
-          gap="space-16"
-          style={{ maxWidth: "1280px", margin: "0 auto" }}
-        >
-          <HStack
-            as="ul"
-            gap="space-16"
-            align="center"
-            style={{ listStyle: "none" }}
-          >
-            <li>
-              <NavbarLink href="/">Forside</NavbarLink>
-            </li>
-            <li>
-              <NavbarLink href="/teams">Teams</NavbarLink>
-            </li>
-            <li>
-              <NavbarLink href="/reports">Alle rapporter</NavbarLink>
-            </li>
-            {userDetails?.isAdmin && (
+        <PageBlock width="xl" gutters>
+          <HStack justify="space-between" align="center" gap="space-16">
+            <HStack
+              as="ul"
+              padding="space-0"
+              margin="space-0"
+              gap="space-16"
+              align="center"
+              style={{ listStyle: "none" }}
+            >
               <li>
-                <NavbarLink
-                  href="/admin"
-                  icon={<GavelSoundBlockIcon fontSize="30" aria-hidden />}
-                >
-                  Admin
-                </NavbarLink>
+                <NavbarLink href="/">Forside</NavbarLink>
               </li>
-            )}
+              <li>
+                <NavbarLink href="/teams">Team</NavbarLink>
+              </li>
+              <li>
+                <NavbarLink href="/reports">Alle rapporter</NavbarLink>
+              </li>
+              {userDetails?.isAdmin && (
+                <li>
+                  <NavbarLink
+                    href="/admin"
+                    icon={<GavelSoundBlockIcon fontSize="30" aria-hidden />}
+                  >
+                    Admin
+                  </NavbarLink>
+                </li>
+              )}
+            </HStack>
+            <HStack
+              as="ul"
+              padding="space-0"
+              margin="space-0"
+              gap="space-16"
+              align="center"
+              style={{ listStyle: "none" }}
+            >
+              <li>
+                <p>
+                  Innlogget som: <strong>{userDetails.email}</strong>
+                </p>
+              </li>
+              <li>
+                <ThemeButton />
+              </li>
+              <li>
+                <a
+                  href="/oauth2/logout"
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <LeaveIcon aria-hidden /> Logg ut
+                </a>
+              </li>
+            </HStack>
           </HStack>
-          <HStack
-            as="ul"
-            gap="space-16"
-            align="center"
-            style={{ listStyle: "none" }}
-          >
-            <li>
-              <p>
-                Innlogget som: <strong>{userDetails.email}</strong>
-              </p>
-            </li>
-            <li>
-              <ThemeButton />
-            </li>
-            <li>
-              <a href="/oauth2/logout" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <LeaveIcon aria-hidden /> Logg Ut
-              </a>
-            </li>
-          </HStack>
-        </HStack>
+        </PageBlock>
       </Box>
     </span>
   );

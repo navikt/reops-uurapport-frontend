@@ -15,7 +15,7 @@ interface MobileNavbarProps {
 
 const MobileNavbar = ({ user }: MobileNavbarProps) => {
   return (
-    <div className="min-h-32">
+    <div>
       <Dropdown>
         <Button
           variant="tertiary"
@@ -40,10 +40,7 @@ const MobileNavbar = ({ user }: MobileNavbarProps) => {
               </Dropdown.Menu.List.Item>
             )}
             <Dropdown.Menu.Divider />
-            <Dropdown.Menu.List.Item
-              as="a"
-              href="/oauth2/logout"
-            >
+            <Dropdown.Menu.List.Item as="a" href="/oauth2/logout">
               <LeaveIcon />
               Logg ut
             </Dropdown.Menu.List.Item>

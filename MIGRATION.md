@@ -9,7 +9,7 @@ This document tracks the migration from Astro to Next.js App Router.
 - [x] Next.js configuration (next.config.js, tsconfig.json)
 - [x] Environment variables setup
 - [x] Authentication middleware (@navikt/oasis)
-- [x] Root layout with NAV Design System
+- [x] Root layout with Nav Design System
 - [x] API proxy route (/api/proxy/[...path])
 - [x] Health check routes (/api/internal/isAlive, /api/internal/isReady)
 - [x] Server utility functions (environment, urls, getOboToken, getAuthToken)
@@ -191,7 +191,7 @@ pnpm start
 ### CSS Changes
 
 - Astro CSS variables: `var(--ax-*)` → Next.js/DS: `var(--a-*)`
-- NAV Design System CSS is imported via `import '@navikt/ds-css'` in root layout
+- Nav Design System CSS is imported via `import '@navikt/ds-css'` in root layout
 
 ### Data Fetching Differences
 

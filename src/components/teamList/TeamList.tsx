@@ -18,10 +18,7 @@ type SortOrder = NonNullable<DataGrid.Table.Sorting["sortOrder"]>;
 function parseSortOrder(raw: string): SortOrder {
   if (raw === "") return [];
   const [columnId, direction] = raw.split(":");
-  if (
-    columnId === "name" &&
-    (direction === "asc" || direction === "desc")
-  ) {
+  if (columnId === "name" && (direction === "asc" || direction === "desc")) {
     return [{ columnId, direction }];
   }
   return [];
@@ -58,7 +55,6 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
       {
         id: "members",
         header: "Medlemmer",
-        align: "right",
         bodyCell: (team) => `${team.members?.length ?? 0}`,
       },
     ];

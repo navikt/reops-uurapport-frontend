@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Button,
   Checkbox,
@@ -8,6 +9,7 @@ import {
   Textarea,
   TextField,
   DatePicker,
+  LocalAlert,
   useDatepicker,
 } from "@navikt/ds-react";
 import type {
@@ -26,6 +28,22 @@ interface ReportListProps {
 }
 
 const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
+  const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const [createFailed, setCreateFailed] = useState(false);
+
+  const handleCreate = async (data: InitializeAggregatedReport) => {
+    setIsSaving(true);
+    setCreateFailed(false);
+    try {
+      const reportId = await createAggregatedReport(data);
+      router.push(`/reports/aggregated/${reportId}`);
+    } catch {
+      setCreateFailed(true);
+      setIsSaving(false);
+    }
+  };
+
   const [selectNavNo, setSelectNavNo] = useState<boolean>(false);
   const [useDataFilter, setUseDataFilter] = useState<boolean>(false);
   const [initialData, setInitialData] = useState<InitializeAggregatedReport>(
@@ -264,9 +282,20 @@ const Reports = ({ reports, aggregatedReport, userTeams }: ReportListProps) => {
           </Checkbox>
         ))}
       </CheckboxGroup>
+      {createFailed && (
+        <LocalAlert status="error" role="alert">
+          <LocalAlert.Header>
+            <LocalAlert.Title as="h3">
+              Kunne ikke opprette samlerapporten
+            </LocalAlert.Title>
+          </LocalAlert.Header>
+          <LocalAlert.Content>Prøv igjen.</LocalAlert.Content>
+        </LocalAlert>
+      )}
       <Button
         variant="primary"
-        onClick={() => createAggregatedReport(initialData)}
+        loading={isSaving}
+        onClick={() => handleCreate(initialData)}
         className={styles.createReportButton}
         disabled={
           !initialData.descriptiveName ||

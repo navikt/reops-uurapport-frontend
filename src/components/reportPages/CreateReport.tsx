@@ -1,5 +1,6 @@
 "use client";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Criterion from "./criterion/Criterion";
 import type { AggregatedReport, CriterionType, Report } from "@src/types";
 import {
@@ -15,12 +16,17 @@ import {
   Link,
   Button,
   Checkbox,
+  LocalAlert,
+  HStack,
+  Box,
 } from "@navikt/ds-react";
 import _ from "lodash";
 import styles from "./CreateReport.module.css";
 import { formatDate } from "@src/utils/client/date";
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import DeleteReportModal from "@components/Modal/deleteReportModal/DeleteReportModal";
+import ArchiveReportModal from "@components/Modal/archiveReportModal/ArchiveReportModal";
+import RestoreReportButton from "@components/Modal/restoreReport/RestoreReportButton";
 import { ValidationWarnings } from "@components/ValidationWarnings/ValidationWarnings";
 import SaveStatus, { type SaveState } from "./SaveStatus";
 import { useQueryParam, useQueryParamList } from "@src/hooks/useQueryParam";
@@ -57,6 +63,23 @@ const CreateReportInner = ({
     report.isPartOfNavNo,
   );
   const [saveState, setSaveState] = useState<SaveState>("idle");
+  const router = useRouter();
+  const archive = report.archive ?? null;
+  const isArchived = archive !== null;
+  const canEdit = report.hasWriteAccess && !isArchived;
+  const canArchive = canEdit;
+  const reportName = report.descriptiveName?.trim() || report.url;
+  const bannerRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const previousArchived = useRef(isArchived);
+
+  // The archive/restore buttons disappear after the action, so focus would be
+  // lost. Move it to whatever now describes the new state.
+  useEffect(() => {
+    if (previousArchived.current === isArchived) return;
+    previousArchived.current = isArchived;
+    (isArchived ? bannerRef.current : headingRef.current)?.focus();
+  }, [isArchived]);
 
   const filterOptions: Record<string, string> = {
     COMPLIANT: "Tilfredsstilt",
@@ -141,21 +164,67 @@ const CreateReportInner = ({
 
   return (
     <div className={styles.reportContent}>
+      {archive && (
+        <div
+          ref={bannerRef}
+          tabIndex={-1}
+          role="status"
+          className={styles.archivedBanner}
+        >
+          <LocalAlert status="announcement">
+            <LocalAlert.Header>
+              <LocalAlert.Title as="h2">
+                Denne rapporten er arkivert
+              </LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+              <p>
+                {`Arkivert ${formatDate(archive.archivedAt)} av ${archive.archivedBy}. `}
+                {archive.reason
+                  ? `Årsak: ${archive.reason}. `
+                  : "Ingen årsak oppgitt. "}
+                Rapporten vises ikke i rapportlistene og kan ikke redigeres før
+                den er gjenopprettet.
+              </p>
+              {report.hasWriteAccess && (
+                <RestoreReportButton
+                  reportId={report.reportId}
+                  reportName={reportName}
+                  onRestored={() => router.refresh()}
+                  onError={() => router.refresh()}
+                />
+              )}
+            </LocalAlert.Content>
+          </LocalAlert>
+        </div>
+      )}
       {report?.validationWarnings && report.validationWarnings.length > 0 && (
         <ValidationWarnings warnings={report.validationWarnings} />
       )}
-      <Heading level="1" size="xlarge">
+      <Heading level="1" size="xlarge" ref={headingRef} tabIndex={-1}>
         {report?.descriptiveName}
       </Heading>
       <SaveStatus state={saveState} />
+      {(canArchive || isAdmin) && (
+        <Box marginBlock="space-16">
+          <HStack gap="space-8" justify="end" wrap>
+            {canArchive && <ArchiveReportModal reportId={report.reportId} />}
+            {isAdmin && (
+              <DeleteReportModal
+                reportId={report.reportId}
+                reportName={reportName}
+                isArchived={isArchived}
+                onDeleted={() => router.push("/reports")}
+              />
+            )}
+          </HStack>
+        </Box>
+      )}
       <Tabs value={activeTab} onChange={setActiveTab} className={styles.tabs}>
-        <div className={styles.tabListButton}>
-          <Tabs.List>
-            <Tabs.Tab value="criteria" label="Retningslinjer" />
-            <Tabs.Tab value="metadata" label="Metadata" />
-          </Tabs.List>
-          {isAdmin && <DeleteReportModal reportId={report.reportId} />}
-        </div>
+        <Tabs.List>
+          <Tabs.Tab value="criteria" label="Retningslinjer" />
+          <Tabs.Tab value="metadata" label="Metadata" />
+        </Tabs.List>
 
         <Tabs.Panel value="criteria" className={styles.tabContent}>
           <span className={styles.filtersAndButton}>
@@ -197,7 +266,7 @@ const CreateReportInner = ({
                       key={criterion.number}
                       criterion={criterion}
                       handleChange={handleCriterionChange}
-                      hasWriteAccess={report?.hasWriteAccess as boolean}
+                      hasWriteAccess={canEdit}
                     />
                   </li>
                 ))
@@ -211,7 +280,7 @@ const CreateReportInner = ({
                         key={criterion.number}
                         criterion={criterion}
                         handleChange={handleCriterionChange}
-                        hasWriteAccess={report?.hasWriteAccess as boolean}
+                        hasWriteAccess={canEdit}
                       />
                     </li>
                   ))}
@@ -236,7 +305,7 @@ const CreateReportInner = ({
             id="report-name"
             name="report-name"
             defaultValue={report?.descriptiveName}
-            readOnly={!report?.hasWriteAccess}
+            readOnly={!canEdit}
             onChange={(e) =>
               handleMetadataChange("descriptiveName", e.target.value)
             }
@@ -246,7 +315,7 @@ const CreateReportInner = ({
             id="report-url"
             name="report-url"
             defaultValue={report?.url}
-            readOnly={!report?.hasWriteAccess}
+            readOnly={!canEdit}
             onChange={(e) => handleMetadataChange("url", e.target.value)}
           />
           <Textarea
@@ -254,18 +323,18 @@ const CreateReportInner = ({
             id="notes"
             name="notes"
             defaultValue={report?.notes}
-            readOnly={!report?.hasWriteAccess}
+            readOnly={!canEdit}
             onChange={(e) => handleMetadataChange("notes", e.target.value)}
           />
           {reportType === "SINGLE" && (
             <Checkbox
-              description="Hvis rapporten er for en applikasjon som er en del av NAV.no rettet mot eksterne brukere, huk av her."
+              description="Hvis rapporten er for en applikasjon som er en del av nav.no rettet mot eksterne brukere, huk av her."
               name="isPartOfNavNo"
               defaultChecked={isPartOfNavNo}
               onChange={handleCheckboxChange}
-              readOnly={!report?.hasWriteAccess}
+              readOnly={!canEdit}
             >
-              Tjenesten er under NAV.no
+              Tjenesten er under nav.no
             </Checkbox>
           )}
         </Tabs.Panel>

@@ -52,7 +52,7 @@ export default async function Home() {
             Velkommen til uurapport!
           </Heading>
           <p className={styles.text}>
-            Denne applikasjonen er NAVs interne rapporteringsverktøy for
+            Denne applikasjonen er Navs interne rapporteringsverktøy for
             tilgjengelighetserklæringer
           </p>
           <Button as={Link} href="/teams" underline={false} variant="secondary">

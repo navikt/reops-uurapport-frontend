@@ -22,7 +22,7 @@ export const getOboToken = async (token: string): Promise<string> => {
     } catch (cause) {
       throw new Error(
         `Could not reach local auth token server at ${tokenEndpoint}. Is it running? ` +
-          `Tip: use "pnpm run mock-dev" instead if you don't have it set up locally.`,
+          `Tip: start it with "docker-compose up" in reops-uurapport-backend.`,
         { cause },
       );
     }

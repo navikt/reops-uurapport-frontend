@@ -1,6 +1,14 @@
 "use client";
 import { useRef, useState } from "react";
-import { Button, Modal, Select, TextField, Checkbox } from "@navikt/ds-react";
+import { useRouter } from "next/navigation";
+import {
+  Button,
+  Modal,
+  Select,
+  TextField,
+  Checkbox,
+  LocalAlert,
+} from "@navikt/ds-react";
 import { createReport } from "@src/services/reportServices";
 import { FilePlusIcon } from "@navikt/aksel-icons";
 import { fetcher } from "@src/utils/client/api";
@@ -22,10 +30,22 @@ const CreateReportModal = ({ preselectedTeamId }: CreateReportModalProps) => {
     teamId: preselectedTeamId ?? "",
     isPartOfNavNo: true,
   });
-  const handleSubmit = () => {
-    const reportId = createReport(reportDetails);
-    console.log(reportId);
-    ref.current?.close();
+  const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const [createFailed, setCreateFailed] = useState(false);
+
+  const handleSubmit = async () => {
+    setIsSaving(true);
+    setCreateFailed(false);
+    try {
+      const reportId = await createReport(reportDetails);
+      ref.current?.close();
+      router.push(`/reports/${reportId}`);
+    } catch {
+      setCreateFailed(true);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const { data: userDetails } = useSWRImmutable(
@@ -70,6 +90,7 @@ const CreateReportModal = ({ preselectedTeamId }: CreateReportModalProps) => {
       </Button>
       <Modal
         ref={ref}
+        portal
         header={{ heading: "Opprett rapport" }}
         closeOnBackdropClick={true}
       >
@@ -90,12 +111,12 @@ const CreateReportModal = ({ preselectedTeamId }: CreateReportModalProps) => {
             onChange={handleChange}
           />
           <Checkbox
-            description="Hvis rapporten er for en applikasjon som er en del av NAV.no, huk av her."
+            description="Hvis rapporten er for en applikasjon som er en del av nav.no, huk av her."
             name="isPartOfNavNo"
             onChange={handleCheckboxChange}
             checked={reportDetails.isPartOfNavNo}
           >
-            Tjenesten er under NAV.no
+            Tjenesten er under nav.no
           </Checkbox>
           <Select
             label="Hvilket team er ansvarlig for løsningen?"
@@ -110,9 +131,24 @@ const CreateReportModal = ({ preselectedTeamId }: CreateReportModalProps) => {
               </option>
             ))}
           </Select>
+          {createFailed && (
+            <LocalAlert status="error" role="alert">
+              <LocalAlert.Header>
+                <LocalAlert.Title as="h3">
+                  Kunne ikke opprette rapporten
+                </LocalAlert.Title>
+              </LocalAlert.Header>
+              <LocalAlert.Content>Prøv igjen.</LocalAlert.Content>
+            </LocalAlert>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button type="submit" disabled={!isValid} onClick={handleSubmit}>
+          <Button
+            type="submit"
+            disabled={!isValid}
+            loading={isSaving}
+            onClick={handleSubmit}
+          >
             Opprett rapport
           </Button>
           <Button

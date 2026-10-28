@@ -20,6 +20,8 @@
 
 .myReportsHeader {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   justify-content: right;
   margin-top: 20px;
   margin-bottom: 20px;

@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "mock-dev": "concurrently \"pnpm run mock\" \"pnpm run dev:mock\"",
+    "mock-dev:admin": "MOCK_ROLE=admin pnpm run mock-dev",
+    "mock-dev:user": "MOCK_ROLE=user pnpm run mock-dev",
     "dev": "APP_ENV=local VITE_APP_ENV=local next dev",
     "dev:mock": "APP_ENV=mock VITE_APP_ENV=mock next dev",
     "prettier": "prettier --write .",

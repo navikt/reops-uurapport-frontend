@@ -14,3 +14,13 @@
 .button {
   white-space: nowrap;
 }
+
+.memberRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.memberField {
+  flex: 1;
+}

@@ -4,6 +4,8 @@ import ReportList from "@components/ReportList/ReportList";
 import CreateReportModal from "@components/Modal/createReportModal/CreateReportModal";
 import { Tabs, Select, Heading } from "@navikt/ds-react";
 import { Suspense } from "react";
+import { ArchiveIcon } from "@navikt/aksel-icons";
+import { LinkButton } from "@components/LinkButton";
 import TeamDashboard from "./TeamDashboard";
 import styles from "./MyTeam.module.css";
 import type { Team, User } from "@src/types";
@@ -35,10 +37,7 @@ function MyTeamInner({ user }: MyTeamProps) {
           <Tabs.Tab value="teamView" label="Mitt team" />
           <Tabs.Tab value="myReports" label="Mine rapporter" />
         </Tabs.List>
-        <Tabs.Panel
-          value="teamView"
-          className="h-24 w-full bg-ax-neutral-100 p-4"
-        >
+        <Tabs.Panel value="teamView">
           <div className={styles.myTeamHeader}>
             <Select
               className={styles.selector}
@@ -58,11 +57,15 @@ function MyTeamInner({ user }: MyTeamProps) {
 
           <TeamDashboard teamId={currentTeamId} isMyTeam={isMyTeam} />
         </Tabs.Panel>
-        <Tabs.Panel
-          value="myReports"
-          className="h-24 w-full bg-ax-neutral-100 p-4"
-        >
+        <Tabs.Panel value="myReports">
           <header className={styles.myReportsHeader}>
+            <LinkButton
+              href="/reports/archived"
+              variant="secondary"
+              icon={<ArchiveIcon aria-hidden />}
+            >
+              Arkiverte rapporter
+            </LinkButton>
             <CreateReportModal preselectedTeamId={currentTeamId} />
           </header>
           <section className={styles.myReportsContainer}>

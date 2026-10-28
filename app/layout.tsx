@@ -3,6 +3,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { Box } from "@navikt/ds-react";
+import { PageBlock } from "@/components/layout/PageBlock";
 import Script from "next/script";
 import "@navikt/ds-css";
 import "./globals.css";
@@ -10,7 +11,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "uurapport rapportering",
   description:
-    "NAVs interne rapporteringsverktøy for tilgjengelighetserklæringer",
+    "Navs interne rapporteringsverktøy for tilgjengelighetserklæringer",
 };
 
 export const viewport: Viewport = {
@@ -34,24 +35,24 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className="body">
+      <body>
         <ThemeProvider>
           <Navbar />
           <Box
             as="main"
             background="sunken"
-            padding={{ xs: "space-16", sm: "space-20" }}
+            paddingBlock={{ xs: "space-16", sm: "space-20" }}
             style={{ flex: 1 }}
           >
-            <Box
-              background="raised"
-              padding={{ xs: "space-16", sm: "space-20", md: "space-24" }}
-              borderRadius="8"
-              maxWidth="1280px"
-              marginInline="auto"
-            >
-              {children}
-            </Box>
+            <PageBlock width="xl" gutters>
+              <Box
+                background="raised"
+                padding={{ xs: "space-16", sm: "space-20", md: "space-24" }}
+                borderRadius="8"
+              >
+                {children}
+              </Box>
+            </PageBlock>
           </Box>
           <Footer />
         </ThemeProvider>

@@ -39,9 +39,8 @@ export const createReport = async (initReport: InitialReport) => {
   });
 
   if (response.ok) {
-    const report = await response.json();
-    console.log("Report created", report, response.status);
-    window.location.href = `/reports/${report.id}`;
+    const report: { id: string } = await response.json();
+    return report.id;
   } else {
     console.log("Failed to create report", response.status);
     throw new Error("Failed to create report");
@@ -61,9 +60,8 @@ export const createAggregatedReport = async (
   });
 
   if (response.ok) {
-    const report = await response.json();
-    console.log("Aggregated report created", report, response.status);
-    window.location.href = `/reports/aggregated/${report.id}`;
+    const report: { id: string } = await response.json();
+    return report.id;
   } else {
     console.log("Failed to create aggregated report", response.status);
     throw new Error("Failed to create aggregated report");
@@ -128,22 +126,43 @@ export const updateAggregatedReport = (
   });
 };
 
-// DELETE operations
-export const deleteReport = async (id: string) => {
-  const response = await fetch(
-    `${apiProxyUrl}/admin/reports/aggregated/${id}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-      credentials: "include",
-    },
-  );
+// ARCHIVE operations
+export const archiveReport = async (id: string, reason?: string) => {
+  const response = await fetch(`${apiProxyUrl}/reports/${id}/archive`, {
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({ reason: reason?.trim() || null }),
+    credentials: "include",
+  });
 
-  if (response.ok) {
-    window.location.href = "/reports";
-  } else {
+  if (!response.ok) {
+    console.log("Failed to archive report", response.status);
+    throw new Error("Failed to archive report");
+  }
+};
+
+export const unarchiveReport = async (id: string) => {
+  const response = await fetch(`${apiProxyUrl}/reports/${id}/archive`, {
+    headers: { "Content-Type": "application/json" },
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    console.log("Failed to restore report", response.status);
+    throw new Error("Failed to restore report");
+  }
+};
+
+// DELETE operations (admin only, permanent)
+export const deleteReport = async (id: string) => {
+  const response = await fetch(`${apiProxyUrl}/admin/reports/${id}`, {
+    headers: { "Content-Type": "application/json" },
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
     console.log("Failed to delete report", response.status);
     throw new Error("Failed to delete report");
   }

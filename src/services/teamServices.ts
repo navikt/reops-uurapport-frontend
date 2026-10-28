@@ -1,23 +1,32 @@
 import type { NewTeam, Team } from "@src/types";
 import { apiProxyUrl } from "@src/utils/client/urls";
 
+export class TeamRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
+
 export const updateTeam = async (teamId: string, updates: Team) => {
-  console.log(9999999999999, teamId);
-  const response = await fetch(`${apiProxyUrl}/teams/${teamId}/update`, {
-    method: "PUT",
+  // PATCH, not PUT: the backend's CORS config only allows PATCH, so PUT is
+  // rejected (403) when the browser calls the backend directly (local mode).
+  const response = await fetch(`${apiProxyUrl}/teams/${teamId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updates),
     credentials: "include",
   });
   if (response.ok) {
     console.log("Team updated", response.status);
   } else {
-    console.log("Failed to update team-", response.status);
-    throw new Error("Failed to update team");
+    throw new TeamRequestError("Failed to update team", response.status);
   }
 };
 
 export const createNewTeam = async (newTeam: NewTeam) => {
-  console.log(newTeam);
   const response = await fetch(`${apiProxyUrl}/teams/new`, {
     method: "POST",
     body: JSON.stringify(newTeam),
@@ -25,17 +34,9 @@ export const createNewTeam = async (newTeam: NewTeam) => {
       "Content-Type": "application/json",
     },
   });
-  if (response.ok) {
-    console.log(
-      `${newTeam.name} Created! The members are: ${newTeam.members}`, //Rediger senere. Brukte til debugging
-      response.status,
-    );
-  }
 
   if (!response.ok) {
-    const text = await response.text();
-    console.error("Failed to create team", response.status, text);
-    throw new Error(`Failed to create team: ${response.status} ${text}`);
+    throw new TeamRequestError("Failed to create team", response.status);
   }
 };
 

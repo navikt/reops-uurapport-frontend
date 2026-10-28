@@ -41,7 +41,7 @@ export default async function TeamsPage() {
 
   return (
     <VStack gap="space-16">
-      <h1>Alle teams</h1>
+      <h1>Alle team</h1>
       <NewTeamModal />
       <Suspense fallback={null}>
         <TeamList teams={teams} isAdmin={user.isAdmin} />

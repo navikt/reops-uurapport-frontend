@@ -1,13 +1,14 @@
 "use client";
-import { useRef, useState } from "react";
-import { Button, List, Modal, TextField, Box } from "@navikt/ds-react";
-import { PersonPencilIcon, XMarkIcon } from "@navikt/aksel-icons";
-import styles from "./EditTeamModal.module.css";
-import type { Team } from "@src/types";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@navikt/ds-react";
+import { PersonPencilIcon } from "@navikt/aksel-icons";
+import useSWR, { mutate as globalMutate } from "swr";
 import { updateTeam } from "@src/services/teamServices";
-import useSWR from "swr";
 import { fetcher } from "@src/utils/client/api";
 import { apiProxyUrl } from "@src/utils/client/urls";
+import type { Team } from "@src/types";
+import TeamFormModal from "./TeamFormModal";
 
 interface EditTeamModalProps {
   teamId: string;
@@ -15,151 +16,46 @@ interface EditTeamModalProps {
   size?: "medium" | "small" | "xsmall";
 }
 
-function EditTeamModal(props: EditTeamModalProps) {
-  const ref = useRef<HTMLDialogElement>(null);
-  const [teamEmail, setTeamEmail] = useState("");
-  const [newMembers, setNewMembers] = useState<string[]>([]);
-  const [currentMembers, setCurrentMembers] = useState<string[]>([]);
-  const [teamName, setTeamName] = useState("");
+function EditTeamModal({ teamId, size }: EditTeamModalProps) {
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const addMemberField = () => {
-    setNewMembers([...newMembers, ""]);
-  };
-
-  const { data: teamData, mutate } = useSWR(
-    { url: `${apiProxyUrl}/teams/${props.teamId}` },
+  const { data: team, mutate } = useSWR<Team>(
+    { url: `${apiProxyUrl}/teams/${teamId}` },
     fetcher,
   );
 
-  const updateTeamData = async () => {
-    const editedTeam: Team = {
-      id: teamData.id,
-      name: teamName,
-      email: teamEmail,
-      members: [...currentMembers, ...newMembers],
-    };
-
-    console.log(editedTeam);
-
-    try {
-      await updateTeam(props.teamId as string, editedTeam);
-      ref.current?.close();
-      console.log("her her her");
-      mutate();
-      setCurrentMembers(editedTeam.members);
-      setNewMembers([]);
-    } catch (error) {
-      console.error(error);
-      setCurrentMembers(editedTeam.members); //Denne linja og linja under må fjernes/endres før deployment
-      setNewMembers([]);
-    }
-  };
-
-  const [prevTeamData, setPrevTeamData] = useState(teamData);
-  if (teamData !== prevTeamData) {
-    setPrevTeamData(teamData);
-    setTeamEmail(teamData?.email);
-    setCurrentMembers(teamData?.members);
-    setTeamName(teamData?.name);
-  }
-
-  const isValid = teamName && teamEmail;
-
   return (
-    <div className="py-12">
+    <div>
       <Button
         variant="secondary"
-        size={props.size}
-        onClick={() => ref.current?.showModal()}
+        size={size}
+        onClick={() => setIsOpen(true)}
         icon={<PersonPencilIcon aria-hidden />}
       >
         Rediger
       </Button>
-      <Modal
-        ref={ref}
-        header={{ heading: "Rediger team" }}
-        width={400}
-        closeOnBackdropClick={true}
-      >
-        <Modal.Body>
-          <span className={styles.modalFields}>
-            <TextField
-              label="Sett navn for team"
-              defaultValue={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-            />
-
-            <TextField
-              label="Sett emailadresse for teameier"
-              defaultValue={teamEmail}
-              type="email"
-              onChange={(e) => setTeamEmail(e.target.value)}
-            />
-
-            <div className={styles.currentMembersList}>
-              <Box marginBlock="space-16" asChild>
-                <List data-aksel-migrated-v8>
-                  {currentMembers?.map((member: string) => {
-                    return (
-                      <List.Item key={member}>
-                        <Button
-                          variant="tertiary"
-                          size="small"
-                          icon={<XMarkIcon aria-hidden />}
-                          className={styles.removeMemberButton}
-                          onClick={() => {
-                            const membersCopy = [...currentMembers];
-                            const index = membersCopy.indexOf(member);
-                            membersCopy.splice(index, 1);
-                            setCurrentMembers(membersCopy);
-                          }}
-                        >
-                          Fjern {member}
-                        </Button>
-                      </List.Item>
-                    );
-                  })}
-                </List>
-              </Box>
-            </div>
-            {newMembers?.map((member, index) => (
-              <TextField
-                key={index}
-                label={`Mailadresse til nytt medlem`}
-                type="email"
-                placeholder="ola.nordmann@nav.no"
-                onChange={(e) => {
-                  const newGuys = [...newMembers];
-                  newGuys[index] = e.target.value;
-                  setNewMembers(newGuys);
-                }}
-              />
-            ))}
-
-            <Button
-              variant="tertiary"
-              onClick={addMemberField}
-              style={{ marginTop: "1rem" }}
-            >
-              Legg til medlem
-            </Button>
-          </span>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={updateTeamData} disabled={!isValid}>
-            Lagre
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setNewMembers([]);
-              ref.current?.close();
-            }}
-          >
-            Avbryt
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {isOpen && team && (
+        <TeamFormModal
+          heading="Rediger team"
+          submitLabel="Lagre"
+          errorTitle="Kunne ikke lagre teamet"
+          initialValues={{
+            name: team.name,
+            email: team.email,
+            members: team.members ?? [],
+          }}
+          onSubmit={async (values) => {
+            await updateTeam(teamId, { id: team.id, ...values });
+            await mutate();
+            router.refresh();
+            // Membership may have changed which teams the user belongs to.
+            await globalMutate({ url: `${apiProxyUrl}/users/details` });
+            setIsOpen(false);
+          }}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 }

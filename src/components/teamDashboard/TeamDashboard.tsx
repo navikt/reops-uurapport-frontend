@@ -59,16 +59,18 @@ function TeamDashboard(props: TeamDashboardProps) {
   } = useSWR({ url: `${apiProxyUrl}/teams/${props.teamId}` }, fetcher);
 
   const selectedReport = reportListData?.find(
-    (report: ReportSummary) => report.id === currentReportId
+    (report: ReportSummary) => report.id === currentReportId,
   );
 
-  const reportRequest = currentReportId && selectedReport
-    ? {
-        url: selectedReport.reportType === "AGGREGATED"
-          ? `${apiProxyUrl}/reports/aggregated/${currentReportId}`
-          : `${apiProxyUrl}/reports/${currentReportId}`
-      }
-    : null;
+  const reportRequest =
+    currentReportId && selectedReport
+      ? {
+          url:
+            selectedReport.reportType === "AGGREGATED"
+              ? `${apiProxyUrl}/reports/aggregated/${currentReportId}`
+              : `${apiProxyUrl}/reports/${currentReportId}`,
+        }
+      : null;
 
   const {
     data: reportData,
@@ -161,7 +163,7 @@ function TeamDashboard(props: TeamDashboardProps) {
   const chartData = [
     { name: "Oppfylt", value: COMPLIANT, color: colors.success },
     { name: "Ikke oppfylt", value: NOT_COMPLIANT, color: colors.danger },
-    { name: "Ikke aktuelle", value: NOT_APPLICABLE, color: colors.neutral },
+    { name: "Ikke aktuelt", value: NOT_APPLICABLE, color: colors.neutral },
     { name: "Ikke testet", value: NOT_TESTED, color: colors.warning },
   ];
 
@@ -176,7 +178,7 @@ function TeamDashboard(props: TeamDashboardProps) {
       {hasError && !isLoading && (
         <div className={styles.errorContainer}>
           <Alert variant="error">
-            Noe gikk galt ved lasting av data. Vennligst prøv igjen senere.
+            Noe gikk galt ved lasting av data. Prøv igjen senere.
           </Alert>
         </div>
       )}
@@ -212,7 +214,7 @@ function TeamDashboard(props: TeamDashboardProps) {
                     </Select>
                     <p>Oppfylt: {COMPLIANT}</p>
                     <p>Ikke oppfylt: {NOT_COMPLIANT}</p>
-                    <p>Ikke aktuelle: {NOT_APPLICABLE}</p>
+                    <p>Ikke aktuelt: {NOT_APPLICABLE}</p>
                     <p>Ikke testet: {NOT_TESTED}</p>
                   </>
                 ) : (
@@ -248,7 +250,10 @@ function TeamDashboard(props: TeamDashboardProps) {
                             ))}
                           </Pie>
                           <Tooltip
-                            formatter={(value?: ValueType, _name?: NameType) => {
+                            formatter={(
+                              value?: ValueType,
+                              _name?: NameType,
+                            ) => {
                               const safeValue =
                                 typeof value === "number" ? value : 0;
 
@@ -287,33 +292,34 @@ function TeamDashboard(props: TeamDashboardProps) {
                                       },
                                       index: number,
                                     ) => (
-                                    <li
-                                      key={`item-${index}`}
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: "8px",
-                                      }}
-                                    >
-                                      <div
+                                      <li
+                                        key={`item-${index}`}
                                         style={{
-                                          width: 16,
-                                          height: 16,
-                                          backgroundColor: entry.color,
-                                          borderRadius: "2px",
-                                          flexShrink: 0,
-                                        }}
-                                      />
-                                      <span
-                                        style={{
-                                          fontSize: "16px",
-                                          fontFamily: "Source Sans Pro",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          gap: "8px",
                                         }}
                                       >
-                                        {entry.value}: {entry.payload?.value}
-                                      </span>
-                                    </li>
-                                  ))}
+                                        <div
+                                          style={{
+                                            width: 16,
+                                            height: 16,
+                                            backgroundColor: entry.color,
+                                            borderRadius: "2px",
+                                            flexShrink: 0,
+                                          }}
+                                        />
+                                        <span
+                                          style={{
+                                            fontSize: "16px",
+                                            fontFamily: "Source Sans Pro",
+                                          }}
+                                        >
+                                          {entry.value}: {entry.payload?.value}
+                                        </span>
+                                      </li>
+                                    ),
+                                  )}
                                 </ul>
                               );
                             }}
@@ -333,13 +339,13 @@ function TeamDashboard(props: TeamDashboardProps) {
             <section className={styles.teamInfo}>
               <div className={styles.teamInfoHeader}>
                 <Heading level="3" size="medium">
-                  Team detaljer
+                  Teamdetaljer
                 </Heading>
                 {props.isMyTeam && <EditTeamModal teamId={props.teamId} />}
               </div>
               <span className={styles.divider} />
               <Heading level="3" size="small">
-                Team ansvarlig
+                Teamansvarlig
               </Heading>
               *<BodyLong>{teamData?.email ?? "Ikke satt"}</BodyLong>
               <span className={styles.divider} />

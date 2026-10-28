@@ -41,7 +41,7 @@ export default async function DiagnosticsPage() {
   return (
     <div className={styles.container}>
       <Heading level="1" size="xlarge" spacing>
-        Rapport Diagnostikk
+        Rapportdiagnostikk
       </Heading>
 
       <div className={styles.summary}>

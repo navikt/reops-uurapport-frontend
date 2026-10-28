@@ -21,7 +21,7 @@ const nextConfig = {
     NEXT_PUBLIC_WONDERWALL_INGRESS: process.env.VITE_WONDERWALL_INGRESS,
   },
 
-  // Transpile NAV packages
+  // Transpile Nav packages
   transpilePackages: ["@navikt/ds-react", "@navikt/aksel-icons"],
 
   // Configure serverExternalPackages for server-only modules

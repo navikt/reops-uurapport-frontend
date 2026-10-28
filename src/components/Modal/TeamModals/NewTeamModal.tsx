@@ -1,131 +1,45 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Modal, TextField } from "@navikt/ds-react";
 import AddOrgBtn from "@components/buttons/AddOrgBtn";
 import { apiProxyUrl } from "@src/utils/client/urls";
-import type { NewTeam } from "@src/types";
 import { createNewTeam } from "@src/services/teamServices";
 import useSWRImmutable from "swr/immutable";
 import { fetcher } from "@src/utils/client/api";
-import styles from "../Modal.module.css";
+import TeamFormModal from "./TeamFormModal";
 
 function NewTeamModal() {
-  const ref = useRef<HTMLDialogElement>(null);
   const router = useRouter();
-  const [teamName, setTeamName] = useState("");
-  const [teamEmail, setTeamEmail] = useState("");
-  const [members, setMembers] = useState<string[]>([""]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const { data: userDetails, isLoading } = useSWRImmutable(
+  const { data: userDetails, mutate } = useSWRImmutable(
     { url: `${apiProxyUrl}/users/details` },
     fetcher,
   );
 
-  const addMemberField = () => {
-    setMembers([...members, ""]);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const newTeam: NewTeam = {
-      name: teamName,
-      email: teamEmail,
-      members: members,
-    };
-
-    console.log(newTeam);
-
-    try {
-      await createNewTeam(newTeam);
-      setTeamName("");
-      setTeamEmail("");
-      setMembers([""]);
-      ref.current?.close();
-      router.refresh();
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const isValid = teamName && teamEmail;
-
-  const [prevUserEmail, setPrevUserEmail] = useState(userDetails?.email);
-  if (!isLoading && userDetails?.email !== prevUserEmail) {
-    setPrevUserEmail(userDetails?.email);
-    setTeamEmail(userDetails?.email);
-  }
-
   return (
-    <div className="py-12">
-      <AddOrgBtn onClick={() => ref.current?.showModal()} />
-
-      <Modal
-        ref={ref}
-        header={{ heading: "Legg til team" }}
-        width={400}
-        closeOnBackdropClick={true}
-      >
-        <Modal.Body className={styles.modalBody}>
-          <form
-            id="createTeamForm"
-            onSubmit={handleSubmit}
-            className={styles.modalFields}
-          >
-            <TextField
-              label="Teamnavn"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              placeholder="Team Eksempel"
-            />
-            <TextField
-              label="Skriv inn din e-post:"
-              onChange={(e) => setTeamEmail(e.target.value)}
-              placeholder="ola.nordmann@nav.no"
-              defaultValue={userDetails?.email}
-            />
-
-            {members.map((member, index) => (
-              <TextField
-                key={index}
-                label={`Medlem ${index + 1}`}
-                value={member}
-                placeholder="ola.nordmann@nav.no"
-                onChange={(e) => {
-                  const newMembers = [...members];
-                  newMembers[index] = e.target.value;
-                  setMembers(newMembers);
-                }}
-              />
-            ))}
-
-            <Button
-              variant="tertiary"
-              onClick={addMemberField}
-              style={{ marginTop: "1rem" }}
-            >
-              Legg til flere medlemmer
-            </Button>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button type="submit" form="createTeamForm" disabled={!isValid}>
-            Send
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setTeamName("");
-              setTeamEmail("");
-              setMembers([""]);
-              ref.current?.close();
-            }}
-          >
-            Avbryt
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    <div>
+      <AddOrgBtn onClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <TeamFormModal
+          heading="Legg til team"
+          submitLabel="Opprett team"
+          errorTitle="Kunne ikke opprette teamet"
+          initialValues={{
+            name: "",
+            email: userDetails?.email ?? "",
+            members: [""],
+          }}
+          onSubmit={async (values) => {
+            await createNewTeam(values);
+            // The user's team list is cached; refresh it so the new team is selectable.
+            await mutate();
+            router.refresh();
+            setIsOpen(false);
+          }}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 }

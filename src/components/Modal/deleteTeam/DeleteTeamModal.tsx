@@ -4,6 +4,8 @@ import { Modal, Button, BodyLong } from "@navikt/ds-react";
 import { deleteTeam } from "@src/services/teamServices";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
+import { mutate as globalMutate } from "swr";
+import { apiProxyUrl } from "@src/utils/client/urls";
 import styles from "../Modal.module.css";
 
 interface DeleteTeamModalProps {
@@ -19,6 +21,8 @@ const DeleteTeamModal = ({ teamId, size }: DeleteTeamModalProps) => {
   const handleDelete = async () => {
     try {
       await deleteTeam(teamId);
+      // The cached team list for the current user is now out of date.
+      await globalMutate({ url: `${apiProxyUrl}/users/details` });
       ref.current?.close();
       router.refresh();
     } catch (error) {
@@ -38,7 +42,7 @@ const DeleteTeamModal = ({ teamId, size }: DeleteTeamModalProps) => {
       >
         Slett
       </Button>
-      <Modal ref={ref} header={{ heading: "Slett team" }}>
+      <Modal ref={ref} portal header={{ heading: "Slett team" }}>
         <Modal.Body>
           <BodyLong>Er du sikker på at du vil slette dette teamet?</BodyLong>
         </Modal.Body>

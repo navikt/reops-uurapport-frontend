@@ -47,6 +47,39 @@ export type ValidationWarning = {
   severity: "warning" | "error";
 };
 
+export type ArchiveInfo = {
+  archivedAt: string;
+  archivedBy: string;
+  reason: string | null;
+};
+
+export type ArchivedReportSummary = {
+  id: string;
+  title: string | null;
+  url: string;
+  teamId: string;
+  teamName: string;
+  reportType: "SINGLE" | "AGGREGATED";
+  archive: ArchiveInfo;
+  canRestore: boolean;
+};
+
+export type DeletionContact = {
+  navIdent: string;
+  fullName: string;
+  role: "kontaktperson" | "teamleder";
+};
+
+export type AdminContact = {
+  name: string | null;
+  email: string;
+};
+
+export type DeletionContacts = {
+  contacts: DeletionContact[];
+  slackChannelId: string | null;
+};
+
 export type Report = {
   reportId: string;
   url: string;
@@ -66,6 +99,7 @@ export type Report = {
   notes: string;
   isPartOfNavNo: boolean;
   validationWarnings?: ValidationWarning[];
+  archive?: ArchiveInfo | null;
 };
 
 export type ReportSummary = {
@@ -123,6 +157,7 @@ export type AggregatedReport = {
   notes: string;
   isPartOfNavNo: boolean;
   validationWarnings?: ValidationWarning[];
+  archive?: ArchiveInfo | null;
 };
 
 export type User = {

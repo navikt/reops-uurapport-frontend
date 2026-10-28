@@ -24,6 +24,10 @@ spec:
     outbound:
       rules:
         - application: uurapport-backend
+      external:
+        - host: teamkatalog-api.intern.nav.no
+          ports:
+            - port: 443
   azure:
     application:
       enabled: true
@@ -44,6 +48,8 @@ spec:
   env:
     - name: NAIS_CLUSTER_NAME
       value: "dev-gcp"
+    - name: TEAMKATALOG_API_URL
+      value: "https://teamkatalog-api.intern.nav.no"
     - name: BACKEND_APP_NAME
       value: "uurapport-backend"
     - name: VITE_WONDERWALL_INGRESS
