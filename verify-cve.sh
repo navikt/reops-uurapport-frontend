@@ -10,7 +10,7 @@ if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
 fi
 printf '%s' "$NODE_AUTH_TOKEN" > /tmp/.nat-token
 trap 'rm -f /tmp/.nat-token' EXIT
-docker build --secret id=NODE_AUTH_TOKEN,src=/tmp/.nat-token -t "$IMAGE" .
+docker build --pull --no-cache --secret id=NODE_AUTH_TOKEN,src=/tmp/.nat-token -t "$IMAGE" .
 
 echo "== docker run =="
 docker run --rm -d -p "$PORT:$PORT" --name "$IMAGE" "$IMAGE"

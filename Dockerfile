@@ -26,7 +26,7 @@ RUN pnpm run build
 # Production stage - wolfi-base with nodejs only (no npm/node-gyp shipped)
 FROM cgr.dev/chainguard/wolfi-base:latest AS production
 LABEL maintainer="team-researchops"
-RUN apk update && apk add --no-cache nodejs-25
+RUN apk update && apk upgrade --no-cache && apk add --no-cache nodejs-26
 WORKDIR /usr/src/app
 
 # Copy standalone server and dependencies

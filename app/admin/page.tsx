@@ -2,6 +2,7 @@ import { LinkButton } from "@src/components/LinkButton";
 import { apiUrl } from "@src/utils/server/urls";
 import { getOboToken } from "@src/utils/server/getOboToken";
 import { getAuthToken } from "@src/utils/server/getAuthToken";
+import DeadlineSettings from "@src/components/deadline/DeadlineSettings";
 import ReportList from "@src/components/ReportList/ReportList";
 import Forbidden from "@src/components/forbidden/Forbidden";
 import type { ReportSummary, User } from "@src/types";
@@ -73,6 +74,7 @@ export default async function AdminPage() {
         </LinkButton>
       </div>
       <div className={styles.content}>
+        <DeadlineSettings />
         <Suspense fallback={null}>
           <ReportList reports={reports} />
         </Suspense>

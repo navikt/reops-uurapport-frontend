@@ -1,6 +1,7 @@
 import { apiUrl } from "@/utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
+import DeadlineCountdown from "@/components/deadline/DeadlineCountdown";
 import MyTeam from "@/components/teamDashboard/MyTeam";
 import { Button, Heading, Link } from "@navikt/ds-react";
 import styles from "./page.module.css";
@@ -46,6 +47,7 @@ export default async function Home() {
 
   return (
     <div>
+      <DeadlineCountdown />
       <section className={styles.section1}>
         <section className={styles.innerSection1}>
           <Heading level="1" size="xlarge">

@@ -508,6 +508,16 @@ api.get("/api/teams/team-test/reports", (c) => {
   return c.json([]);
 });
 
+let mockDeadline: string | null = null;
+
+api.get("/api/deadline", (c) => c.json({ deadline: mockDeadline }));
+
+api.patch("/api/admin/deadline", async (c) => {
+  const body = await c.req.json<{ deadline: string | null }>();
+  mockDeadline = body.deadline;
+  return c.json({ deadline: mockDeadline });
+});
+
 api.post("/api/teams/new", (c) => {
   return c.text("det funka");
 });
