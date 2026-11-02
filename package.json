@@ -14,7 +14,6 @@
     "lint": "eslint .",
     "knip": "^6.44.0",
     "knip:production": "knip --production",
-    "prepare": "husky",
     "analyze": "ANALYZE=true next build -c next.config.analyze.mjs",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -35,8 +34,6 @@
     "swr": "^2.5.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.2.2",
-    "@commitlint/config-conventional": "^21.2.2",
     "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "^9.39.5",
     "@hono/node-server": "2.1.1",
@@ -54,7 +51,6 @@
     "eslint-config-next": "^16.4.3",
     "eslint-config-prettier": "^10.1.8",
     "hono": "4.13.5",
-    "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "knip": "^6.44.0",
     "lint-staged": "^17.6.0",
