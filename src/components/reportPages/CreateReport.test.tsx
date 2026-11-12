@@ -1,8 +1,15 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, it, expect, vi } from "vitest";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import CreateReport from "./CreateReport";
 import type { Report } from "@src/types";
+import { updateReport } from "@src/services/reportServices";
+
+let currentSearch = "";
+beforeEach(() => {
+  currentSearch = "";
+  vi.clearAllMocks();
+});
 
 vi.mock("@src/services/reportServices", () => ({
   updateReport: vi.fn().mockResolvedValue({}),
@@ -17,7 +24,7 @@ vi.mock("@components/Modal/archiveReportModal/ArchiveReportModal", () => ({
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: vi.fn(), push: vi.fn(), refresh: vi.fn() }),
   usePathname: () => "/reports/r1",
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => new URLSearchParams(currentSearch),
 }));
 
 const report = {
@@ -40,6 +47,63 @@ const report = {
 } as unknown as Report;
 
 describe("CreateReport a11y", () => {
+  it("filters saved Nei answers using NON_COMPLIANT", () => {
+    currentSearch = "filter=NON_COMPLIANT";
+    const mixed = {
+      ...report,
+      successCriteria: [
+        {
+          ...report.successCriteria[0],
+          status: "COMPLIANT",
+          name: "Oppfylt krav",
+        },
+        {
+          ...report.successCriteria[0],
+          number: "1.2.1",
+          status: "NON_COMPLIANT",
+          name: "Krav med brudd",
+        },
+        {
+          ...report.successCriteria[0],
+          number: "1.3.1",
+          status: "NOT_TESTED",
+          name: "Ikke testet krav",
+        },
+      ],
+    };
+    render(<CreateReport report={mixed} reportType="SINGLE" isAdmin={false} />);
+    expect(
+      screen.getByRole("heading", { name: "1.2.1 Krav med brudd" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "1.1.1 Oppfylt krav" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "1.3.1 Ikke testet krav" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "Nei" })).toBeChecked();
+  });
+
+  it("sends NON_COMPLIANT to the save API when selecting Nei", async () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <CreateReport report={report} reportType="SINGLE" isAdmin={false} />,
+      );
+      fireEvent.click(screen.getByRole("radio", { name: "Nei" }));
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(500);
+      });
+      expect(updateReport).toHaveBeenCalledWith("r1", {
+        successCriteria: [
+          expect.objectContaining({ number: "1.1.1", status: "NON_COMPLIANT" }),
+        ],
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("has no axe violations (criteria tab)", async () => {
     const { container } = render(
       <CreateReport report={report} reportType="SINGLE" isAdmin={false} />,

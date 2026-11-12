@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import Criterion from "./Criterion";
 import type { CriterionType } from "@src/types";
@@ -16,6 +16,34 @@ const baseCriterion = {
 const noop = vi.fn();
 
 describe("Criterion a11y", () => {
+  it("emits the API status NON_COMPLIANT when Nei is selected", () => {
+    const handleChange = vi.fn();
+    render(
+      <Criterion
+        criterion={baseCriterion}
+        handleChange={handleChange}
+        hasWriteAccess
+      />,
+    );
+    fireEvent.click(screen.getByRole("radio", { name: "Nei" }));
+    expect(handleChange).toHaveBeenCalledWith(
+      "1.1.1",
+      "status",
+      "NON_COMPLIANT",
+    );
+  });
+
+  it("shows saved NON_COMPLIANT answers as Nei", () => {
+    render(
+      <Criterion
+        criterion={{ ...baseCriterion, status: "NON_COMPLIANT" }}
+        handleChange={noop}
+        hasWriteAccess
+      />,
+    );
+    expect(screen.getByRole("radio", { name: "Nei" })).toBeChecked();
+  });
+
   it("has no axe violations (default state)", async () => {
     const { container } = render(
       <Criterion

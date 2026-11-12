@@ -6,9 +6,8 @@ import { apiProxyUrl } from "@src/utils/client/urls";
 export const DEADLINE_KEY = { url: `${apiProxyUrl}/deadline` };
 
 export const useDeadlineOverride = () => {
-  const { data, mutate } = useSWR<{ deadline: string | null }>(
-    DEADLINE_KEY,
-    fetcher,
-  );
-  return { override: data?.deadline ?? null, mutate };
+  const { data, mutate, isLoading, error } = useSWR<{
+    deadline: string | null;
+  }>(DEADLINE_KEY, fetcher);
+  return { override: data?.deadline ?? null, mutate, isLoading, error };
 };

@@ -103,6 +103,7 @@ export type Report = {
 };
 
 export type ReportSummary = {
+  url?: string;
   title: string;
   id: string;
   teamId: string;

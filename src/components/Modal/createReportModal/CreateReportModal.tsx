@@ -20,9 +20,13 @@ import { apiProxyUrl } from "@src/utils/client/urls";
 interface CreateReportModalProps {
   /** Team to preselect in the team dropdown (e.g. the team currently viewed). */
   preselectedTeamId?: string;
+  size?: "medium" | "small" | "xsmall";
 }
 
-const CreateReportModal = ({ preselectedTeamId }: CreateReportModalProps) => {
+const CreateReportModal = ({
+  preselectedTeamId,
+  size,
+}: CreateReportModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
   const [reportDetails, setReportDetails] = useState<InitialReport>({
     name: "",
@@ -79,8 +83,9 @@ const CreateReportModal = ({ preselectedTeamId }: CreateReportModalProps) => {
   return (
     <div>
       <Button
+        size={size}
         type="button"
-        icon={<FilePlusIcon />}
+        icon={<FilePlusIcon aria-hidden />}
         onClick={() => {
           ref.current?.showModal();
           console.log("Modal opened");

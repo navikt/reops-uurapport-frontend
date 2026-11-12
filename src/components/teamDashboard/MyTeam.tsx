@@ -11,6 +11,7 @@ import styles from "./MyTeam.module.css";
 import type { Team, User } from "@src/types";
 import DeadlineCountdown from "@components/deadline/DeadlineCountdown";
 import { useQueryParam } from "@src/hooks/useQueryParam";
+import { useSelectedTeam } from "@src/hooks/useSelectedTeam";
 
 interface MyTeamProps {
   user: User;
@@ -20,18 +21,13 @@ function MyTeamInner({ user }: MyTeamProps) {
   const [tabState, setTabState] = useQueryParam("tab", "teamView", {
     history: "push",
   });
-  const [currentTeamId, setCurrentTeamId] = useQueryParam(
-    "team",
-    user.teams[0].id,
-  );
+  const [currentTeamId, setCurrentTeamId] = useSelectedTeam(user);
   const isMyTeam = user.teams.map((team) => team.id).includes(currentTeamId);
 
   return (
     <>
       <DeadlineCountdown />
       <div className={styles.teamContent}>
-        <h1 className={styles.srOnly}>Mitt team</h1>
-
         <Tabs value={tabState} onChange={setTabState}>
           <Tabs.List>
             <Tabs.Tab value="teamView" label="Mitt team" />
@@ -42,6 +38,7 @@ function MyTeamInner({ user }: MyTeamProps) {
               <Select
                 className={styles.selector}
                 label="Velg team"
+                size="small"
                 value={currentTeamId}
                 onChange={(e) => setCurrentTeamId(e.target.value)}
               >
@@ -55,7 +52,11 @@ function MyTeamInner({ user }: MyTeamProps) {
               </Select>
             </div>
 
-            <TeamDashboard teamId={currentTeamId} isMyTeam={isMyTeam} />
+            <TeamDashboard
+              key={currentTeamId}
+              teamId={currentTeamId}
+              isMyTeam={isMyTeam}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="myReports">
             <header className={styles.myReportsHeader}>
@@ -70,7 +71,9 @@ function MyTeamInner({ user }: MyTeamProps) {
             </header>
             <section className={styles.myReportsContainer}>
               <section>
-                <Heading size="large">Mine rapporter</Heading>
+                <Heading level="1" size="large">
+                  Mine rapporter
+                </Heading>
               </section>
               <ReportList reports={user.reports} />
             </section>

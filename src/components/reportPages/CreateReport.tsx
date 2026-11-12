@@ -30,19 +30,17 @@ import RestoreReportButton from "@components/Modal/restoreReport/RestoreReportBu
 import { ValidationWarnings } from "@components/ValidationWarnings/ValidationWarnings";
 import SaveStatus, { type SaveState } from "./SaveStatus";
 import { useQueryParam, useQueryParamList } from "@src/hooks/useQueryParam";
+import {
+  CRITERION_STATUS,
+  isCriterionStatus,
+  type CriterionStatus,
+} from "@src/utils/criterionStatus";
 
 interface CreateReportProps {
   report: Report | AggregatedReport;
   reportType: "SINGLE" | "AGGREGATED";
   isAdmin: boolean;
 }
-
-const VALID_FILTERS = new Set([
-  "COMPLIANT",
-  "NON_COMPLIANT",
-  "NOT_TESTED",
-  "NOT_APPLICABLE",
-]);
 
 const CreateReportInner = ({
   report,
@@ -56,9 +54,7 @@ const CreateReportInner = ({
     history: "push",
   });
   const [rawFilters, setSelectedFilters] = useQueryParamList("filter");
-  const selectedFilters = rawFilters.filter((filter) =>
-    VALID_FILTERS.has(filter),
-  );
+  const selectedFilters = rawFilters.filter(isCriterionStatus);
   const [isPartOfNavNo, setIsPartOfNavNo] = useState<boolean>(
     report.isPartOfNavNo,
   );
@@ -81,7 +77,7 @@ const CreateReportInner = ({
     (isArchived ? bannerRef.current : headingRef.current)?.focus();
   }, [isArchived]);
 
-  const filterOptions: Record<string, string> = {
+  const filterOptions: Record<CriterionStatus, string> = {
     COMPLIANT: "Tilfredsstilt",
     NON_COMPLIANT: "Ikke tilfredsstilt",
     NOT_TESTED: "Ikke testet",
@@ -229,7 +225,7 @@ const CreateReportInner = ({
         <Tabs.Panel value="criteria" className={styles.tabContent}>
           <span className={styles.filtersAndButton}>
             <Chips className={styles.reportFilters}>
-              {Object.keys(filterOptions).map((option) => (
+              {Object.values(CRITERION_STATUS).map((option) => (
                 <Chips.Toggle
                   key={option}
                   selected={selectedFilters.includes(option)}
@@ -271,8 +267,10 @@ const CreateReportInner = ({
                   </li>
                 ))
               : criteriaData
-                  .filter((criterion) =>
-                    selectedFilters.includes(criterion.status),
+                  .filter(
+                    (criterion) =>
+                      isCriterionStatus(criterion.status) &&
+                      selectedFilters.includes(criterion.status),
                   )
                   .map((criterion) => (
                     <li key={criterion.number}>

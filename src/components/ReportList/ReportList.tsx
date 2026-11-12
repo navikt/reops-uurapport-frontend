@@ -1,11 +1,15 @@
 "use client";
-import { Link } from "@navikt/ds-react";
+import { BodyLong, Link, TextField } from "@navikt/ds-react";
 import { DataGrid } from "@navikt/ds-react/PREVIEW";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { formatDate } from "@src/utils/client/date";
 import { useQueryParam } from "@src/hooks/useQueryParam";
 import type { ReportSummary } from "@src/types";
 import cell from "@components/cellText.module.css";
+import { matchesReport } from "@src/utils/client/reportSearch";
+import { usePagination } from "@src/hooks/usePagination";
+import ReportPagination from "./ReportPagination";
+import styles from "./ReportList.module.css";
 
 interface ReportListProps {
   reports: ReportSummary[];
@@ -90,6 +94,7 @@ const comparator = (
 };
 
 const ReportList = ({ reports }: ReportListProps) => {
+  const [query, setQuery] = useState("");
   const [sortParam, setSortParam] = useQueryParam("sort", "");
   const sortOrder = useMemo(() => parseSortOrder(sortParam), [sortParam]);
 
@@ -102,30 +107,52 @@ const ReportList = ({ reports }: ReportListProps) => {
 
   const sortedData = useMemo(() => {
     const first = sortOrder[0];
-    if (!first) return reports;
+    const filtered = reports.filter((report) => matchesReport(report, query));
+    if (!first) return filtered;
     const orderBy = first.columnId as keyof ReportSummary;
-    return reports.slice().sort((a, b) => {
+    return filtered.sort((a, b) => {
       const result = comparator(a, b, orderBy);
       return first.direction === "asc" ? -result : result;
     });
-  }, [reports, sortOrder]);
+  }, [reports, sortOrder, query]);
+  const pagination = usePagination(
+    sortedData,
+    JSON.stringify([query, sortOrder]),
+  );
 
   return (
-    <DataGrid
-      columns={columns}
-      data={sortedData}
-      getRowId={(row) => row.id}
-      defaultSettings={{ zebraStripes: true, truncateContent: false }}
-    >
-      <DataGrid.Table
-        layout="auto"
-        sorting={{
-          allowMultiSort: false,
-          sortOrder,
-          onSortOrderChange: handleSortOrderChange,
-        }}
+    <>
+      <TextField
+        size="small"
+        label="Finn rapport"
+        description="Søk i navn og nettadresse"
+        className={styles.search}
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
       />
-    </DataGrid>
+      <DataGrid
+        columns={columns}
+        data={pagination.items}
+        getRowId={(row) => row.id}
+        defaultSettings={{ zebraStripes: true, truncateContent: false }}
+      >
+        <DataGrid.Table
+          aria-label="Rapporter"
+          emptyContent={<BodyLong>Ingen rapporter passer med søket</BodyLong>}
+          layout="auto"
+          sorting={{
+            allowMultiSort: false,
+            sortOrder,
+            onSortOrderChange: handleSortOrderChange,
+          }}
+        />
+      </DataGrid>
+      <ReportPagination
+        total={sortedData.length}
+        page={pagination.page}
+        onPageChange={pagination.onPageChange}
+      />
+    </>
   );
 };
 

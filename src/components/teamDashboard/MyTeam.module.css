@@ -4,13 +4,9 @@
   margin-right: auto;
 }
 
-.selector,
-.selector2 {
-  width: 20%;
-}
-
 .selector {
-  margin-top: 20px;
+  width: min(26rem, 100%);
+  margin-top: 1rem;
 }
 
 .myReportsHeader {
@@ -32,22 +28,4 @@
 .myReportsContainer > section {
   display: flex;
   justify-content: space-between;
-}
-
-@media (max-width: 768px) {
-  .selector,
-  .selector2 {
-    width: 90%;
-    margin-right: auto;
-    margin-left: auto;
-  }
-}
-
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }

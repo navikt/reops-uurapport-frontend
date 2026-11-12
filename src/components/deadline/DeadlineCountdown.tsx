@@ -16,7 +16,11 @@ function DeadlineCountdown() {
 
   useEffect(() => {
     const first = setTimeout(() => setNow(new Date()), 0);
-    return () => clearTimeout(first);
+    const clock = setInterval(() => setNow(new Date()), 60_000);
+    return () => {
+      clearTimeout(first);
+      clearInterval(clock);
+    };
   }, []);
 
   if (!now) return null;

@@ -1,394 +1,169 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import styles from "./TeamDashboard.module.css";
+
+import { useState } from "react";
 import {
   BodyLong,
+  Button,
   Heading,
-  Radio,
-  RadioGroup,
-  Select,
-  Alert,
+  Link,
+  LocalAlert,
   Loader,
-  Table,
-  Box,
+  TextField,
 } from "@navikt/ds-react";
-import { fetcher } from "@src/utils/client/api";
-import ReportList from "@components/ReportList/ReportList";
 import useSWR from "swr";
 import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
 import CreateReportModal from "@components/Modal/createReportModal/CreateReportModal";
+import { fetcher } from "@src/utils/client/api";
 import { apiProxyUrl } from "@src/utils/client/urls";
-import { useQueryParam } from "@src/hooks/useQueryParam";
-import type { ReportSummary } from "@src/types";
-import type {
-  NameType,
-  ValueType,
-} from "recharts/types/component/DefaultTooltipContent";
-import type { LegendPayload } from "recharts/types/component/DefaultLegendContent";
+import type { ReportSummary, Team } from "@src/types";
+import TeamReportList from "./TeamReportList";
+import TeamStatusSummary from "./TeamStatusSummary";
+import styles from "./TeamDashboard.module.css";
 
 interface TeamDashboardProps {
   teamId: string;
   isMyTeam: boolean;
 }
 
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-
-function TeamDashboard(props: TeamDashboardProps) {
-  const [currentReportId, setCurrentReportId] = useQueryParam("report", "");
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 768 : false,
+function TeamDashboard({ teamId, isMyTeam }: TeamDashboardProps) {
+  const [query, setQuery] = useState("");
+  const {
+    data: reports,
+    error: reportsError,
+    isLoading: isLoadingReports,
+    mutate: reloadReports,
+  } = useSWR<ReportSummary[]>(
+    { url: `${apiProxyUrl}/teams/${teamId}/reports` },
+    fetcher,
   );
-
   const {
-    data: reportListData,
-    error: reportListError,
-    isLoading: isLoadingList,
-  } = useSWR({ url: `${apiProxyUrl}/teams/${props.teamId}/reports` }, fetcher);
-
-  const {
-    data: teamData,
+    data: team,
     error: teamError,
-    isLoading: isLoadingTeamData,
-  } = useSWR({ url: `${apiProxyUrl}/teams/${props.teamId}` }, fetcher);
+    isLoading: isLoadingTeam,
+    mutate: reloadTeam,
+  } = useSWR<Team>({ url: `${apiProxyUrl}/teams/${teamId}` }, fetcher);
 
-  const selectedReport = reportListData?.find(
-    (report: ReportSummary) => report.id === currentReportId,
-  );
+  if (isLoadingReports || isLoadingTeam) {
+    return (
+      <div className={styles.loadingContainer}>
+        <Loader size="xlarge" title="Laster teamets rapporter" />
+      </div>
+    );
+  }
 
-  const reportRequest =
-    currentReportId && selectedReport
-      ? {
-          url:
-            selectedReport.reportType === "AGGREGATED"
-              ? `${apiProxyUrl}/reports/aggregated/${currentReportId}`
-              : `${apiProxyUrl}/reports/${currentReportId}`,
-        }
-      : null;
+  if (reportsError || teamError) {
+    return (
+      <LocalAlert status="error">
+        <LocalAlert.Header>
+          <LocalAlert.Title>Kunne ikke laste teamet</LocalAlert.Title>
+        </LocalAlert.Header>
+        <LocalAlert.Content>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              void reloadReports();
+              void reloadTeam();
+            }}
+          >
+            Prøv igjen
+          </Button>
+        </LocalAlert.Content>
+      </LocalAlert>
+    );
+  }
 
-  const {
-    data: reportData,
-    error: reportError,
-    isLoading: isLoadingReport,
-  } = useSWR(reportRequest, fetcher);
-
-  const isLoading =
-    isLoadingList || isLoadingTeamData || (currentReportId && isLoadingReport);
-  const hasError = reportListError || teamError || reportError;
-
-  const hasReport = Array.isArray(reportListData) && reportListData.length > 0;
-
-  const { NOT_COMPLIANT, COMPLIANT, NOT_APPLICABLE, NOT_TESTED } =
-    reportData?.successCriteria?.reduce(
-      (
-        acc: {
-          NOT_COMPLIANT: number;
-          COMPLIANT: number;
-          NOT_APPLICABLE: number;
-          NOT_TESTED: number;
-        },
-        criterion: { status?: string },
-      ) => {
-        switch (criterion.status) {
-          case "NOT_TESTED":
-            acc.NOT_TESTED++;
-            break;
-          case "COMPLIANT":
-            acc.COMPLIANT++;
-            break;
-          case "NOT_APPLICABLE":
-            acc.NOT_APPLICABLE++;
-            break;
-          default:
-            acc.NOT_COMPLIANT++;
-            break;
-        }
-        return acc;
-      },
-      { NOT_COMPLIANT: 0, COMPLIANT: 0, NOT_APPLICABLE: 0, NOT_TESTED: 0 },
-    ) ?? { NOT_COMPLIANT: 0, COMPLIANT: 0, NOT_APPLICABLE: 0, NOT_TESTED: 0 };
-
-  useEffect(() => {
-    if (hasReport && !currentReportId && reportListData?.[0]?.id) {
-      setCurrentReportId(reportListData[0].id);
-    }
-  }, [hasReport, currentReportId, reportListData, setCurrentReportId]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const total = COMPLIANT + NOT_COMPLIANT + NOT_APPLICABLE + NOT_TESTED;
-
-  // Get Aksel design tokens for chart colors at runtime
-  const getChartColors = () => {
-    if (typeof window === "undefined") {
-      // SSR fallback - use reasonable defaults
-      return {
-        success: "#00703C",
-        danger: "#C32F27",
-        neutral: "#595959",
-        warning: "#FF9100",
-      };
-    }
-
-    const root = getComputedStyle(document.documentElement);
-    return {
-      success:
-        root.getPropertyValue("--a-surface-success-strong").trim() || "#00703C",
-      danger:
-        root.getPropertyValue("--a-surface-danger-strong").trim() || "#C32F27",
-      neutral:
-        root.getPropertyValue("--ax-bg-neutral-moderate").trim() || "#595959",
-      warning:
-        root.getPropertyValue("--a-surface-warning-strong").trim() || "#FF9100",
-    };
-  };
-
-  const colors = getChartColors();
-
-  const chartData = [
-    { name: "Oppfylt", value: COMPLIANT, color: colors.success },
-    { name: "Ikke oppfylt", value: NOT_COMPLIANT, color: colors.danger },
-    { name: "Ikke aktuelt", value: NOT_APPLICABLE, color: colors.neutral },
-    { name: "Ikke testet", value: NOT_TESTED, color: colors.warning },
-  ];
+  const allReports = reports ?? [];
 
   return (
     <div className={styles.teamDashboard}>
-      {isLoading && (
-        <div className={styles.loadingContainer}>
-          <Loader size="xlarge" title="Laster teamdashboard..." />
-        </div>
-      )}
-
-      {hasError && !isLoading && (
-        <div className={styles.errorContainer}>
-          <Alert variant="error">
-            Noe gikk galt ved lasting av data. Prøv igjen senere.
-          </Alert>
-        </div>
-      )}
-
-      {!isLoading && !hasError && (
-        <>
-          <div className={styles.teamHeader}>
-            <Heading level="1" size="large">
-              {teamData?.name ?? "Ukjent team"}
-            </Heading>
-            {props.isMyTeam && (
-              <div className={styles.buttons}>
-                <CreateReportModal preselectedTeamId={props.teamId} />
-              </div>
-            )}
-          </div>
-
-          <div className={styles.chartAndInfo}>
-            {hasReport && currentReportId ? (
-              <section className={styles.pieChart}>
-                {isMobile ? (
-                  <>
-                    <Select
-                      label="Velg rapport"
-                      value={currentReportId}
-                      onChange={(e) => setCurrentReportId(e.target.value)}
-                    >
-                      {reportListData.map((report: ReportSummary) => (
-                        <option key={report.id} value={report.id}>
-                          {report.title}
-                        </option>
-                      ))}
-                    </Select>
-                    <p>Oppfylt: {COMPLIANT}</p>
-                    <p>Ikke oppfylt: {NOT_COMPLIANT}</p>
-                    <p>Ikke aktuelt: {NOT_APPLICABLE}</p>
-                    <p>Ikke testet: {NOT_TESTED}</p>
-                  </>
+      <header className={styles.teamHeader}>
+        <div className={styles.teamInfo}>
+          <Heading level="1" size="medium">
+            {team?.name ?? "Ukjent team"}
+          </Heading>
+          <dl className={styles.teamDetails}>
+            <div>
+              <dt>Teamansvarlig</dt>
+              <dd>
+                {team?.email ? (
+                  <Link href={`mailto:${team.email}`}>{team.email}</Link>
                 ) : (
-                  <>
-                    <RadioGroup
-                      name="report"
-                      legend="Velg rapport"
-                      value={currentReportId}
-                      onChange={setCurrentReportId}
-                    >
-                      {reportListData.map((report: ReportSummary) => (
-                        <Radio key={report.id} value={report.id}>
-                          {report.title}
-                        </Radio>
-                      ))}
-                    </RadioGroup>
-
-                    <div className={styles.chartContainer}>
-                      <ResponsiveContainer width="100%" height={230}>
-                        <PieChart>
-                          <Pie
-                            data={chartData}
-                            cx={140}
-                            cy={110}
-                            innerRadius={60}
-                            outerRadius={90}
-                            paddingAngle={2}
-                            dataKey="value"
-                            isAnimationActive={false}
-                          >
-                            {chartData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip
-                            formatter={(
-                              value?: ValueType,
-                              _name?: NameType,
-                            ) => {
-                              const safeValue =
-                                typeof value === "number" ? value : 0;
-
-                              if (!total) {
-                                return [`${safeValue} (0%)`, ""];
-                              }
-
-                              const percentage = (
-                                (safeValue / total) *
-                                100
-                              ).toFixed(1);
-                              return [`${safeValue} (${percentage}%)`, ""];
-                            }}
-                          />
-                          <Legend
-                            layout="vertical"
-                            verticalAlign="middle"
-                            align="right"
-                            content={(legendProps) => {
-                              const { payload } = legendProps;
-                              return (
-                                <ul
-                                  style={{
-                                    listStyle: "none",
-                                    padding: 0,
-                                    margin: 0,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "12px",
-                                  }}
-                                >
-                                  {payload?.map(
-                                    (
-                                      entry: LegendPayload & {
-                                        payload?: { value?: number };
-                                      },
-                                      index: number,
-                                    ) => (
-                                      <li
-                                        key={`item-${index}`}
-                                        style={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                          gap: "8px",
-                                        }}
-                                      >
-                                        <div
-                                          style={{
-                                            width: 16,
-                                            height: 16,
-                                            backgroundColor: entry.color,
-                                            borderRadius: "2px",
-                                            flexShrink: 0,
-                                          }}
-                                        />
-                                        <span
-                                          style={{
-                                            fontSize: "16px",
-                                            fontFamily: "Source Sans Pro",
-                                          }}
-                                        >
-                                          {entry.value}: {entry.payload?.value}
-                                        </span>
-                                      </li>
-                                    ),
-                                  )}
-                                </ul>
-                              );
-                            }}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </>
+                  "Ikke satt"
                 )}
-              </section>
-            ) : (
-              <section className={styles.pieChart}>
-                <BodyLong>Ingen rapporter tilgjengelig</BodyLong>
-              </section>
-            )}
+              </dd>
+            </div>
+            <div>
+              <dt>Medlemmer</dt>
+              <dd>
+                {team?.members?.length ? (
+                  <ul className={styles.members}>
+                    {team.members.map((member) => (
+                      <li key={member}>{member}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  "Ingen medlemmer registrert"
+                )}
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <div className={styles.teamSide}>
+          {isMyTeam && (
+            <div
+              role="group"
+              aria-label="Teamadministrasjon"
+              className={styles.teamActions}
+            >
+              <EditTeamModal teamId={teamId} size="small" />
+            </div>
+          )}
+          <TeamStatusSummary reports={allReports} />
+        </div>
+      </header>
 
-            <section className={styles.teamInfo}>
-              <div className={styles.teamInfoHeader}>
-                <Heading level="3" size="medium">
-                  Teamdetaljer
-                </Heading>
-                {props.isMyTeam && <EditTeamModal teamId={props.teamId} />}
-              </div>
-              <span className={styles.divider} />
-              <Heading level="3" size="small">
-                Teamansvarlig
-              </Heading>
-              *<BodyLong>{teamData?.email ?? "Ikke satt"}</BodyLong>
-              <span className={styles.divider} />
-              <Heading level="3" size="small">
-                Teammedlemmer
-              </Heading>
-              <Box>
-                <Table zebraStripes>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.ColumnHeader>Medlem</Table.ColumnHeader>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {teamData?.members?.length ? (
-                      teamData.members.map((member: string) => (
-                        <Table.Row key={member}>
-                          <Table.DataCell>{member}</Table.DataCell>
-                        </Table.Row>
-                      ))
-                    ) : (
-                      <Table.Row>
-                        <Table.DataCell>
-                          Ingen medlemmer registrert
-                        </Table.DataCell>
-                      </Table.Row>
-                    )}
-                  </Table.Body>
-                </Table>
-              </Box>
-            </section>
+      <section aria-label="Rapporter" className={styles.reports}>
+        <div className={styles.toolbar}>
+          {allReports.length > 0 && (
+            <TextField
+              label="Finn rapport"
+              description="Søk i navn og nettadresse"
+              size="small"
+              className={styles.search}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          )}
+          {isMyTeam && (
+            <CreateReportModal
+              key={teamId}
+              preselectedTeamId={teamId}
+              size="small"
+            />
+          )}
+        </div>
+        {allReports.length > 0 ? (
+          <>
+            <TeamReportList
+              reports={allReports}
+              groupByType
+              query={query}
+              emptyContent={
+                <div className={styles.emptyState}>
+                  <BodyLong>Ingen rapporter passer med søket</BodyLong>
+                  <Button variant="tertiary" onClick={() => setQuery("")}>
+                    Nullstill søket
+                  </Button>
+                </div>
+              }
+            />
+          </>
+        ) : (
+          <div className={styles.emptyState}>
+            <BodyLong>Teamet har ingen rapporter ennå.</BodyLong>
           </div>
-
-          <section className={styles.reportList}>
-            <Heading level="3" size="small">
-              Rapporter
-            </Heading>
-            <Suspense fallback={null}>
-              <ReportList reports={reportListData ?? []} />
-            </Suspense>
-          </section>
-        </>
-      )}
+        )}
+      </section>
     </div>
   );
 }

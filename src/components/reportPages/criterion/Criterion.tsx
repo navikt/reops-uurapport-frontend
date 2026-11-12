@@ -1,5 +1,6 @@
 import { Textarea, Radio, RadioGroup, Link, Heading } from "@navikt/ds-react";
 import type { CriterionType } from "@src/types";
+import { CRITERION_STATUS } from "@src/utils/criterionStatus";
 import styles from "./Criterion.module.css";
 
 type CriterionProps = {
@@ -47,16 +48,18 @@ const Criterion = ({
             </p>
           }
           defaultValue={
-            criterion.status !== "NOT_TESTED" ? criterion.status : "NOT_TESTED"
+            criterion.status !== CRITERION_STATUS.NOT_TESTED
+              ? criterion.status
+              : CRITERION_STATUS.NOT_TESTED
           }
         >
-          <Radio value="COMPLIANT">Ja</Radio>
-          <Radio value="NON_COMPLIANT">Nei</Radio>
-          <Radio value="NOT_TESTED">Ikke testet</Radio>
+          <Radio value={CRITERION_STATUS.COMPLIANT}>Ja</Radio>
+          <Radio value={CRITERION_STATUS.NON_COMPLIANT}>Nei</Radio>
+          <Radio value={CRITERION_STATUS.NOT_TESTED}>Ikke testet</Radio>
 
-          <Radio value="NOT_APPLICABLE">Ikke aktuelt</Radio>
+          <Radio value={CRITERION_STATUS.NOT_APPLICABLE}>Ikke aktuelt</Radio>
         </RadioGroup>
-        {criterion.status === "NON_COMPLIANT" ? (
+        {criterion.status === CRITERION_STATUS.NON_COMPLIANT ? (
           <div className={styles.textareaWrapper}>
             <Textarea
               className={styles.textarea}
