@@ -37,7 +37,16 @@ export default function TeamStatusSummary({
   const pending = singleReports.some(
     (report) => !statuses?.[report.id]?.data && !statuses?.[report.id]?.error,
   );
-  if (pending) return <Loader size="small" title="Laster samlet kravstatus" />;
+  if (pending)
+    return (
+      <section
+        aria-label="Samlet kravstatus"
+        aria-busy="true"
+        className={styles.summary}
+      >
+        <Loader size="small" title="Laster samlet kravstatus" />
+      </section>
+    );
   const loaded = singleReports.flatMap((report) => {
     const result = statuses?.[report.id];
     return result?.data && !result.error ? [result.data] : [];

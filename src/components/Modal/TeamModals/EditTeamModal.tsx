@@ -26,7 +26,7 @@ function EditTeamModal({ teamId, size }: EditTeamModalProps) {
   );
 
   return (
-    <div>
+    <>
       <Button
         variant="secondary"
         size={size}
@@ -56,7 +56,7 @@ function EditTeamModal({ teamId, size }: EditTeamModalProps) {
           onClose={() => setIsOpen(false)}
         />
       )}
-    </div>
+    </>
   );
 }
 

@@ -61,6 +61,7 @@ let loadingUrl: string | undefined;
 let reportDetail: typeof detail | undefined;
 let detailsById: Record<string, typeof detail>;
 let createdById: Record<string, string | undefined>;
+let notesById: Record<string, string>;
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -69,6 +70,7 @@ beforeEach(() => {
   loadingUrl = undefined;
   reportDetail = detail;
   detailsById = {};
+  notesById = {};
   createdById = Object.fromEntries(
     reports.map((report) => [report.id, report.date]),
   );
@@ -90,6 +92,7 @@ beforeEach(() => {
                       created: createdById[id],
                       lastChanged: "2026-11-12",
                       url: "https://example.com/page",
+                      notes: notesById[id],
                     }
                   : undefined,
               },
@@ -119,6 +122,25 @@ beforeEach(() => {
 });
 
 describe("TeamDashboard", () => {
+  it("keeps the summary section in place while chart data loads", () => {
+    reportDetail = undefined;
+    const { rerender } = render(<TeamDashboard teamId="team" isMyTeam />);
+    const summary = screen.getByRole("region", { name: "Samlet kravstatus" });
+    expect(summary).toHaveClass(styles.summary);
+    expect(summary).toHaveAttribute("aria-busy", "true");
+    expect(
+      within(summary).getByTitle("Laster samlet kravstatus"),
+    ).toBeInTheDocument();
+
+    reportDetail = detail;
+    rerender(<TeamDashboard teamId="team" isMyTeam />);
+    expect(screen.getByRole("region", { name: "Samlet kravstatus" })).toBe(
+      summary,
+    );
+    expect(summary).not.toHaveAttribute("aria-busy", "true");
+    expect(within(summary).getByText("Krav i 2 enkeltrapporter")).toBeVisible();
+  });
+
   it("shows every report together, newest first, without decorative copy or counters", () => {
     render(<TeamDashboard teamId="team" isMyTeam />);
     const reportLinks = screen
@@ -420,6 +442,28 @@ describe("TeamDashboard", () => {
       within(singles).getByRole("link", { name: "Single 0" }),
     ).toBeInTheDocument();
   });
+
+  it("hides redundant type in grouped details and shows only nonempty notes", () => {
+    notesById = { combined: "En linje\n  En annen", first: "  " };
+    render(<TeamReportList reports={reports} groupByType />);
+    const aggregated = screen.getByRole("table", { name: "Samlerapporter" });
+    fireEvent.click(
+      within(aggregated).getByRole("button", { name: "Vis detaljer" }),
+    );
+    expect(within(aggregated).getByText("Notater")).toBeVisible();
+    expect(within(aggregated).getByText(/En linje/).textContent).toBe(
+      "En linje\n  En annen",
+    );
+    expect(
+      within(aggregated).queryByText("Rapporttype"),
+    ).not.toBeInTheDocument();
+    const singles = screen.getByRole("table", { name: "Enkeltrapporter" });
+    fireEvent.click(
+      within(singles).getByRole("button", { name: "Vis alle rader" }),
+    );
+    expect(within(singles).queryByText("Rapporttype")).not.toBeInTheDocument();
+    expect(within(singles).queryByText("Notater")).not.toBeInTheDocument();
+  });
 });
 
 describe("ReportStatus", () => {
@@ -562,6 +606,7 @@ describe("ReportStatus", () => {
             created: "2024-01-03",
             lastChanged: "2026-11-12",
             url: "https://example.com",
+            notes: "Tekst\nmed linjeskift",
           }),
         ),
       )
@@ -578,6 +623,7 @@ describe("ReportStatus", () => {
         created: "2024-01-03",
         lastChanged: "2026-11-12",
         url: "https://example.com",
+        notes: "Tekst\nmed linjeskift",
       });
       expect(results.combined).toEqual({ error: true });
       expect(fetch).toHaveBeenCalledTimes(2);

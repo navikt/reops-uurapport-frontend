@@ -31,7 +31,7 @@ const DeleteTeamModal = ({ teamId, size }: DeleteTeamModalProps) => {
   };
 
   return (
-    <div>
+    <>
       <Button
         data-color="danger"
         variant="primary"
@@ -64,7 +64,7 @@ const DeleteTeamModal = ({ teamId, size }: DeleteTeamModalProps) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 

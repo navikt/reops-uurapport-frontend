@@ -4,8 +4,9 @@ import { getAuthToken } from "@/utils/server/getAuthToken";
 import TeamList from "@/components/teamList/TeamList";
 import NewTeamModal from "@/components/Modal/TeamModals/NewTeamModal";
 import type { Team, User } from "@src/types";
-import { VStack } from "@navikt/ds-react";
+import { Heading } from "@navikt/ds-react";
 import { Suspense } from "react";
+import { PageHeader } from "@components/layout/PageHeader";
 
 async function getData() {
   const token = await getAuthToken();
@@ -40,12 +41,15 @@ export default async function TeamsPage() {
   const { user, teams } = await getData();
 
   return (
-    <VStack gap="space-16">
-      <h1>Alle team</h1>
-      <NewTeamModal />
+    <>
+      <PageHeader actions={<NewTeamModal />}>
+        <Heading level="1" size="xlarge">
+          Alle team
+        </Heading>
+      </PageHeader>
       <Suspense fallback={null}>
         <TeamList teams={teams} isAdmin={user.isAdmin} />
       </Suspense>
-    </VStack>
+    </>
   );
 }

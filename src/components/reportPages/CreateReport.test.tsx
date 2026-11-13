@@ -16,7 +16,7 @@ vi.mock("@src/services/reportServices", () => ({
   updateAggregatedReport: vi.fn().mockResolvedValue({}),
 }));
 vi.mock("@components/Modal/deleteReportModal/DeleteReportModal", () => ({
-  default: () => null,
+  default: () => <button type="button">Slett rapport</button>,
 }));
 vi.mock("@components/Modal/archiveReportModal/ArchiveReportModal", () => ({
   default: () => <button type="button">Arkiver rapport</button>,
@@ -149,5 +149,78 @@ describe("CreateReport a11y", () => {
       screen.getByRole("button", { name: "Arkiver rapport" }),
     ).toBeTruthy();
     expect(screen.queryByRole("button", { name: /^Gjenopprett/ })).toBeNull();
+  });
+
+  it("keeps the title before the permitted actions", () => {
+    render(<CreateReport report={report} reportType="SINGLE" isAdmin />);
+    const heading = screen.getByRole("heading", {
+      level: 1,
+      name: "Testrapport",
+    });
+    const archive = screen.getByRole("button", { name: "Arkiver rapport" });
+    const deleteButton = screen.getByRole("button", { name: "Slett rapport" });
+    expect(
+      heading.compareDocumentPosition(archive) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      archive.compareDocumentPosition(deleteButton) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      screen.getByText("Svarene dine lagres automatisk."),
+    ).toBeInTheDocument();
+  });
+
+  it("respects archive and delete permissions", () => {
+    const readOnly = { ...report, hasWriteAccess: false };
+    const { rerender } = render(
+      <CreateReport report={readOnly} reportType="SINGLE" isAdmin={false} />,
+    );
+    expect(
+      screen.queryByRole("button", { name: "Arkiver rapport" }),
+    ).toBeNull();
+    expect(screen.queryByRole("button", { name: "Slett rapport" })).toBeNull();
+
+    rerender(<CreateReport report={readOnly} reportType="SINGLE" isAdmin />);
+    expect(
+      screen.queryByRole("button", { name: "Arkiver rapport" }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "Slett rapport" }),
+    ).toBeInTheDocument();
+  });
+
+  it("moves focus to the banner on archive and back to the heading on restore", () => {
+    const archived = {
+      ...report,
+      archive: {
+        archivedAt: "2026-09-01T10:00:00.000Z",
+        archivedBy: "bruker@nav.no",
+        reason: null,
+      },
+    } as unknown as Report;
+    const { rerender } = render(
+      <CreateReport report={report} reportType="SINGLE" isAdmin />,
+    );
+    screen.getByRole("button", { name: "Arkiver rapport" }).focus();
+    rerender(<CreateReport report={archived} reportType="SINGLE" isAdmin />);
+    expect(
+      screen
+        .getByText("Denne rapporten er arkivert")
+        .closest('[role="status"]'),
+    ).toHaveFocus();
+    expect(
+      screen.queryByRole("button", { name: "Arkiver rapport" }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "Slett rapport" }),
+    ).toBeInTheDocument();
+
+    screen.getByRole("button", { name: /^Gjenopprett/ }).focus();
+    rerender(<CreateReport report={report} reportType="SINGLE" isAdmin />);
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Testrapport" }),
+    ).toHaveFocus();
   });
 });

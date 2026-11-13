@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import TeamList from "./TeamList";
 import type { Team } from "@src/types";
@@ -23,6 +23,15 @@ const teams: Team[] = [
 ] as unknown as Team[];
 
 describe("TeamList a11y", () => {
+  it("uses the shared compact density and text size", () => {
+    render(<TeamList teams={teams} isAdmin={false} />);
+    expect(screen.getByRole("table")).toHaveAttribute("data-density", "tight");
+    expect(screen.getByRole("table")).toHaveAttribute(
+      "data-text-size",
+      "small",
+    );
+  });
+
   it("has no axe violations (admin view)", async () => {
     const { container } = render(<TeamList teams={teams} isAdmin={true} />);
     const results = await axe(container);

@@ -1,10 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import ArchivedReportList from "./ArchivedReportList";
 import type { ArchivedReportSummary } from "@src/types";
 
 const refresh = vi.fn();
+const loadDetails = vi.hoisted(() => vi.fn());
+vi.mock("@components/teamDashboard/useReportStatuses", () => ({
+  useReportStatuses: (items: { id: string }[]) => {
+    loadDetails(items);
+    return {
+      data: {
+        [items[0].id]: {
+          metadata: {
+            url: "https://example.nav.no",
+            notes: "Notat\n  med linjeskift",
+          },
+        },
+      },
+      retry: vi.fn(),
+    };
+  },
+}));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh, push: vi.fn(), replace: vi.fn() }),
 }));
@@ -64,6 +81,18 @@ const reports: ArchivedReportSummary[] = [
 describe("ArchivedReportList", () => {
   beforeEach(() => vi.clearAllMocks());
 
+  it("shows archive dates in the short Norwegian format", () => {
+    const report = {
+      ...reports[0],
+      archive: { ...reports[0].archive, archivedAt: "2026-11-13T12:00:00" },
+    };
+    render(<ArchivedReportList reports={[report]} isAdmin={false} />);
+    const date = screen.getByText("13.11.2026");
+    expect(date.tagName).toBe("TIME");
+    expect(date).toHaveAttribute("datetime", report.archive.archivedAt);
+    expect(date).toHaveAttribute("title", report.archive.archivedAt);
+  });
+
   it("has no axe violations (user and admin)", async () => {
     for (const isAdmin of [false, true]) {
       const { container, unmount } = render(
@@ -108,14 +137,20 @@ describe("ArchivedReportList", () => {
 
   it("restores a report and announces it", async () => {
     render(<ArchivedReportList reports={reports} isAdmin={false} />);
+    expect(
+      screen.getByRole("link", { name: "Tilbake til alle rapporter" }),
+    ).toHaveAttribute("href", "/reports");
     fireEvent.click(
       screen.getByRole("button", { name: "Gjenopprett Gammel tjeneste" }),
     );
     expect(unarchiveReport).toHaveBeenCalledWith("a1");
-    expect((await screen.findByRole("status")).textContent).toContain(
-      "er gjenopprettet",
-    );
+    expect(
+      await screen.findByText("«Gammel tjeneste» er gjenopprettet."),
+    ).toBeInTheDocument();
     expect(refresh).toHaveBeenCalled();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Arkiverte rapporter" }),
+    ).toHaveFocus();
   });
 
   it("requires two steps and a typed name before permanent delete", async () => {
@@ -139,9 +174,54 @@ describe("ArchivedReportList", () => {
 
     fireEvent.click(confirmButton);
     expect(deleteReport).toHaveBeenCalledWith("a1");
-    expect((await screen.findByRole("status")).textContent).toContain(
-      "er slettet",
-    );
+    expect(
+      await screen.findByText("«Gammel tjeneste» er slettet."),
+    ).toBeInTheDocument();
     expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("loads details only on expansion, including notes and type", async () => {
+    const { container } = render(
+      <ArchivedReportList reports={reports} isAdmin={false} />,
+    );
+    expect(loadDetails).not.toHaveBeenCalled();
+    fireEvent.click(screen.getAllByRole("button", { name: "Vis detaljer" })[0]);
+    expect(loadDetails).toHaveBeenCalled();
+    expect(screen.getByText("Notat med linjeskift").textContent).toBe(
+      "Notat\n  med linjeskift",
+    );
+    expect(screen.getByText("Rapporttype")).toBeVisible();
+    expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("filters archived reports across pages by team and URL", () => {
+    const many = Array.from({ length: 60 }, (_, index) => ({
+      ...reports[0],
+      id: `archived${index}`,
+      title: `Arkiv ${index}`,
+      url: `https://example.no/${index}`,
+      teamId: index === 58 ? "t2" : "t1",
+      teamName: index === 58 ? "Team Beta" : "Team Alfa",
+    }));
+    render(<ArchivedReportList reports={many} isAdmin={false} />);
+    fireEvent.click(
+      within(
+        screen.getByRole("navigation", {
+          name: "Sider med arkiverte rapporter",
+        }),
+      ).getByRole("button", { name: "3" }),
+    );
+    fireEvent.change(screen.getByRole("combobox", { name: "Team" }), {
+      target: { value: "t2" },
+    });
+    expect(screen.getByRole("link", { name: "Arkiv 58" })).toBeVisible();
+    fireEvent.change(screen.getByLabelText("Finn rapport"), {
+      target: { value: "example.no/58" },
+    });
+    expect(screen.getByRole("link", { name: "Arkiv 58" })).toBeVisible();
+    fireEvent.change(screen.getByRole("combobox", { name: "Team" }), {
+      target: { value: "t1" },
+    });
+    expect(screen.getByText("Ingen rapporter passer med søket")).toBeVisible();
   });
 });

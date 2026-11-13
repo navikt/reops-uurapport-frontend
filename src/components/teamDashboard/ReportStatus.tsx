@@ -21,7 +21,12 @@ export type StatusColumn = CriterionStatus;
 export type StatusData = ReturnType<typeof summarizeStatus>;
 export type StatusResult = {
   data?: StatusData;
-  metadata?: { created?: string; lastChanged?: string; url?: string };
+  metadata?: {
+    created?: string;
+    lastChanged?: string;
+    url?: string;
+    notes?: string;
+  };
   error?: boolean;
 };
 

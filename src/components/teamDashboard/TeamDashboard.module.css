@@ -32,6 +32,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-height: 76px;
 }
 .donut {
   width: 76px;
@@ -125,33 +126,6 @@
   max-width: 26rem;
 }
 
-.reportTitle {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.reportDetails {
-  padding: 1rem;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.reportDetailFields {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 0.75rem 1.5rem;
-  margin: 0.75rem 0 0;
-}
-
-.reportDetailFields dt {
-  font-size: 0.875rem;
-  color: var(--ax-text-neutral-subtle);
-}
-.reportDetailFields dd {
-  margin: 0.25rem 0 0;
-}
 .statusNumber {
   font-variant-numeric: tabular-nums;
   font-weight: 600;
@@ -169,15 +143,6 @@
   color: var(--ax-text-neutral-subtle);
 }
 
-.scrollHint {
-  display: none;
-}
-.statusMessage {
-  margin-top: 1rem;
-}
-.statusMessage p {
-  margin: 0;
-}
 .emptyState {
   padding: 1rem 0;
 }
@@ -199,15 +164,6 @@
   display: grid;
   place-items: center;
   min-height: 12rem;
-}
-
-@media (max-width: 1099px) {
-  .scrollHint {
-    display: block;
-    margin: 0 0 0.5rem;
-    font-size: 0.875rem;
-    color: var(--ax-text-neutral-subtle);
-  }
 }
 
 @media (max-width: 599px) {

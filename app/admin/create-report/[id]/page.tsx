@@ -6,6 +6,8 @@ import Forbidden from "@src/components/forbidden/Forbidden";
 import { getReports, getUserDetails } from "@src/actions/reportActions";
 import type { AggregatedReport } from "@src/types";
 import styles from "../create-report.module.css";
+import { PageHeader } from "@components/layout/PageHeader";
+import { Heading } from "@navikt/ds-react";
 
 async function getAggregatedReport(id: string): Promise<AggregatedReport> {
   const token = await getAuthToken();
@@ -48,13 +50,17 @@ export default async function EditAggregatedReportPage({ params }: PageProps) {
   }
 
   return (
-    <span className={styles.content}>
-      <h1 className={styles.h1}>Opprett samlerapport</h1>
+    <div className={styles.content}>
+      <PageHeader>
+        <Heading level="1" size="xlarge">
+          Opprett samlerapport
+        </Heading>
+      </PageHeader>
       <CreateAggregatedReport
         reports={reports}
         aggregatedReport={aggregatedReport}
         userTeams={user.teams}
       />
-    </span>
+    </div>
   );
 }

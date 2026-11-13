@@ -7,6 +7,7 @@ import type { Team } from "@src/types";
 import cell from "@components/cellText.module.css";
 import EditTeamModal from "@components/Modal/TeamModals/EditTeamModal";
 import DeleteTeamModal from "@components/Modal/deleteTeam/DeleteTeamModal";
+import { compactGridSettings } from "@components/gridSettings";
 
 interface TeamListProps {
   teams: Team[];
@@ -88,7 +89,7 @@ const TeamList = ({ teams, isAdmin }: TeamListProps) => {
       columns={columns}
       data={sortedTeams}
       getRowId={(row) => row.id}
-      defaultSettings={{ zebraStripes: true, truncateContent: false }}
+      defaultSettings={{ ...compactGridSettings, truncateContent: false }}
     >
       <DataGrid.Table
         layout="auto"

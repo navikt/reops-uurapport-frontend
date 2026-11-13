@@ -1,5 +1,6 @@
 html {
   background-color: var(--ax-bg-neutral-soft);
+  scrollbar-gutter: stable;
 }
 
 html,

@@ -26,6 +26,7 @@ export async function loadReportStatuses({
               created: report.created,
               lastChanged: report.lastChanged,
               url: report.url,
+              notes: report.notes,
             },
           };
         } catch {

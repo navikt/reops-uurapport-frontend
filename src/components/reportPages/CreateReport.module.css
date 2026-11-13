@@ -1,15 +1,8 @@
 .reportContent {
   display: flex;
   flex-direction: column;
-  align-items: left;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  box-shadow: var(--ax-shadow-small);
-  background-color: var(--ax-bg-default);
-  border-radius: 1rem;
-  padding: 20px;
 }
+
 .reportFilters {
   display: flex;
   flex-direction: row;
@@ -27,9 +20,6 @@
   align-self: start;
 }
 
-.reportContent h1 {
-  align-self: center;
-}
 .filtersAndButton {
   display: flex;
   flex-direction: row;
@@ -40,12 +30,6 @@
 
 .metadata {
   margin-bottom: 3rem;
-}
-
-@media (max-width: 768px) {
-  .reportContent {
-    padding: 16px;
-  }
 }
 
 .archivedBanner {

@@ -8,6 +8,8 @@ import Forbidden from "@src/components/forbidden/Forbidden";
 import type { ReportSummary, User } from "@src/types";
 import styles from "./admin.module.css";
 import { Suspense } from "react";
+import { PageHeader } from "@components/layout/PageHeader";
+import { Heading } from "@navikt/ds-react";
 
 async function getUserDetails(): Promise<User> {
   const token = await getAuthToken();
@@ -62,23 +64,32 @@ export default async function AdminPage() {
   }
 
   return (
-    <span>
-      <div className={styles.headingAndButton}>
-        <h1>Admin</h1>
-        <LinkButton href="/admin/create-report">
-          Opprett en samslått rapport
-        </LinkButton>
-        <LinkButton href="/admin/diagnostics">Rapportdiagnostikk</LinkButton>
-        <LinkButton href="https://myaccount.microsoft.com/groups/95fa4c83-0d92-4aa0-83b0-c80487350318">
-          Legg til admin i Azure
-        </LinkButton>
-      </div>
+    <>
+      <PageHeader
+        actions={
+          <>
+            <LinkButton href="/admin/create-report">
+              Opprett en samslått rapport
+            </LinkButton>
+            <LinkButton href="/admin/diagnostics">
+              Rapportdiagnostikk
+            </LinkButton>
+            <LinkButton href="https://myaccount.microsoft.com/groups/95fa4c83-0d92-4aa0-83b0-c80487350318">
+              Legg til admin i Azure
+            </LinkButton>
+          </>
+        }
+      >
+        <Heading level="1" size="xlarge">
+          Admin
+        </Heading>
+      </PageHeader>
       <div className={styles.content}>
         <DeadlineSettings />
         <Suspense fallback={null}>
           <ReportList reports={reports} />
         </Suspense>
       </div>
-    </span>
+    </>
   );
 }

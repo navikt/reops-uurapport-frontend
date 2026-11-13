@@ -57,6 +57,37 @@ export async function getReports(): Promise<ReportSummary[]> {
   return response.json();
 }
 
+export async function getAllReports(): Promise<ReportSummary[]> {
+  const token = await getAuthToken();
+  const oboToken = await getOboToken(token);
+  const [singleResponse, aggregatedResponse] = await Promise.all(
+    ["/api/reports", "/api/reports/aggregated"].map((path) =>
+      fetch(`${apiUrl}${path}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${oboToken}`,
+        },
+      }),
+    ),
+  );
+  if (!singleResponse.ok || !aggregatedResponse.ok) {
+    throw new Error(
+      `Failed to fetch reports: ${!singleResponse.ok ? singleResponse.status : aggregatedResponse.status}`,
+    );
+  }
+  const [singles, aggregated]: [ReportSummary[], ReportSummary[]] =
+    await Promise.all([singleResponse.json(), aggregatedResponse.json()]);
+  return [
+    ...singles.map((report) => ({ ...report, reportType: "SINGLE" as const })),
+    ...aggregated.map((report) => ({
+      ...report,
+      reportType: "AGGREGATED" as const,
+    })),
+  ];
+}
+
 export async function getArchivedReports(): Promise<ArchivedReportSummary[]> {
   const token = await getAuthToken();
   const oboToken = await getOboToken(token);

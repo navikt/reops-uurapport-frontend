@@ -1,0 +1,10 @@
+.responsiveWidth {
+  max-width: 80rem;
+}
+
+/* Fit the default report columns plus page gutters on widescreen displays. */
+@media (min-width: 105rem) {
+  .responsiveWidth {
+    max-width: 105rem;
+  }
+}

@@ -1,159 +1,73 @@
 "use client";
-import { BodyLong, Link, TextField } from "@navikt/ds-react";
-import { DataGrid } from "@navikt/ds-react/PREVIEW";
-import { useMemo, useState } from "react";
-import { formatDate } from "@src/utils/client/date";
+
+import { BodyLong } from "@navikt/ds-react";
+import { useState } from "react";
 import { useQueryParam } from "@src/hooks/useQueryParam";
 import type { ReportSummary } from "@src/types";
-import cell from "@components/cellText.module.css";
-import { matchesReport } from "@src/utils/client/reportSearch";
-import { usePagination } from "@src/hooks/usePagination";
-import ReportPagination from "./ReportPagination";
-import styles from "./ReportList.module.css";
+import { useReportStatuses } from "@components/teamDashboard/useReportStatuses";
+import ReportFilters from "./ReportFilters";
+import ReportGrid, { type SortOrder } from "./ReportGrid";
 
-interface ReportListProps {
-  reports: ReportSummary[];
-}
-
-type SortOrder = NonNullable<DataGrid.Table.Sorting["sortOrder"]>;
-
-const SORTABLE_COLUMNS = new Set(["title", "teamName", "date"]);
+const SORTABLE_COLUMNS = new Set([
+  "title",
+  "teamName",
+  "date",
+  "created",
+  "COMPLIANT",
+  "NON_COMPLIANT",
+  "NOT_TESTED",
+  "NOT_APPLICABLE",
+  "isPartOfNavNo",
+]);
 
 function parseSortOrder(raw: string): SortOrder {
-  if (raw === "") return [];
-  const [columnId, direction] = raw.split(":");
-  if (
+  const [columnId, direction, extra] = raw.split(":");
+  return !extra &&
     SORTABLE_COLUMNS.has(columnId) &&
     (direction === "asc" || direction === "desc")
-  ) {
-    return [{ columnId, direction }];
-  }
-  return [];
+    ? [{ columnId, direction }]
+    : [];
 }
 
-const columns: DataGrid.Columns<ReportSummary> = [
-  {
-    id: "title",
-    header: "Navn",
-    isRowHeader: true,
-    isSortable: true,
-    bodyCell: (report) =>
-      report.reportType === "AGGREGATED" ? (
-        <Link
-          className={cell.wrap}
-          data-color="accent"
-          href={`/reports/aggregated/${report.id}`}
-        >
-          {report.title === "" ? "(Uten navn)" : report.title}
-        </Link>
-      ) : (
-        <Link
-          className={cell.wrap}
-          data-color="accent"
-          href={`/reports/${report.id}`}
-        >
-          {report.title === "" ? "Uten navn" : report.title}
-        </Link>
-      ),
-  },
-  {
-    id: "teamName",
-    header: "Team",
-    isSortable: true,
-    bodyCell: (report) =>
-      report.teamId && report.teamName ? (
-        <Link className={cell.wrap} href={`/teams/${report.teamId}`}>
-          {report.teamName}
-        </Link>
-      ) : (
-        <span>-</span>
-      ),
-  },
-  {
-    id: "date",
-    header: "Sist endret",
-    isSortable: true,
-    bodyCell: (report) => formatDate(report.date),
-  },
-];
-
-const comparator = (
-  a: ReportSummary,
-  b: ReportSummary,
-  orderBy: keyof ReportSummary,
-) => {
-  const aValue = a[orderBy];
-  const bValue = b[orderBy];
-
-  if (bValue === undefined && aValue === undefined) return 0;
-  if (bValue === undefined) return -1;
-  if (aValue === undefined) return 1;
-  if (bValue < aValue) return -1;
-  if (bValue > aValue) return 1;
-  return 0;
-};
-
-const ReportList = ({ reports }: ReportListProps) => {
+export default function ReportList({ reports }: { reports: ReportSummary[] }) {
   const [query, setQuery] = useState("");
+  const [teamId, setTeamId] = useState("");
   const [sortParam, setSortParam] = useQueryParam("sort", "");
-  const sortOrder = useMemo(() => parseSortOrder(sortParam), [sortParam]);
-
-  const handleSortOrderChange: DataGrid.Table.Sorting["onSortOrderChange"] = (
-    newSortOrder,
-  ) => {
-    const first = newSortOrder[0];
-    setSortParam(first ? `${first.columnId}:${first.direction}` : undefined);
-  };
-
-  const sortedData = useMemo(() => {
-    const first = sortOrder[0];
-    const filtered = reports.filter((report) => matchesReport(report, query));
-    if (!first) return filtered;
-    const orderBy = first.columnId as keyof ReportSummary;
-    return filtered.sort((a, b) => {
-      const result = comparator(a, b, orderBy);
-      return first.direction === "asc" ? -result : result;
-    });
-  }, [reports, sortOrder, query]);
-  const pagination = usePagination(
-    sortedData,
-    JSON.stringify([query, sortOrder]),
-  );
-
+  const { data: statuses, retry } = useReportStatuses(reports);
+  const selectedTeam = reports.some(
+    (report) => report.teamId === teamId && report.teamName,
+  )
+    ? teamId
+    : "";
+  const filtered = selectedTeam
+    ? reports.filter((report) => report.teamId === selectedTeam)
+    : reports;
   return (
     <>
-      <TextField
-        size="small"
-        label="Finn rapport"
-        description="Søk i navn og nettadresse"
-        className={styles.search}
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
+      <ReportFilters
+        reports={reports}
+        query={query}
+        onQueryChange={setQuery}
+        teamId={selectedTeam}
+        onTeamChange={setTeamId}
       />
-      <DataGrid
-        columns={columns}
-        data={pagination.items}
-        getRowId={(row) => row.id}
-        defaultSettings={{ zebraStripes: true, truncateContent: false }}
-      >
-        <DataGrid.Table
-          aria-label="Rapporter"
-          emptyContent={<BodyLong>Ingen rapporter passer med søket</BodyLong>}
-          layout="auto"
-          sorting={{
-            allowMultiSort: false,
-            sortOrder,
-            onSortOrderChange: handleSortOrderChange,
-          }}
-        />
-      </DataGrid>
-      <ReportPagination
-        total={sortedData.length}
-        page={pagination.page}
-        onPageChange={pagination.onPageChange}
+      <ReportGrid
+        reports={filtered}
+        query={query}
+        filterKey={selectedTeam}
+        statuses={statuses}
+        retry={retry}
+        label="Rapporter"
+        showTeam
+        sortOrder={parseSortOrder(sortParam)}
+        onSortOrderChange={(order) => {
+          const first = order[0];
+          setSortParam(
+            first ? `${first.columnId}:${first.direction}` : undefined,
+          );
+        }}
+        emptyContent={<BodyLong>Ingen rapporter passer med søket</BodyLong>}
       />
     </>
   );
-};
-
-export default ReportList;
+}

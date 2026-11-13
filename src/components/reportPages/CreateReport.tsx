@@ -17,8 +17,6 @@ import {
   Button,
   Checkbox,
   LocalAlert,
-  HStack,
-  Box,
 } from "@navikt/ds-react";
 import _ from "lodash";
 import styles from "./CreateReport.module.css";
@@ -29,6 +27,7 @@ import ArchiveReportModal from "@components/Modal/archiveReportModal/ArchiveRepo
 import RestoreReportButton from "@components/Modal/restoreReport/RestoreReportButton";
 import { ValidationWarnings } from "@components/ValidationWarnings/ValidationWarnings";
 import SaveStatus, { type SaveState } from "./SaveStatus";
+import { PageHeader } from "@components/layout/PageHeader";
 import { useQueryParam, useQueryParamList } from "@src/hooks/useQueryParam";
 import {
   CRITERION_STATUS,
@@ -197,25 +196,28 @@ const CreateReportInner = ({
       {report?.validationWarnings && report.validationWarnings.length > 0 && (
         <ValidationWarnings warnings={report.validationWarnings} />
       )}
-      <Heading level="1" size="xlarge" ref={headingRef} tabIndex={-1}>
-        {report?.descriptiveName}
-      </Heading>
+      <PageHeader
+        actions={
+          (canArchive || isAdmin) && (
+            <>
+              {canArchive && <ArchiveReportModal reportId={report.reportId} />}
+              {isAdmin && (
+                <DeleteReportModal
+                  reportId={report.reportId}
+                  reportName={reportName}
+                  isArchived={isArchived}
+                  onDeleted={() => router.push("/reports")}
+                />
+              )}
+            </>
+          )
+        }
+      >
+        <Heading level="1" size="xlarge" ref={headingRef} tabIndex={-1}>
+          {report?.descriptiveName}
+        </Heading>
+      </PageHeader>
       <SaveStatus state={saveState} />
-      {(canArchive || isAdmin) && (
-        <Box marginBlock="space-16">
-          <HStack gap="space-8" justify="end" wrap>
-            {canArchive && <ArchiveReportModal reportId={report.reportId} />}
-            {isAdmin && (
-              <DeleteReportModal
-                reportId={report.reportId}
-                reportName={reportName}
-                isArchived={isArchived}
-                onDeleted={() => router.push("/reports")}
-              />
-            )}
-          </HStack>
-        </Box>
-      )}
       <Tabs value={activeTab} onChange={setActiveTab} className={styles.tabs}>
         <Tabs.List>
           <Tabs.Tab value="criteria" label="Retningslinjer" />

@@ -1,34 +1,38 @@
 import ReportList from "@/components/ReportList/ReportList";
 import CreateReportModal from "@/components/Modal/createReportModal/CreateReportModal";
-import { getReports } from "@src/actions/reportActions";
-import styles from "./reports.module.css";
+import { getAllReports } from "@src/actions/reportActions";
 import { Suspense } from "react";
 import { ArchiveIcon } from "@navikt/aksel-icons";
 import { LinkButton } from "@components/LinkButton";
+import { PageHeader } from "@components/layout/PageHeader";
+import { Heading } from "@navikt/ds-react";
 
 export default async function ReportsPage() {
-  const reports = await getReports();
+  const reports = await getAllReports();
 
   return (
     <>
-      <div className={styles.headingAndButton}>
-        <h1 className={styles.h1}>Alle rapporter</h1>
-        <div className={styles.actions}>
-          <LinkButton
-            href="/reports/archived"
-            variant="secondary"
-            icon={<ArchiveIcon aria-hidden />}
-          >
-            Arkiverte rapporter
-          </LinkButton>
-          <CreateReportModal />
-        </div>
-      </div>
-      <div className={styles.content}>
-        <Suspense fallback={null}>
-          <ReportList reports={reports} />
-        </Suspense>
-      </div>
+      <PageHeader
+        actions={
+          <>
+            <LinkButton
+              href="/reports/archived"
+              variant="secondary"
+              icon={<ArchiveIcon aria-hidden />}
+            >
+              Arkiverte rapporter
+            </LinkButton>
+            <CreateReportModal />
+          </>
+        }
+      >
+        <Heading level="1" size="xlarge">
+          Alle rapporter
+        </Heading>
+      </PageHeader>
+      <Suspense fallback={null}>
+        <ReportList reports={reports} />
+      </Suspense>
     </>
   );
 }
