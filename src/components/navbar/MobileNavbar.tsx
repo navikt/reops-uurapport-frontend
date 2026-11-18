@@ -3,7 +3,6 @@
 import NextLink from "next/link";
 import {
   MenuHamburgerIcon,
-  LeaveIcon,
   GavelSoundBlockIcon,
 } from "@navikt/aksel-icons";
 import { Button, Dropdown } from "@navikt/ds-react";
@@ -39,11 +38,6 @@ const MobileNavbar = ({ user }: MobileNavbarProps) => {
                 Admin
               </Dropdown.Menu.List.Item>
             )}
-            <Dropdown.Menu.Divider />
-            <Dropdown.Menu.List.Item as="a" href="/oauth2/logout">
-              <LeaveIcon />
-              Logg ut
-            </Dropdown.Menu.List.Item>
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>

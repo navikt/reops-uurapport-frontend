@@ -1,7 +1,7 @@
 import { Box, HStack } from "@navikt/ds-react";
 import { PageBlock } from "@/components/layout/PageBlock";
 import styles from "./Navbar.module.css";
-import { LeaveIcon, GavelSoundBlockIcon } from "@navikt/aksel-icons";
+import { GavelSoundBlockIcon } from "@navikt/aksel-icons";
 import { apiUrl } from "../../utils/server/urls";
 import { getOboToken } from "@/utils/server/getOboToken";
 import { getAuthToken } from "@/utils/server/getAuthToken";
@@ -122,20 +122,6 @@ export default async function Navbar() {
               </li>
               <li>
                 <ThemeButton />
-              </li>
-              <li>
-                <a
-                  href="/oauth2/logout"
-                  style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                  }}
-                >
-                  <LeaveIcon aria-hidden /> Logg ut
-                </a>
               </li>
             </HStack>
           </HStack>
