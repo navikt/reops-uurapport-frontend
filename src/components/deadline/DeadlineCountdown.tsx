@@ -39,7 +39,7 @@ function DeadlineCountdown() {
     <GlobalAlert status="announcement" as="div" size="small">
       <GlobalAlert.Header>
         <GlobalAlert.Title as="h2">
-          Tilgjengelighetserklæring: ca. {dateLabel}
+          Ønsket frist for tilgjengelighetserklæringen: {dateLabel}
         </GlobalAlert.Title>
       </GlobalAlert.Header>
       <GlobalAlert.Content>
